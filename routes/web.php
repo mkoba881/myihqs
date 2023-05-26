@@ -27,7 +27,7 @@ Route::controller(IhqsController::class)->middleware('auth')->group(function() {
 
 Route::get('fs/analysis', [IhqsController::class, 'analysis'])->name('fs.analysis');
 Route::get('fs/answer', [IhqsController::class, 'answer'])->name('fs.answer');
-Route::get('fs/management', [IhqsController::class, 'manegement'])->name('fs.manegement');
+Route::get('fs/management', [IhqsController::class, 'management'])->name('fs.management');
 
 Auth::routes();
 

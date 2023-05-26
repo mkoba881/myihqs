@@ -24,7 +24,7 @@ class IhqsController extends Controller
 
     public function management()
     {
-        return view('fs.manegement');
+        return view('fs.management');
     }
 
 }
