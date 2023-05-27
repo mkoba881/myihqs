@@ -21,13 +21,18 @@ use App\Http\Controllers\Admin\IhqsController;
 Route::controller(IhqsController::class)->prefix('admin')->name('admin.')->middleware('auth')->group(function() {
     Route::get('ihqs/selection', 'add');
 });
-Route::controller(IhqsController::class)->middleware('auth')->group(function() {
-    Route::get('fs/analysis', 'analysis');
+
+Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
+    Route::get('analysis', 'analysis')->name('analysis');
+    Route::get('answer', 'answer')->name('answer');
+    Route::get('management', 'management')->name('management');
+    Route::get('answerend', 'answerend')->name('answerend');
+
 });
 
-Route::get('fs/analysis', [IhqsController::class, 'analysis'])->name('fs.analysis');
-Route::get('fs/answer', [IhqsController::class, 'answer'])->name('fs.answer');
-Route::get('fs/management', [IhqsController::class, 'management'])->name('fs.management');
+// Route::get('fs/analysis', [IhqsController::class, 'analysis'])->name('fs.analysis');
+// Route::get('fs/answer', [IhqsController::class, 'answer'])->name('fs.answer');
+// Route::get('fs/management', [IhqsController::class, 'management'])->name('fs.management');
 
 Auth::routes();
 

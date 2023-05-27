@@ -27,4 +27,8 @@ class IhqsController extends Controller
         return view('fs.management');
     }
 
+    public function answerend()
+    {
+        return view('fs.answerend');
+    }
 }
