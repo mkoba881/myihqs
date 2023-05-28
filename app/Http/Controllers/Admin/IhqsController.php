@@ -41,5 +41,17 @@ class IhqsController extends Controller
     {
         return view('fs.makepreview');
     }
+    public function deleteqn()
+    {
+        return view('fs.deleteqn');
+    }
+    public function conductqn()
+    {
+        return view('fs.conductqn');
+    }
+    public function conductqnpreview()
+    {
+        return view('fs.conductqnpreview');
+    }
 
 }

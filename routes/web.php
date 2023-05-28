@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 use App\Http\Controllers\Admin\IhqsController;
 Route::controller(IhqsController::class)->prefix('admin')->name('admin.')->middleware('auth')->group(function() {
-    Route::get('ihqs/selection', 'add');
+    Route::get('ihqs/selection', 'add')->name('ihqs.selection');
 });
 
 Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
@@ -29,7 +29,10 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::get('answerend', 'answerend')->name('answerend');
     Route::get('make', 'make')->name('make');
     Route::get('makepreview', 'makepreview')->name('makepreview');
-    
+    Route::get('deleteqn', 'deleteqn')->name('deleteqn');
+    Route::get('conductqn', 'conductqn')->name('conductqn');
+    Route::get('conductqnpreview', 'conductqnpreview')->name('conductqnpreview');
+
 });
 
 // Route::get('fs/analysis', [IhqsController::class, 'analysis'])->name('fs.analysis');

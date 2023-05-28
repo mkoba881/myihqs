@@ -22,6 +22,7 @@
         <div class="card-contents">
             <a href="{{ route('fs.answer')}}">アンケートに回答する</a>
         </div>
+
     </div>
     <!--　ルーティング検討コード<form action="{{ route('fs.analysis') }}" method="get">
     <form action="{{ route('fs.answer') }}" method="get">

@@ -15,6 +15,15 @@
             <div class="card-contents">
                 <a href="{{ route('fs.make')}}">アンケートフォームを作成する</a>
             </div>
+            <div class="card-contents">
+                <a href="{{ route('fs.make')}}">アンケートフォームを編集する</a>
+            </div>
+            <div class="card-contents">
+                <a href="{{ route('fs.deleteqn')}}">アンケートフォームを削除する</a>
+            </div>
+            <div class="card-contents">
+                <a href="{{ route('fs.conductqn')}}">アンケートを実施する</a>
+            </div>
         </div>
     </div>
 @endsection 
