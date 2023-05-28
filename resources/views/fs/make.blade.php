@@ -3,17 +3,17 @@
 
 
 {{-- admin.blade.phpの@yield('title')に'ニュースの新規作成'を埋め込む --}}
-@section('title', 'アンケート管理画面')
+@section('title', 'アンケート作成画面')
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h2>アンケート管理画面</h2>
+                <h2>アンケート作成画面</h2>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.make')}}">アンケートフォームを作成する</a>
+                <a href="{{ route('fs.makepreview')}}">次へ進む</a>
             </div>
         </div>
     </div>

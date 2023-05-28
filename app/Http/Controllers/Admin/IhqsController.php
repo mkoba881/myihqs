@@ -31,4 +31,15 @@ class IhqsController extends Controller
     {
         return view('fs.answerend');
     }
+
+    public function make()
+    {
+        return view('fs.make');
+    }
+
+    public function makepreview()
+    {
+        return view('fs.makepreview');
+    }
+
 }

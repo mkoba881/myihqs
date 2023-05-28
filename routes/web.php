@@ -27,7 +27,9 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::get('answer', 'answer')->name('answer');
     Route::get('management', 'management')->name('management');
     Route::get('answerend', 'answerend')->name('answerend');
-
+    Route::get('make', 'make')->name('make');
+    Route::get('makepreview', 'makepreview')->name('makepreview');
+    
 });
 
 // Route::get('fs/analysis', [IhqsController::class, 'analysis'])->name('fs.analysis');
