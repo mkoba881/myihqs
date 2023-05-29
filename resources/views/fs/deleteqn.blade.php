@@ -16,10 +16,8 @@
                 <h3>本当に削除していいですか？</h3>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.management')}}">いいえ</a>
-            </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.management')}}">はい</a>
+                <a href="{{ route('fs.management')}}" class="btn btn-primary">いいえ</a>
+                <a href="{{ route('fs.management')}}" class="btn btn-primary">はい</a>
             </div>
         </div>
     </div>

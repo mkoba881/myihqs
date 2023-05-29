@@ -13,10 +13,8 @@
                 <h2>アンケート作成プレビュー画面</h2>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.make')}}">作成画面に戻る</a>
-            </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.management')}}">作成完了</a>
+                <a href="{{ route('fs.make')}}" class="btn btn-primary">作成画面に戻る</a>
+                <a href="{{ route('fs.management')}}" class="btn btn-primary">作成完了</a>
             </div>
         </div>
     </div>

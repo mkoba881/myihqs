@@ -13,7 +13,7 @@
                 <h2>アンケート作成画面</h2>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.makepreview')}}">次へ進む</a>
+                <a href="{{ route('fs.makepreview')}}" class="btn btn-primary">次へ進む</a>
             </div>
         </div>
     </div>

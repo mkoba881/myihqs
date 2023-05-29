@@ -13,10 +13,8 @@
                 <h2>アンケート実施プレビュー画面</h2>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.conductqn')}}">前に戻る</a>
-            </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.management')}}">完了</a>
+                <a href="{{ route('fs.conductqn')}}" class="btn btn-primary">前に戻る</a>
+                <a href="{{ route('fs.management')}}" class="btn btn-primary">完了</a>
             </div>
         </div>
     </div>

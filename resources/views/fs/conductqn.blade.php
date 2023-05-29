@@ -12,12 +12,14 @@
             <div class="col-md-8 mx-auto">
                 <h2>アンケート実施画面</h2>
             </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.management')}}">前に戻る</a>
+            <div class="content">
+                <div class="inner">
+                    <a href="{{ route('fs.management')}}" class="btn btn-primary">前に戻る</a>
+                    <a href="{{ route('fs.conductqnpreview')}}" class="btn btn-primary">次へ進む</a>
+                </div>
             </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.conductqnpreview')}}">次へ進む</a>
-            </div>
+
+            
         </div>
     </div>
 @endsection 

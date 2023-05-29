@@ -13,7 +13,7 @@
                 <h2>アンケート回答画面</h2>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.answerend')}}">アンケートフォームを終了する</a>
+                <a href="{{ route('fs.answerend')}}" class="btn btn-primary">アンケートフォームを終了する</a>
             </div>
         </div>
     </div>

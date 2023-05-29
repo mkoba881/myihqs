@@ -13,7 +13,7 @@
                 <h2>アンケート分析画面</h2>
             </div>
             <div class="card-contents">
-                <a href="{{ route('admin.ihqs.selection')}}">前の画面に戻る</a>
+                <a href="{{ route('admin.ihqs.selection')}}" class="btn btn-primary">前の画面に戻る</a>
             </div>
 
         </div>
