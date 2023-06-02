@@ -1,6 +1,6 @@
 {{-- layouts/admin.blade.phpを読み込む --}}
 @extends('layouts.admin')
-            
+
 
 {{-- admin.blade.phpの@yield('title')に'ニュースの新規作成'を埋め込む --}}
 @section('title', 'アンケート管理画面')
@@ -34,6 +34,23 @@
                           <th>前回実施日テスト</th>
                           <th>作成日テスト</th>
                           <th>更新日テスト</th>
+                        <!-- @foreach($posts as $qn)この部分後程確認する-->
+                        <!--    <tr>-->
+                        <!--        <th>{{ $qn->id }}</th>-->
+                        <!--        <td>{{ Str::limit($qn->qn_name, 100) }}</td>-->
+                        <!--        <td>-->
+                        <!--            <div>-->
+                        <!--                <a href="{{ route('fs.conductqn', ['id' => $qn->id]) }}">アンケートを実施する</a>-->
+                        <!--            </div>-->
+                        <!--            <div>-->
+                        <!--                <a href="{{ route('fs.make', ['id' => $qn->id]) }}">アンケートを編集する</a>-->
+                        <!--            </div>-->
+                        <!--            <div>-->
+                        <!--                <a href="{{ route('fs.deleteqn', ['id' => $qn->id]) }}">アンケートを削除する</a>-->
+                        <!--            </div>-->
+                        <!--        </td>-->
+                        <!--    </tr>-->
+                        <!--@endforeach-->
                       </tbody>
                     </table>
                 </div>
