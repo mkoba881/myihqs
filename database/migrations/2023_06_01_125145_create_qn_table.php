@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('qn', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('qn_fmt_id');  
             $table->string('qn_name');
             $table->timestamps();
         });

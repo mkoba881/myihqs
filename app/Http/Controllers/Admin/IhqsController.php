@@ -42,6 +42,8 @@ class IhqsController extends Controller
 
     public function makepreview()
     {
+     
+     //ここの場所ってそもそも正しいのか確認する
         $this->validate($request, Qn::$rules);
         $qn = new Qn;
         $form = $request->all();

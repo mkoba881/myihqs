@@ -10,7 +10,8 @@ class Qn extends Model
     use HasFactory;
     
     // 以下を追記
-    protected $guarded = array('id');
+    //protected $guarded = array('id');
+    protected $primaryKey = 'qn_fmt_id';
 
     public static $rules = array(
         'qn_name' => 'required',
