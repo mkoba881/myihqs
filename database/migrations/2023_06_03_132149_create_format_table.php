@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('qn', function (Blueprint $table) {
-            $table->bigIncrements('qn_fmt_id');  
-            $table->string('qn_name');
+        Schema::create('format', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('mailformat');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('qn');
+        Schema::dropIfExists('format');
     }
 };
