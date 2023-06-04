@@ -13,6 +13,8 @@ class Format extends Model
     
     public static $rules = array(
     'name' => 'required',
+    'start' => 'required',
+    'end' => 'required',
     );
     
     
@@ -21,5 +23,10 @@ class Format extends Model
     {
         return $this->hasMany('App\Models\Item');
     }
-    
+
+    public function Mail()
+    {
+        return $this->hasMany('App\Models\Mail');
+    }
+
 }
