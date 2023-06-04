@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('format', function (Blueprint $table) {
+        Schema::create('mail', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->bigInteger('parent_id')->nullable();
+            $table->string('user_mailformat');
+            $table->string('remind_mailformat');
+            $table->string('admin_mailformat');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('format');
+        Schema::dropIfExists('mail');
     }
 };

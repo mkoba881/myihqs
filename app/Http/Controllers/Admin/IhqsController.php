@@ -40,18 +40,35 @@ class IhqsController extends Controller
         return view('fs.make');
     }
 
+    public function create(Request $request)
+    {
+        // Validationを行う
+        $this->validate($request, Format::$rules);
+        $format = new Format;
+        $form = $request->all();
+        
+        // フォームから送信されてきた_tokenを削除する
+        unset($form['_token']);
+        
+        // データベースに保存する
+        $news->fill($form);
+        $news->save();
+        
+        return view('fs/make');
+    }
+
     public function makepreview()
     {
-     
+
      //ここの場所ってそもそも正しいのか確認する
-        $this->validate($request, Qn::$rules);
-        $qn = new Qn;
+        $this->validate($request, Format::$rules);
+        $format = new Format;
         $form = $request->all();
         // フォームから送信されてきた_tokenを削除する
         unset($form['_token']);
         // データベースに保存する
-        $qn->fill($form);
-        $qn->save();
+        $format->fill($form);
+        $format->save();
      
         return view('fs.makepreview');
     }
