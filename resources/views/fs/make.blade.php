@@ -20,62 +20,74 @@
                             @endforeach
                         </ul>
                     @endif
-                    <div class="form-group row">
-                        <label class="col-md-2">Q1</label>
-                        <div class="form-group row">
-                            <label class="col-md-2">質問文</label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" name="question" value="{{ old('question') }}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2">選択肢</label>
-                            <div class="col-md-10">
-                                <label class="col-md-2">①</label>
-                                <input type="text" class="form-control" name="option1" value="{{ old('option1') }}">
-                                <label class="col-md-2">②</label>
-                                <input type="text" class="form-control" name="option2" value="{{ old('option2') }}">
-                                <label class="col-md-2">③</label>
-                                <input type="text" class="form-control" name="option3" value="{{ old('option3') }}">
-                                <label class="col-md-2">④</label>
-                                <input type="text" class="form-control" name="option4" value="{{ old('option4') }}">
-                                <label class="col-md-2">⑤</label>
-                                <input type="text" class="form-control" name="option5" value="{{ old('option5') }}">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>優先度</label>
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2">参考リンク</label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" name="rf_url" value="{{ old('rf_url') }}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-2">画像</label>
-                            <div class="col-md-10">
-                                <input type="file" class="form-control-file" name="image">
-                        </div>
                     
+                    <div class="form-group row">
+                        <div class="form-group row">
+                            <label class="col-md-2"><b>アンケート名</b></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                            </div>
+                        </div>
 
+                        <div style="display:inline-flex">
+                            <h2 class="col-md-1">Q1</h2>
+                            <div class="form-group row">
+                                <label class="col-md-2 example">質問文</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="question" value="{{ old('question') }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2">選択肢</label>
+                                <div class="col-md-10">
+                                    <label class="col-md-2">①</label>
+                                    <input type="text" class="form-control" name="option1" value="{{ old('option1') }}">
+                                    <label class="col-md-2">②</label>
+                                    <input type="text" class="form-control" name="option2" value="{{ old('option2') }}">
+                                    <label class="col-md-2">③</label>
+                                    <input type="text" class="form-control" name="option3" value="{{ old('option3') }}">
+                                    <label class="col-md-2">④</label>
+                                    <input type="text" class="form-control" name="option4" value="{{ old('option4') }}">
+                                    <label class="col-md-2">⑤</label>
+                                    <input type="text" class="form-control" name="option5" value="{{ old('option5') }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2">優先度</label>
+                                <select class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2">参考リンク</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="rf_url" value="{{ old('rf_url') }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2">画像</label>
+                                <div class="col-md-5">
+                                    <input type="file" class="form-control-file" name="image">
+                            </div>
                         
-            </div>
+    
+                            
+                </div>
+                        </div>
+
+                                
                     </div>
+                    
                     <input type="submit" value="次へ進む">
                 </form>
             </div>
             <!--<div class="card-contents">-->
             <!--    <a href="{{ route('fs.makepreview')}}" class="btn btn-primary">次へ進む</a>-->
             <!--</div>-->
-        </div>
         </div>
     </div>
 @endsection 
