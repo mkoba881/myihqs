@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h2>アンケート作成画面</h2>
-                <form action="{{ route('fs.make') }}" method="post" enctype="multipart/form-data"><!--フォームの作成 -->
+                <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data"><!--フォームの作成 -->
                     
                     @if (count($errors) > 0)<!-- `$errors` は `validate` で弾かれた内容を記憶する配列 -->
                         <ul>
@@ -29,10 +29,12 @@
                             </div>
                         </div>
 
-                        <div style="display:inline-flex">
-                            <h2 class="col-md-1">Q1</h2>
+                        <!--<div  class="example">-->
+                        <div  class="example">
+                            <!--<h2 class="col-md-1">Q1</h2>-->
                             <div class="form-group row">
-                                <label class="col-md-2 example">質問文</label>
+                                <label class="col-md-2">Q1</label>
+                                <label class="col-md-2">質問文</label>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control" name="question" value="{{ old('question') }}">
                                 </div>
@@ -45,7 +47,7 @@
                                     <label class="col-md-2">②</label>
                                     <input type="text" class="form-control" name="option2" value="{{ old('option2') }}">
                                     <label class="col-md-2">③</label>
-                                    <input type="text" class="form-control" name="option3" value="{{ old('option3') }}">
+                                    <input type="text" class="form-control" nam e="option3" value="{{ old('option3') }}">
                                     <label class="col-md-2">④</label>
                                     <input type="text" class="form-control" name="option4" value="{{ old('option4') }}">
                                     <label class="col-md-2">⑤</label>
@@ -72,17 +74,12 @@
                                 <label class="col-md-2">画像</label>
                                 <div class="col-md-5">
                                     <input type="file" class="form-control-file" name="image">
+                                </div>
                             </div>
-                        
-    
-                            
-                </div>
                         </div>
-
-                                
                     </div>
-                    
-                    <input type="submit" value="次へ進む">
+                    @csrf
+                    <input type="submit" class="btn btn-primary" value="次へ進む">
                 </form>
             </div>
             <!--<div class="card-contents">-->

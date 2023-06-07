@@ -5,6 +5,12 @@ body {
   color: #000;
 }
 
+.example {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
 .navbar-laravel {
   background-color: #000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

@@ -6,10 +6,12 @@ body {
 }
 
 
-// .example{ サンプル間隔調整
-//     display: flex;
-//     justify-content:space-around;
-// }
+.example{ //サンプル間隔調整
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    //justify-content:space-around;
+}
 
 .navbar-laravel {
   background-color: #000;

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-// 以下の1行を追記することで、Qn Modelが扱えるようになる
-use App\Models\Qn;
+// 以下の1行を追記することで、Format Modelが扱えるようになる
+use App\Models\Format;
 
 class IhqsController extends Controller
 {
@@ -50,26 +50,26 @@ class IhqsController extends Controller
         // フォームから送信されてきた_tokenを削除する
         unset($form['_token']);
         
-        // データベースに保存する
-        $news->fill($form);
-        $news->save();
-        
-        return view('fs/make');
+        // データベースに保存する、Formatモデルを使用する。
+        $format->fill($form);
+        $format->save();
+
+        //return view('fs/make');        
+        return redirect('/fs/makepreview');
     }
 
     public function makepreview()
     {
 
-     //ここの場所ってそもそも正しいのか確認する
-        $this->validate($request, Format::$rules);
-        $format = new Format;
-        $form = $request->all();
-        // フォームから送信されてきた_tokenを削除する
-        unset($form['_token']);
-        // データベースに保存する
-        $format->fill($form);
-        $format->save();
-     
+    //  //ここの場所ってそもそも正しいのか確認する
+    //     $this->validate($request, Format::$rules);
+    //     $format = new Format;
+    //     $form = $request->all();
+    //     // フォームから送信されてきた_tokenを削除する
+    //     unset($form['_token']);
+    //     // データベースに保存する
+    //     $format->fill($form);
+    //     $format->save();
         return view('fs.makepreview');
     }
     public function deleteqn()  

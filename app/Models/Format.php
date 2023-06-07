@@ -12,9 +12,7 @@ class Format extends Model
     protected $guarded = array('id');
     
     public static $rules = array(
-    'name' => 'required',
-    'start' => 'required',
-    'end' => 'required',
+    'question' => 'required',
     );
     
     
