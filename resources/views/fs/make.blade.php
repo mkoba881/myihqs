@@ -22,16 +22,39 @@
                     @endif
                     
                     <div class="form-group row">
+
                         <div class="form-group row">
                             <label class="col-md-2"><b>アンケート名</b></label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                <input type="text" class="form-control" name="ankate_name" value="{{ old('ankate_name') }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">開始日</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="start" value="{{ old('start') }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">終了日</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="end" value="{{ old('end') }}">
                             </div>
                         </div>
 
-                        <!--<div  class="example">-->
-                        <div  class="example">
+
+                        <div  class="table">
                             <!--<h2 class="col-md-1">Q1</h2>-->
+                            <thead>
+                              </tr>
+                                <th scope="col">質問No</th>
+                                <th scope="col">質問文</th>
+                                <th scope="col">回答の選択肢</th>
+                                <th scope="col">参考リンク</th>
+                                <th scope="col">参考画像</th>
+                            　</tr>
+                            </thead>
+                            
                             <div class="form-group row">
                                 <label class="col-md-2">Q1</label>
                                 <label class="col-md-2">質問文</label>

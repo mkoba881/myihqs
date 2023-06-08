@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 // 以下の1行を追記することで、Format Modelが扱えるようになる
 use App\Models\Format;
+use App\Models\Detail;
 
 class IhqsController extends Controller
 {
@@ -39,22 +40,50 @@ class IhqsController extends Controller
     {
         return view('fs.make');
     }
+    
+    //アンケート詳細テーブル用関数
+    private function savedetail(Request $request)
+    {
 
+        // Validationを行う
+        $this->validate($request, Detail::$rules);
+        $detail = new Detail;
+        $form_detail = $request->all();
+        
+        // フォームから送信されてきた_tokenを削除する
+        unset($form_detail['_token']);
+        
+        // データベースに保存する、Formatモデルを使用する。
+        $detail->fill($form_detail);
+        $detail->save();
+        
+    }
+    
     public function create(Request $request)
     {
         // Validationを行う
         $this->validate($request, Format::$rules);
-        $format = new Format;
-        $form = $request->all();
+        //$format = new Format;
+        
+        
+        
+        $form = $request->all();//フォームの中身を全部とってきている
         
         // フォームから送信されてきた_tokenを削除する
         unset($form['_token']);
-        
-        // データベースに保存する、Formatモデルを使用する。
-        $format->fill($form);
-        $format->save();
+        //dd($form);    
+        $format_form=array(
+            'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end']
+            );
+        // $array = array(
+        // 'name' => $value,
+        // );
+        $format_id = \DB::table('format')->insertGetId($format_form);
+        //dd($format_id);
 
-        //return view('fs/make');        
+        // $format->fill($form);
+        // $format->save();
+        
         return redirect('/fs/makepreview');
     }
 
