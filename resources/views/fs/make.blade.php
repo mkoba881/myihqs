@@ -74,7 +74,7 @@
                                     <label class="col-md-2">②</label>
                                     <input type="text" class="form-control" name="option2" value="{{ old('option2') }}">
                                     <label class="col-md-2">③</label>
-                                    <input type="text" class="form-control" nam e="option3" value="{{ old('option3') }}">
+                                    <input type="text" class="form-control" name="option3" value="{{ old('option3') }}">
                                     <label class="col-md-2">④</label>
                                     <input type="text" class="form-control" name="option4" value="{{ old('option4') }}">
                                     <label class="col-md-2">⑤</label>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-2">優先度</label>
-                                <select class="form-control">
+                                <select class="form-control" name="priority" value="{{ old('priority') }}">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -100,7 +100,7 @@
                             <div class="form-group row">
                                 <label class="col-md-2">画像</label>
                                 <div class="col-md-5">
-                                    <input type="file" class="form-control-file" name="image">
+                                    <input type="file" class="form-control-file" name="rf_image">
                                 </div>
                             </div>
                             <div class="form-group row">

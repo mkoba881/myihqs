@@ -41,29 +41,12 @@ class IhqsController extends Controller
         return view('fs.make');
     }
     
-    //アンケート詳細テーブル用関数
-    private function savedetail(Request $request)
-    {
-
-        // Validationを行う
-        $this->validate($request, Detail::$rules);
-        $detail = new Detail;
-        $form_detail = $request->all();
-        
-        // フォームから送信されてきた_tokenを削除する
-        unset($form_detail['_token']);
-        
-        // データベースに保存する、Formatモデルを使用する。
-        $detail->fill($form_detail);
-        $detail->save();
-        
-    }
-    
     public function create(Request $request)
     {
         // Validationを行う
         $this->validate($request, Format::$rules);
         //$format = new Format;
+        //$detail = new Detail;
         
         
         
@@ -87,7 +70,17 @@ class IhqsController extends Controller
             'name'=>$form['question_name'],'format_id'=>$format_id,'sortorder'=>$form['sortorder']
             );
         $item_id = \DB::table('item')->insertGetId($item_form);
-        dd($item_id);
+        //dd($item_id);
+        $detail_form=array(
+            'item_id'=>$item_id,'question'=>$form['question'],'option1'=>$form['option1'],'option2'=>$form['option2'],'option3'=>$form['option3'],'option4'=>$form['option4'],'option5'=>$form['option5'],'priority'=>$form['priority'],'rf_url'=>$form['rf_url'],'rf_image'=>$form['rf_image']
+            );
+        //dd($detail_form);
+        \DB::table('detail')->insert($detail_form);
+        
+        // $detail->fill($detail_form);
+        // $detail->save();
+        
+        
         return redirect('/fs/makepreview');
     }
 

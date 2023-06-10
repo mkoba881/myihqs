@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('detail', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger("item_id");
             $table->string('question');
             $table->string('option1');
             $table->string('option2');
