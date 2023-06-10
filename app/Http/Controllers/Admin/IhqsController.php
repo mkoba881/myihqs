@@ -83,7 +83,11 @@ class IhqsController extends Controller
 
         // $format->fill($form);
         // $format->save();
-        
+        $item_form=array(
+            'name'=>$form['question_name'],'format_id'=>$format_id,'sortorder'=>$form['sortorder']
+            );
+        $item_id = \DB::table('item')->insertGetId($item_form);
+        dd($item_id);
         return redirect('/fs/makepreview');
     }
 

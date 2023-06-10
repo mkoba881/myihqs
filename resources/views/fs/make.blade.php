@@ -47,16 +47,20 @@
                             <!--<h2 class="col-md-1">Q1</h2>-->
                             <thead>
                               </tr>
-                                <th scope="col">質問No</th>
+                                <th scope="col">質問No、項目名</th>
                                 <th scope="col">質問文</th>
                                 <th scope="col">回答の選択肢</th>
                                 <th scope="col">参考リンク</th>
                                 <th scope="col">参考画像</th>
                             　</tr>
                             </thead>
-                            
                             <div class="form-group row">
-                                <label class="col-md-2">Q1</label>
+                                <label class="col-md-2">質問No、項目名</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="question_name" value="{{ old('question_name') }}">
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label class="col-md-2">質問文</label>
                                 <div class="col-md-10">
                                     <input type="text" class="form-control" name="question" value="{{ old('question') }}">
@@ -97,6 +101,12 @@
                                 <label class="col-md-2">画像</label>
                                 <div class="col-md-5">
                                     <input type="file" class="form-control-file" name="image">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-2">並び順</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" name="sortorder" value="{{ old('sortorder') }}">
                                 </div>
                             </div>
                         </div>
