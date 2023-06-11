@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('format', function (Blueprint $table) {
+        Schema::create('formats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->dateTime('start');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('format');
+        Schema::dropIfExists('formats');
     }
 };

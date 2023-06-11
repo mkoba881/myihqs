@@ -22,7 +22,6 @@
                     @endif
                     
                     <div class="form-group row">
-
                         <div class="form-group row">
                             <label class="col-md-2"><b>アンケート名</b></label>
                             <div class="col-md-10">
@@ -41,73 +40,60 @@
                                 <input type="text" class="form-control" name="end" value="{{ old('end') }}">
                             </div>
                         </div>
-
-
-                        <div  class="table">
-                            <!--<h2 class="col-md-1">Q1</h2>-->
-                            <thead>
-                              </tr>
-                                <th scope="col">質問No、項目名</th>
-                                <th scope="col">質問文</th>
-                                <th scope="col">回答の選択肢</th>
-                                <th scope="col">参考リンク</th>
-                                <th scope="col">参考画像</th>
-                            　</tr>
-                            </thead>
-                            <div class="form-group row">
-                                <label class="col-md-2">質問No、項目名</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="question_name" value="{{ old('question_name') }}">
-                                </div>
+                        <label class="col-md-2">一つ目の質問</label>
+                        <div class="form-group row">
+                            <label class="col-md-2">質問No、項目名</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="question_name" value="{{ old('question_name') }}">
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-2">質問文</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="question" value="{{ old('question') }}">
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">質問文</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="question" value="{{ old('question') }}">
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-2">選択肢</label>
-                                <div class="col-md-10">
-                                    <label class="col-md-2">①</label>
-                                    <input type="text" class="form-control" name="option1" value="{{ old('option1') }}">
-                                    <label class="col-md-2">②</label>
-                                    <input type="text" class="form-control" name="option2" value="{{ old('option2') }}">
-                                    <label class="col-md-2">③</label>
-                                    <input type="text" class="form-control" name="option3" value="{{ old('option3') }}">
-                                    <label class="col-md-2">④</label>
-                                    <input type="text" class="form-control" name="option4" value="{{ old('option4') }}">
-                                    <label class="col-md-2">⑤</label>
-                                    <input type="text" class="form-control" name="option5" value="{{ old('option5') }}">
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">選択肢</label>
+                            <div class="col-md-10">
+                                <label class="col-md-2">①</label>
+                                <input type="text" class="form-control" name="option1" value="{{ old('option1') }}">
+                                <label class="col-md-2">②</label>
+                                <input type="text" class="form-control" name="option2" value="{{ old('option2') }}">
+                                <label class="col-md-2">③</label>
+                                <input type="text" class="form-control" name="option3" value="{{ old('option3') }}">
+                                <label class="col-md-2">④</label>
+                                <input type="text" class="form-control" name="option4" value="{{ old('option4') }}">
+                                <label class="col-md-2">⑤</label>
+                                <input type="text" class="form-control" name="option5" value="{{ old('option5') }}">
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-2">優先度</label>
-                                <select class="form-control" name="priority" value="{{ old('priority') }}">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">優先度</label>
+                            <select class="form-control" name="priority" value="{{ old('priority') }}">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">参考リンク</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="rf_url" value="{{ old('rf_url') }}">
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-2">参考リンク</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="rf_url" value="{{ old('rf_url') }}">
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">参考画像</label>
+                            <div class="col-md-5">
+                                <input type="file" class="form-control-file" name="rf_image">
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-2">画像</label>
-                                <div class="col-md-5">
-                                    <input type="file" class="form-control-file" name="rf_image">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-md-2">並び順</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" name="sortorder" value="{{ old('sortorder') }}">
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">並び順</label>
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" name="sortorder" value="{{ old('sortorder') }}">
                             </div>
                         </div>
                     </div>

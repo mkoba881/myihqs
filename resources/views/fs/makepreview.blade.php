@@ -12,6 +12,10 @@
             <div class="col-md-8 mx-auto">
                 <h2>アンケート作成プレビュー画面</h2>
             </div>
+            <p>{{$format -> id}}</p>
+            <p>{{$format}}</p>
+            <p>{{$item}}</p>
+            <p>{{$detail}}</p>
             <div class="card-contents">
                 <a href="{{ route('fs.make')}}" class="btn btn-primary">作成画面に戻る</a>
                 <a href="{{ route('fs.management')}}" class="btn btn-primary">作成完了</a>

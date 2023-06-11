@@ -12,7 +12,7 @@ class Item extends Model
     protected $guarded = array('id');
     
     public static $rules = array(
-    'name' => 'required',
+    'question_name' => 'required',
     'sortorder' => 'required',
     );
 

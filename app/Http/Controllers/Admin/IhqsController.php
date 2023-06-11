@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 // 以下の1行を追記することで、Format Modelが扱えるようになる
 use App\Models\Format;
+use App\Models\Item;
 use App\Models\Detail;
 
 class IhqsController extends Controller
@@ -45,6 +46,8 @@ class IhqsController extends Controller
     {
         // Validationを行う
         $this->validate($request, Format::$rules);
+        $this->validate($request, Item::$rules);
+        $this->validate($request, Detail::$rules);
         //$format = new Format;
         //$detail = new Detail;
         
@@ -61,41 +64,46 @@ class IhqsController extends Controller
         // $array = array(
         // 'name' => $value,
         // );
-        $format_id = \DB::table('format')->insertGetId($format_form);
+        $format_id = \DB::table('formats')->insertGetId($format_form);
         //dd($format_id);
-
         // $format->fill($form);
         // $format->save();
         $item_form=array(
             'name'=>$form['question_name'],'format_id'=>$format_id,'sortorder'=>$form['sortorder']
             );
-        $item_id = \DB::table('item')->insertGetId($item_form);
+        $item_id = \DB::table('items')->insertGetId($item_form);
         //dd($item_id);
         $detail_form=array(
-            'item_id'=>$item_id,'question'=>$form['question'],'option1'=>$form['option1'],'option2'=>$form['option2'],'option3'=>$form['option3'],'option4'=>$form['option4'],'option5'=>$form['option5'],'priority'=>$form['priority'],'rf_url'=>$form['rf_url'],'rf_image'=>$form['rf_image']
+            'item_id'=>$item_id,'question'=>$form['question'],'option1'=>$form['option1'],'option2'=>$form['option2'],'option3'=>$form['option3'],'option4'=>$form['option4'],'option5'=>$form['option5'],'priority'=>$form['priority'],'rf_url'=>$form['rf_url'],'rf_image'=>$form['rf_image'],
             );
+    
+    
         //dd($detail_form);
-        \DB::table('detail')->insert($detail_form);
+        \DB::table('details')->insert($detail_form);
         
-        // $detail->fill($detail_form);
+        // $result = \DB::table('detail')->insert($detail_form);
+        // dd($result);
+        // // $detail->fill($detail_form);
         // $detail->save();
-        
-        
-        return redirect('/fs/makepreview');
+        $format = Format::find($format_id);
+        $item= Item::find($item_id);
+        $detail= Detail::find($item_id);
+    
+        return view('fs.makepreview',['format'=> $format,'item'=> $item,'detail'=> $detail]);
+        // return redirect()->route("fs.makepreview",['format_id'=> 1]);
+        // return redirect('/fs/makepreview')->with(compact('format_id'));
     }
 
-    public function makepreview()
+    public function makepreview(Request $request)
     {
-
-    //  //ここの場所ってそもそも正しいのか確認する
-    //     $this->validate($request, Format::$rules);
-    //     $format = new Format;
-    //     $form = $request->all();
-    //     // フォームから送信されてきた_tokenを削除する
-    //     unset($form['_token']);
-    //     // データベースに保存する
-    //     $format->fill($form);
-    //     $format->save();
+        //  $posts_format = Format::all();
+        //  $posts_item = Item::all();
+        //  $posts_detail = Detail::all();
+        dd($request);
+        // dd($format_id);
+        $format = \App\Models\Format::find($format_id);
+        dd($format);
+         
         return view('fs.makepreview');
     }
     public function deleteqn()  
