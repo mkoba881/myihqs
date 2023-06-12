@@ -99,8 +99,8 @@ class IhqsController extends Controller
         //  $posts_format = Format::all();
         //  $posts_item = Item::all();
         //  $posts_detail = Detail::all();
-        dd($request);
-        // dd($format_id);
+        // dd($request);
+        // // dd($format_id);
         $format = \App\Models\Format::find($format_id);
         dd($format);
          
