@@ -45,7 +45,13 @@
                 <h2>・参考リンク</h2>
                 <h3>{{$detail -> rf_url}}</h3>
                 <h2>・参考画像</h2>
-                <img src={{$detail -> rf_image}}  >
+                <!--<img src={{$detail->rf_image}}>-->
+                <div class="image">
+                    @if ($detail ->rf_image)
+                            <img src="{{ secure_asset('uploads/' . $detail->rf_image) }}">
+                            <!--<img src="{{ asset('uploads')}}/{{$detail->rf_image}}" alt="{{ $detail->rf_image }}">-->
+                    @endif
+                </div>
             </div>
             <p>{{$format -> id}}</p>
             <p>{{$format}}</p>
