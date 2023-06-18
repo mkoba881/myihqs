@@ -46,7 +46,7 @@
                 <a href="{{ route('fs.make')}}">アンケートフォームを編集する</a>
             </div>
             <div class="card-contents">
-                <a href="{{ route('fs.deleteqn')}}">アンケートフォームを削除する</a>
+                <a href="{{ route('fs.deleteankate')}}">アンケートフォームを削除する</a>
             </div>
         </div>
     </div>

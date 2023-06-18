@@ -30,7 +30,7 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::get('make', 'make')->name('make');
     Route::post('create', 'create')->name('create');
     Route::get('makepreview', 'makepreview')->name('makepreview');
-    Route::get('deleteqn', 'deleteqn')->name('deleteqn');
+    Route::get('deleteankate', 'deleteankate')->name('deleteankate');
     Route::get('conductqn', 'conductqn')->name('conductqn');
     Route::get('conductqnpreview', 'conductqnpreview')->name('conductqnpreview');
 

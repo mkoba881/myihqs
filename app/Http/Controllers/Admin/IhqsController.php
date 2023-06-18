@@ -85,27 +85,31 @@ class IhqsController extends Controller
         // } else {
         //     $detail_form->rf_image = null;
         // }    
-        
-         $file =  $request->rf_image;
+
+        //$file =  $request->rf_image;
+        $file =  $request->file('rf_image');
         // dd($file);
         // 画像のアップロード
         if($file){
-            // 現在時刻ともともとのファイル名を組み合わせてランダムなファイル名作成
-            $image = time() . $file->getClientOriginalName();
+            // ランダムなファイル名作成
+            $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
+            //$image = time() . $file->getClientOriginalName();
             //dd($image);
             // アップロードするフォルダ名取得
             //$target_path = public_path('uploads/myihqs');
             $target_path = public_path('uploads/');
             //dd($target_path);
             // アップロード処理
+            //$file->storeAs($target_path, $image, 'public');
+            //\Storage::putFileAs($target_path, $file, $image);
             $file->move($target_path, $image);
         }else{
             // 画像が選択されていなければ空文字をセット
             $image = '';
         }
-
+        
         $detail_form['rf_image']=$image;
-    
+        
         //dd($detail_form);
         \DB::table('details')->insert($detail_form);
         
@@ -115,7 +119,7 @@ class IhqsController extends Controller
         // $detail->save();
         $format = Format::find($format_id);
         $item= Item::find($item_id);
-        $detail= Detail::where('item_id', $item_id)->get()->first();//getとfirtstの意味を後程確認
+        $detail= Detail::where('item_id', $item_id)->orderBy('item_id','desc')->get()->first();//getとfirtstの意味を後程確認
         //dd($detail);
         return view('fs.makepreview',['format'=> $format,'item'=> $item,'detail'=> $detail]);
         // return redirect()->route("fs.makepreview",['format_id'=> 1]);
@@ -134,9 +138,9 @@ class IhqsController extends Controller
          
         return view('fs.makepreview');
     }
-    public function deleteqn()  
+    public function deleteankate()  
     {
-        return view('fs.deleteqn');
+        return view('fs.deleteankate');
     }
     public function conductqn()
     {
