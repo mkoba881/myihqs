@@ -29,7 +29,10 @@ class IhqsController extends Controller
 
     public function management()
     {
-        return view('fs.management');
+    $formats = Format::all();
+    //dd($formats);
+        //return view('fs.makepreview',['format'=> $format,'item'=> $item,'detail'=> $detail]);
+        return view('fs.management',['formats' => $formats]);
     }
 
     public function answerend()
@@ -59,8 +62,9 @@ class IhqsController extends Controller
         unset($form['_token']);
         //dd($form);    
         $format_form=array(
-            'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end']
+            'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end'],'status'=>$form['status']
             );
+        //dd($format_form);    
         // $array = array(
         // 'name' => $value,
         // );
@@ -96,13 +100,15 @@ class IhqsController extends Controller
             //$image = time() . $file->getClientOriginalName();
             //dd($image);
             // アップロードするフォルダ名取得
-            //$target_path = public_path('uploads/myihqs');
-            $target_path = public_path('uploads/');
+            //$target_path = '/home/ec2-user/environment/myihqs/public/uploads';
+            //$target_path = public_path('uploads/');
+            $target_path = public_path('uploads');
             //dd($target_path);
             // アップロード処理
-            //$file->storeAs($target_path, $image, 'public');
-            //\Storage::putFileAs($target_path, $file, $image);
-            $file->move($target_path, $image);
+            $path=$file->storeAs('',$image,'image');
+            //$path = \Storage::putFileAs($target_path, $file, $image);
+            //$file->move($target_path, $image);
+            
         }else{
             // 画像が選択されていなければ空文字をセット
             $image = '';

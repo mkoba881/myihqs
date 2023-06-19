@@ -96,6 +96,14 @@
                                 <input type="number" class="form-control" name="sortorder" value="{{ old('sortorder') }}">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">作成ステータス</label>
+                            <select class="form-control" name="status" value="{{ old('status') }}">
+                                <option value=1>作成中（一時保存）</option>
+                                <option value=2>実施前（完成）</option>
+                            </select>
+                        </div>
+
                     </div>
                     @csrf
                     <input type="submit" class="btn btn-primary" value="次へ進む">

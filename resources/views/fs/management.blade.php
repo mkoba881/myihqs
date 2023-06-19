@@ -38,7 +38,7 @@
                     </table>
                 </div>
             </div>
-            
+            <p>{{$formats}}</p>
             <div class="card-contents">
                 <a href="{{ route('fs.conductqn')}}">アンケートを実施する</a>
             </div>

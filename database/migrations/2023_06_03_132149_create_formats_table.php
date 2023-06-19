@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('start');
             $table->dateTime('end');
             $table->bigInteger('parent_id')->nullable();
+            $table->bigInteger('status')->nullable();
             $table->timestamps();
         });
     }
