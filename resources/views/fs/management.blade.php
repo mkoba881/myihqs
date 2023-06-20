@@ -18,7 +18,8 @@
             <h3>アンケート一覧</h3>
             <div class="row">
                 <div class="list-news col-md-12 mx-auto">
-                    <table class="table table-primary table-bordered border-dark"> 
+                    <table class="table table-dark table-bordered border-light"> 
+                    <!--<table class="table table-dark table-bordered border-dark"> -->
                       <thead>
                         <tr>
                           <th>アンケートID</th>
@@ -28,13 +29,17 @@
                           <th>更新日</th>
                         </tr>
                       </thead>
-                      <tbody>
-                          <th>アンケートIDテスト</th>
-                          <th>アンケート名テスト</th>
-                          <th>前回実施日テスト</th>
-                          <th>作成日テスト</th>
-                          <th>更新日テスト</th>
-                      </tbody>
+                        <tbody class="table table-light table-bordered border-dark">
+                            @foreach($formats as $ankate)
+                                <tr>
+                                  <th>{{ $ankate->id}}</th>
+                                  <th>{{ $ankate->name}}</th>
+                                  <th>{{ $ankate->previous_at}}</th>
+                                  <th>{{ $ankate->created_at}}</th>
+                                  <th>{{ $ankate->updated_at}}</th>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
