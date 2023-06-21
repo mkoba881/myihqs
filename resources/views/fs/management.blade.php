@@ -27,16 +27,32 @@
                           <th>前回実施日</th>
                           <th>作成日</th>
                           <th>更新日</th>
+                          <th>ステータス（仮表示後程削除）</th>
+                          <th>実施内容</th>
                         </tr>
                       </thead>
                         <tbody class="table table-light table-bordered border-dark">
                             @foreach($formats as $ankate)
                                 <tr>
-                                  <th>{{ $ankate->id}}</th>
-                                  <th>{{ $ankate->name}}</th>
-                                  <th>{{ $ankate->previous_at}}</th>
-                                  <th>{{ $ankate->created_at}}</th>
-                                  <th>{{ $ankate->updated_at}}</th>
+                                  <td>{{ $ankate->id}}</td>
+                                  <td>{{ $ankate->name}}</td>
+                                  <td>{{ $ankate->previous_at}}</td>
+                                  <td>{{ $ankate->created_at}}</td>
+                                  <td>{{ $ankate->updated_at}}</td>
+                                  <td>{{ $ankate->status}}</td>
+                                  <td>
+                                    @if($ankate->status===2)  
+                                        <div>
+                                            <a href="{{ route('fs.conductqn', ['id' => $ankate->id]) }}" class="btn btn-primary">アンケートを実施する</a>
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <a href="{{ route('fs.make', ['id' => $ankate->id]) }}" class="btn btn-primary">編集</a>
+                                    </div>
+                                    <div>
+                                        <a href="{{ route('fs.deleteankate', ['id' => $ankate->id]) }}" class="btn btn-primary">削除</a>
+                                    </div>
+                                  </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -44,15 +60,15 @@
                 </div>
             </div>
             <p>{{$formats}}</p>
-            <div class="card-contents">
-                <a href="{{ route('fs.conductqn')}}">アンケートを実施する</a>
-            </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.make')}}">アンケートフォームを編集する</a>
-            </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.deleteankate')}}">アンケートフォームを削除する</a>
-            </div>
+            <!--<div class="card-contents">-->
+            <!--    <a href="{{ route('fs.conductqn')}}">アンケートを実施する</a>-->
+            <!--</div>-->
+            <!--<div class="card-contents">-->
+            <!--    <a href="{{ route('fs.make')}}">アンケートフォームを編集する</a>-->
+            <!--</div>-->
+            <!--<div class="card-contents">-->
+            <!--    <a href="{{ route('fs.deleteankate')}}">アンケートフォームを削除する</a>-->
+            <!--</div>-->
         </div>
     </div>
 @endsection 
