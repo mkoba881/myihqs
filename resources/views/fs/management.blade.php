@@ -43,7 +43,7 @@
                                   <td>
                                     @if($ankate->status===2)  
                                         <div>
-                                            <a href="{{ route('fs.conductqn', ['id' => $ankate->id]) }}" class="btn btn-primary">アンケートを実施する</a>
+                                            <a href="{{ route('fs.conductankate', ['id' => $ankate->id]) }}" class="btn btn-primary">アンケートを実施する</a>
                                         </div>
                                     @endif
                                     <div>
@@ -61,7 +61,7 @@
             </div>
             <p>{{$formats}}</p>
             <!--<div class="card-contents">-->
-            <!--    <a href="{{ route('fs.conductqn')}}">アンケートを実施する</a>-->
+            <!--    <a href="{{ route('fs.conductankate')}}">アンケートを実施する</a>-->
             <!--</div>-->
             <!--<div class="card-contents">-->
             <!--    <a href="{{ route('fs.make')}}">アンケートフォームを編集する</a>-->

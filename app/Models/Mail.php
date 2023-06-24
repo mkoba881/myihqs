@@ -13,7 +13,7 @@ class Mail extends Model
     
     public static $rules = array(
     'user_mailformat' => 'required',
+    'admin_mailformat' => 'required',
     );
 
-    
 }

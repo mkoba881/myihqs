@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\Format;
 use App\Models\Item;
 use App\Models\Detail;
+use App\Models\Mail;
+use App\Models\User;
 
 class IhqsController extends Controller
 {
@@ -132,29 +134,38 @@ class IhqsController extends Controller
         // return redirect('/fs/makepreview')->with(compact('format_id'));
     }
 
-    public function makepreview(Request $request)
-    {
-        //  $posts_format = Format::all();
-        //  $posts_item = Item::all();
-        //  $posts_detail = Detail::all();
-        // dd($request);
-        // // dd($format_id);
-        $format = \App\Models\Format::find($format_id);
-        dd($format);
+    // public function makepreview(Request $request)
+    // {
+    //     //  $posts_format = Format::all();
+    //     //  $posts_item = Item::all();
+    //     //  $posts_detail = Detail::all();
+    //     // dd($request);
+    //     // // dd($format_id);
+    //     $format = \App\Models\Format::find($format_id);
+    //     dd($format);
          
-        return view('fs.makepreview');
-    }
+    //     return view('fs.makepreview');
+    // }
     public function deleteankate()  
     {
         return view('fs.deleteankate');
     }
-    public function conductqn()
+    public function conductankate()
     {
-        return view('fs.conductqn');
+        return view('fs.conductankate');
     }
-    public function conductqnpreview()
+    public function conductankatepreview(Request $request)
     {
-        return view('fs.conductqnpreview');
+
+        // Validationを行う
+        // $this->validate($request, Format::$rules);
+
+        $this->validate($request, Mail::$rules);
+     
+        $form = $request->all();//フォームの中身を全部とってきている
+        dd($form);
+
+        return view('fs.conductankatepreview');
     }
 
 }

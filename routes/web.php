@@ -31,8 +31,8 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::post('create', 'create')->name('create');
     Route::get('makepreview', 'makepreview')->name('makepreview');
     Route::get('deleteankate', 'deleteankate')->name('deleteankate');
-    Route::get('conductqn', 'conductqn')->name('conductqn');
-    Route::get('conductqnpreview', 'conductqnpreview')->name('conductqnpreview');
+    Route::get('conductankate', 'conductankate')->name('conductankate');
+    Route::post('conductankatepreview', 'conductankatepreview')->name('conductankatepreview');
 
 });
 
