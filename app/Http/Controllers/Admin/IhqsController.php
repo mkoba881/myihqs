@@ -170,4 +170,15 @@ class IhqsController extends Controller
         return view('fs.conductankatepreview',compact('form'));
     }
 
+    public function saveconductankate(Request $request)  
+    {
+        
+        $conduct_form = $request->all();//フォームの中身を全部とってきている
+        unset($conduct_form['_token']);
+        dd($conduct_form);
+        $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
+        
+        return view('fs.management',['formats' => $formats]);
+    }
+
 }
