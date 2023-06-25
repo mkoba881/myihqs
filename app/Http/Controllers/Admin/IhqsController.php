@@ -65,7 +65,8 @@ class IhqsController extends Controller
         //dd($form);    
         $format_form=array(
             'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end'],'status'=>$form['status']
-            );
+            );  
+        //$format_formにcreated_atを追加すればよい。
         //dd($format_form);    
         // $array = array(
         // 'name' => $value,
@@ -163,9 +164,10 @@ class IhqsController extends Controller
         $this->validate($request, Mail::$rules);
      
         $form = $request->all();//フォームの中身を全部とってきている
-        dd($form);
-
-        return view('fs.conductankatepreview');
+        // フォームから送信されてきた_tokenを削除する
+        unset($form['_token']);
+        //dd($form);
+        return view('fs.conductankatepreview',compact('form'));
     }
 
 }

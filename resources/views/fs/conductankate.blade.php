@@ -22,8 +22,7 @@
                         </ul>
                     @endif    
                     <div class="form-group row">
-                        <div class="col-md-10">
-                            @csrf
+                        <div class="col-md-10"> 
                             <label name="csvFile">取得対象のメールアドレスのcsvファイル</label>
                             <input type="file" name="csvFile" class="csvFile"/>
                             <!--<input type="submit"></input>-->
@@ -59,12 +58,12 @@
                             <input type="text" class="form-control" name="end" value="{{ old('end') }}">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">何日ごとに催促するか</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="ankate_name" value="{{ old('ankate_name') }}">
-                        </div>
-                    </div>
+                    <!--<div class="form-group row">-->
+                    <!--    <label class="col-md-2">何日ごとに催促するか</label>-->
+                    <!--    <div class="col-md-10">-->
+                    <!--        <input type="text" class="form-control" name="remind_day" value="{{ old('remind_day') }}">-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     <a href="{{ route('fs.management')}}" class="btn btn-primary">前に戻る</a>
                     @csrf
                     <input type="submit" class="btn btn-primary" value="次へ進む">
@@ -72,8 +71,6 @@
                 <div class="inner">
                 </div>
             </div>
-
-            
         </div>
     </div>
 @endsection 
