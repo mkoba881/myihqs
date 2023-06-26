@@ -167,7 +167,26 @@ class IhqsController extends Controller
         // フォームから送信されてきた_tokenを削除する
         unset($form['_token']);
         //dd($form);
-        return view('fs.conductankatepreview',compact('form'));
+        //dd($form["csvFile"]);
+        $fp = fopen($form["csvFile"], 'r');
+        //dd($fp);
+        $csv_array = array();
+        while($line = fgetcsv($fp)){
+          //var_dump($line);
+          $csv_array[] = $line;
+          //dd($line);
+          //echo "<br />";
+            }
+        //dd($csv_array);
+        fclose($fp);
+        
+        // $csv = file($form["csvFile"]);
+        // $csv_array = array();
+        // foreach ($csv as $line) {
+        //   $csv_array[] = explode(',', $line);
+        // }
+        // //dd($csv_array);
+        return view('fs.conductankatepreview',compact('form','csv_array'));
     }
 
     public function saveconductankate(Request $request)  

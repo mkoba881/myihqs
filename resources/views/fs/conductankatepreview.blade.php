@@ -12,7 +12,29 @@
             <div class="col-md-8 mx-auto">
                 <h1>アンケート実施プレビュー画面</h1>
                 <h2>取得対象のメールアドレス</h2>
-                <p>{{$form["csvFile"]}}</p>
+                    <div class="list-news col-md-12 mx-auto">
+                        <table class="table table-dark table-bordered border-light"> 
+                          <thead>
+                            <tr>
+                              <th>名前</th>
+                              <th>メールアドレス</th>
+                            </tr>
+                          </thead>
+                            <tbody class="table table-light table-bordered border-dark">
+                                @foreach($csv_array as $array)
+                                    @if($array[0] != "name" and $array[1] != "mailaddress")
+                                        <tr>
+                                          <td>{{ $array[0]}}</td>
+                                          <td>{{ $array[1]}}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                <h2>取得している変数、暫定表示後程削除</h2>
+                <p>{{var_dump($csv_array)}}</p>
+                <!--<p>{{$form["csvFile"]}}</p>-->
                 <h2>アンケート回答メールフォーマット（ユーザー向け）</h2>
                 <p>{{$form["user_mailformat"]}}</p>
                 <h2>アンケート回答メールフォーマット（ユーザー向け催促用）</h2>
