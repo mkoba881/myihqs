@@ -168,16 +168,53 @@ class IhqsController extends Controller
         unset($form['_token']);
         //dd($form);
         //dd($form["csvFile"]);
+        
+        //$charArys = array( 'SJIS','UTF-8', 'eucJP-win', 'SJIS-win', 'ASCII', 'EUC-JP', 'JIS');
+        //$charCode = mb_detect_encoding($form["csvFile"], $charArys, true);
+        //dd($charCode);
+        
+        $fileName = empty($argv[1]) ? $form["csvFile"] : $argv[1];
+        //dd($fileName);
+        
+        $command = "file -i " . $fileName;
+        $output = [];
+        $status = "";
+        exec($command, $output, $status);
+        //dd($output);
+        preg_match("/charset=(.*)/", $output[0], $charset);
+        //dd($charset);
+        //echo $charset[1];
+        // if (!in_array("utf-8", $charset)) {
+        // echo "読み取るCSVファイルはutf-8にしてください。" . PHP_EOL;
+        // echo "今の文字コード" . $charset[1];
+        // return;
+        // }
+        
         $fp = fopen($form["csvFile"], 'r');
         //dd($fp);
+        
         $csv_array = array();
-        while($line = fgetcsv($fp)){
-          //var_dump($line);
-          $csv_array[] = $line;
-          //dd($line);
-          //echo "<br />";
+
+        // while($line = fgetcsv($fp)){
+        //   mb_convert_variables("UTF-8", "SJIS", $line); 
+        //   $csv_array[] = $line;
+        //   //dd($line);
+        // }
+    
+        if ($charset[1]=="utf-8") {
+            while($line = fgetcsv($fp)){
+              $csv_array[] = $line;
+              //dd($line);
             }
-        //dd($csv_array);
+        }
+        else{
+            while($line = fgetcsv($fp)){
+              mb_convert_variables("UTF-8", "SJIS", $line); 
+              $csv_array[] = $line;
+              //dd($line);
+            }
+        }
+        
         fclose($fp);
         
         // $csv = file($form["csvFile"]);
@@ -185,7 +222,7 @@ class IhqsController extends Controller
         // foreach ($csv as $line) {
         //   $csv_array[] = explode(',', $line);
         // }
-        // //dd($csv_array);
+        //dd($csv_array);
         return view('fs.conductankatepreview',compact('form','csv_array'));
     }
 
