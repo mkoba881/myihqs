@@ -60,6 +60,13 @@
                 <a href="{{ route('fs.conductankate')}}" class="btn btn-primary">前に戻る</a>
                 <input type="submit" class="btn btn-primary" value="完了">
             </form>
+            
+            <!--メール送信箇所        -->
+            <form action="{{ route('mail.testmail')}}" method="get">
+                @csrf
+                <input type="submit" value="送信">
+            </form>
+        
         </div>
     </div>
 @endsection 

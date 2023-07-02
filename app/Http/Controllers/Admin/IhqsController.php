@@ -85,13 +85,6 @@ class IhqsController extends Controller
             );
         
         // dd($detail_form);
-        // //後ほど確認
-        // if (isset($form['rf_image'])) {
-        //     $path = $request->file('rf_image')->store('public/image');
-        //     $detail_form->rf_image = basename($path);
-        // } else {
-        //     $detail_form->rf_image = null;
-        // }    
 
         //$file =  $request->rf_image;
         $file =  $request->file('rf_image');
@@ -100,18 +93,11 @@ class IhqsController extends Controller
         if($file){
             // ランダムなファイル名作成
             $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
-            //$image = time() . $file->getClientOriginalName();
-            //dd($image);
-            // アップロードするフォルダ名取得
-            //$target_path = '/home/ec2-user/environment/myihqs/public/uploads';
-            //$target_path = public_path('uploads/');
             $target_path = public_path('uploads');
             //dd($target_path);
             // アップロード処理
             $path=$file->storeAs('',$image,'image');
-            //$path = \Storage::putFileAs($target_path, $file, $image);
-            //$file->move($target_path, $image);
-            
+
         }else{
             // 画像が選択されていなければ空文字をセット
             $image = '';
@@ -122,31 +108,13 @@ class IhqsController extends Controller
         //dd($detail_form);
         \DB::table('details')->insert($detail_form);
         
-        // $result = \DB::table('detail')->insert($detail_form);
-        // dd($result);
-        // // $detail->fill($detail_form);
-        // $detail->save();
         $format = Format::find($format_id);
         $item= Item::find($item_id);
         $detail= Detail::where('item_id', $item_id)->orderBy('item_id','desc')->get()->first();//getとfirtstの意味を後程確認
         //dd($detail);
         return view('fs.makepreview',['format'=> $format,'item'=> $item,'detail'=> $detail]);
-        // return redirect()->route("fs.makepreview",['format_id'=> 1]);
-        // return redirect('/fs/makepreview')->with(compact('format_id'));
     }
 
-    // public function makepreview(Request $request)
-    // {
-    //     //  $posts_format = Format::all();
-    //     //  $posts_item = Item::all();
-    //     //  $posts_detail = Detail::all();
-    //     // dd($request);
-    //     // // dd($format_id);
-    //     $format = \App\Models\Format::find($format_id);
-    //     dd($format);
-         
-    //     return view('fs.makepreview');
-    // }
     public function deleteankate()  
     {
         return view('fs.deleteankate');
