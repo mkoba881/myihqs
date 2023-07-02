@@ -18,12 +18,30 @@ class MailSendController extends Controller
     {
         // $name = 'テスト ユーザー';
         // $email =  'mkoba881@gmail.com';
-    
-        //$recipient = 'mkoba881@gmail.com';
-        $recipients = ['mkoba881@gmail.com', 'mkoba8814@gmail.com'];
+        $csv_array = session('csv_array');
+        //dd($csv_array);
+        
+        //$recipients = ['mkoba881@gmail.com', 'mkoba8814@gmail.com'];
+        $recipients = [];
+        //dd($recipients);
+
+        
+        //CSVからメールアドレスの配列を作成
+        foreach ($csv_array as $index => $data) {
+            if ($index === 0) {
+                continue; // ヘッダー行をスキップします
+            }
+        
+            if (isset($data[1])) {
+                $recipients[] = $data[1]; // メールアドレスの値を配列に追加します
+            }
+        }
+        
+        //dd($recipients);
         //Mail::to($recipients)->send(new SampleMail());
         
         foreach ($recipients as $recipient) {
+        //dd($recipient);
             Mail::to($recipient)->send(new SampleMail($recipient));
         }
 

@@ -60,7 +60,9 @@
                 <a href="{{ route('fs.conductankate')}}" class="btn btn-primary">前に戻る</a>
                 <input type="submit" class="btn btn-primary" value="完了">
             </form>
-            
+            @php
+                session(['csv_array' => $csv_array]);
+            @endphp
             <!--メール送信箇所        -->
             <form action="{{ route('mail.testmail')}}" method="get">
                 @csrf
