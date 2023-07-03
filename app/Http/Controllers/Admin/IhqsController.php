@@ -180,7 +180,7 @@ class IhqsController extends Controller
         //dd($conduct_form['id']);
         
         $format_form=array(
-        'start'=>$conduct_form['start'],'end'=>$conduct_form['end'],
+            'id' => $conduct_form['id'],'start'=>$conduct_form['start'],'end'=>$conduct_form['end'],
             );
             
         //dd($format_form);
@@ -190,11 +190,45 @@ class IhqsController extends Controller
             'admin_mailformat'=>$conduct_form['admin_mailformat'],
             );
         
-        dd($mail_form);
+        //dd($mail_form);
+        $existingData = format::where('id', $conduct_form['id'])->first();
+        $existingData_mail = mail::where('format_id', $conduct_form['id'])->first();
 
-            
+        //dd($existingData);
         
-        \DB::table('mails')->insert($mail_form);
+        if ($existingData) {
+            // 条件に合致するデータが存在する場合は更新
+            $existingData->start = $conduct_form['start'];
+            $existingData->end = $conduct_form['end'];
+            $existingData->save();
+        } else {
+            // 条件に合致するデータが存在しない場合は新規作成
+            $newData = new format;
+            $newData->id = $conduct_form['id'];
+            $newData->start = $conduct_form['start'];
+            $newData->end = $conduct_form['end'];
+            $newData->save();
+        }
+
+        if ($existingData_mail) {
+            // 条件に合致するデータが存在する場合は更新
+            $existingData_mail->format_id = $conduct_form['id'];
+            $existingData_mail->user_mailformat = $conduct_form['user_mailformat'];
+            $existingData_mail->remind_mailformat = $conduct_form['remind_mailformat'];
+            $existingData_mail->admin_mailformat = $conduct_form['admin_mailformat'];
+            $existingData_mail->save();
+        } else {
+            // 条件に合致するデータが存在しない場合は新規作成
+            $newData_mail = new mail;
+            $newData_mail->format_id = $conduct_form['id'];
+            $newData_mail->user_mailformat = $conduct_form['user_mailformat'];
+            $newData_mail->remind_mailformat = $conduct_form['remind_mailformat'];
+            $newData_mail->admin_mailformat = $conduct_form['admin_mailformat'];
+            $newData_mail->save();
+        }
+            
+        //\DB::table('mails')->insert($mail_form);
+        //\DB::table('formats')->insert($format_form);
         
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
         
