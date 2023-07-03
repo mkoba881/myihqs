@@ -28,6 +28,8 @@ class MailSendController extends Controller
         
         //CSVからメールアドレスの配列を作成
         foreach ($csv_array as $index => $data) {
+            //dd($index);
+            //dd($data);
             if ($index === 0) {
                 continue; // ヘッダー行をスキップします
             }

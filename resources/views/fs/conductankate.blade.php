@@ -58,18 +58,15 @@
                             <input type="text" class="form-control" name="end" value="{{ old('end') }}">
                         </div>
                     </div>
-                    <!--<div class="form-group row">-->
-                    <!--    <label class="col-md-2">何日ごとに催促するか</label>-->
-                    <!--    <div class="col-md-10">-->
-                    <!--        <input type="text" class="form-control" name="remind_day" value="{{ old('remind_day') }}">-->
-                    <!--    </div>-->
-                    <!--</div>-->
+                    <input type="hidden" name="id" value="<?=$id?>">
                     <a href="{{ route('fs.management')}}" class="btn btn-primary">前に戻る</a>
                     @csrf
                     <input type="submit" class="btn btn-primary" value="次へ進む">
                 </form>
                 <div class="inner">
                 </div>
+                <p>仮でアンケートIDを表示後程削除</p>
+                <p>{{$id}}</p>
             </div>
         </div>
     </div>

@@ -119,9 +119,12 @@ class IhqsController extends Controller
     {
         return view('fs.deleteankate');
     }
-    public function conductankate()
+    public function conductankate(Request $request)
     {
-        return view('fs.conductankate');
+        $form = $request->all();//フォームの中身を全部とってきている
+        $id = $form['id'];
+        //dd($id);
+        return view('fs.conductankate',compact('id'));
     }
     public function conductankatepreview(Request $request)
     {
@@ -173,7 +176,26 @@ class IhqsController extends Controller
         
         $conduct_form = $request->all();//フォームの中身を全部とってきている
         unset($conduct_form['_token']);
-        dd($conduct_form);
+        //dd($conduct_form);
+        //dd($conduct_form['id']);
+        
+        $format_form=array(
+        'start'=>$conduct_form['start'],'end'=>$conduct_form['end'],
+            );
+            
+        //dd($format_form);
+        
+        $mail_form=array(
+            'format_id'=>$conduct_form['id'],'user_mailformat'=>$conduct_form['user_mailformat'],'remind_mailformat'=>$conduct_form['remind_mailformat'],
+            'admin_mailformat'=>$conduct_form['admin_mailformat'],
+            );
+        
+        dd($mail_form);
+
+            
+        
+        \DB::table('mails')->insert($mail_form);
+        
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
         
         return view('fs.management',['formats' => $formats]);

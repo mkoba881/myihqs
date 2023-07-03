@@ -56,6 +56,7 @@
                 <input type="hidden" name="admin_mailformat" value="<?=$form['admin_mailformat']?>">
                 <input type="hidden" name="start" value="<?=$form['start']?>">
                 <input type="hidden" name="end" value="<?=$form['end']?>">
+                <input type="hidden" name="id" value="<?=$form['id']?>">
                 @csrf
                 <a href="{{ route('fs.conductankate')}}" class="btn btn-primary">前に戻る</a>
                 <input type="submit" class="btn btn-primary" value="完了">
@@ -65,10 +66,9 @@
             @endphp
             <!--メール送信箇所        -->
             <form action="{{ route('mail.testmail')}}" method="get">
-                @csrf
                 <input type="submit" value="送信">
+                @csrf
             </form>
-        
         </div>
     </div>
 @endsection 
