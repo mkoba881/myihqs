@@ -34,7 +34,6 @@
                     </div>
                 <h2>取得している変数、暫定表示後程削除</h2>
                 <p>{{var_dump($csv_array)}}</p>
-                <!--<p>{{$form["csvFile"]}}</p>-->
                 <h2>アンケート回答メールフォーマット（ユーザー向け）</h2>
                 <p>{{$form["user_mailformat"]}}</p>
                 <h2>アンケート回答メールフォーマット（ユーザー向け催促用）</h2>
@@ -51,22 +50,18 @@
             <p>{{$form["user_mailformat"]}}</p>
             
             <form action="{{ route('fs.saveconductankate') }}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="user_mailformat" value="<?=$form['user_mailformat']?>">
-                <input type="hidden" name="remind_mailformat" value="<?=$form['remind_mailformat']?>">
-                <input type="hidden" name="admin_mailformat" value="<?=$form['admin_mailformat']?>">
-                <input type="hidden" name="start" value="<?=$form['start']?>">
-                <input type="hidden" name="end" value="<?=$form['end']?>">
-                <input type="hidden" name="id" value="<?=$form['id']?>">
+                <input type="hidden" name="form" value="{{ json_encode($form) }}">
                 @csrf
-                <a href="{{ route('fs.conductankate')}}" class="btn btn-primary">前に戻る</a>
-                <input type="submit" class="btn btn-primary" value="完了">
+                <!--<a href="{{ route('fs.conductankate')}}" class="btn btn-primary">前に戻る</a>-->
+                <input type="submit" class="btn btn-primary" value="メール内容を確定する">
             </form>
             @php
                 session(['csv_array' => $csv_array]);
             @endphp
             <!--メール送信箇所        -->
             <form action="{{ route('mail.testmail')}}" method="get">
-                <input type="submit" value="送信">
+                <input type="hidden" name="user_mailformat" value="<?=$form['user_mailformat']?>">
+                <input type="submit" value="送信" class="btn btn-primary">
                 @csrf
             </form>
         </div>

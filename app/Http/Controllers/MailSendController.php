@@ -16,6 +16,9 @@ class MailSendController extends Controller
 {
     public function send(Request $request)
     {
+        $form = $request->all();
+        unset($form['_token']); 
+        //dd($form);
         // $name = 'テスト ユーザー';
         // $email =  'mkoba881@gmail.com';
         $csv_array = session('csv_array');
@@ -44,7 +47,7 @@ class MailSendController extends Controller
         
         foreach ($recipients as $recipient) {
         //dd($recipient);
-            Mail::to($recipient)->send(new SampleMail($recipient));
+            Mail::to($recipient)->send(new SampleMail($form['user_mailformat']));
         }
 
         //Mail::send(new TestMail($name, $email));

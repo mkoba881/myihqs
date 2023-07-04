@@ -174,56 +174,57 @@ class IhqsController extends Controller
     public function saveconductankate(Request $request)  
     {
         
-        $conduct_form = $request->all();//フォームの中身を全部とってきている
-        unset($conduct_form['_token']);
-        //dd($conduct_form);
-        //dd($conduct_form['id']);
+        //$form = $request->all();//フォームの中身を全部とってきている
+        $form = $request->input('form');
+        //dd($form);
+        $csv_array = session('csv_array');
         
-        $format_form=array(
-            'id' => $conduct_form['id'],'start'=>$conduct_form['start'],'end'=>$conduct_form['end'],
-            );
-            
-        //dd($format_form);
-        
-        $mail_form=array(
-            'format_id'=>$conduct_form['id'],'user_mailformat'=>$conduct_form['user_mailformat'],'remind_mailformat'=>$conduct_form['remind_mailformat'],
-            'admin_mailformat'=>$conduct_form['admin_mailformat'],
-            );
-        
-        //dd($mail_form);
-        $existingData = format::where('id', $conduct_form['id'])->first();
-        $existingData_mail = mail::where('format_id', $conduct_form['id'])->first();
+        // $form が JSON エンコードされている場合、デコードする
+        if (is_string($form) && json_decode($form)) {
+            $form = json_decode($form, true);
+        }
+        //dd($form);
+
+        // $form=array(
+        //     "user_mailformat" => $conduct_form['user_mailformat'],'remind_mailformat' => $conduct_form['remind_mailformat'],
+        //     'admin_mailformat' => $conduct_form['admin_mailformat'],'start'=>$conduct_form['start'],'end'=>$conduct_form['end'],
+        //     );
+        //dd($form);
+
+
+        $existingData = format::where('id', $form['id'])->first();
+        $existingData_mail = mail::where('format_id', $form['id'])->first();
 
         //dd($existingData);
         
         if ($existingData) {
             // 条件に合致するデータが存在する場合は更新
-            $existingData->start = $conduct_form['start'];
-            $existingData->end = $conduct_form['end'];
+            $existingData->start = $form['start'];
+            $existingData->end = $form['end'];
             $existingData->save();
         } else {
             // 条件に合致するデータが存在しない場合は新規作成
             $newData = new format;
-            $newData->id = $conduct_form['id'];
-            $newData->start = $conduct_form['start'];
-            $newData->end = $conduct_form['end'];
+            $newData->id = $form['id'];
+            $newData->start = $form['start'];
+            $newData->end = $form['end'];
             $newData->save();
         }
 
         if ($existingData_mail) {
             // 条件に合致するデータが存在する場合は更新
-            $existingData_mail->format_id = $conduct_form['id'];
-            $existingData_mail->user_mailformat = $conduct_form['user_mailformat'];
-            $existingData_mail->remind_mailformat = $conduct_form['remind_mailformat'];
-            $existingData_mail->admin_mailformat = $conduct_form['admin_mailformat'];
+            $existingData_mail->format_id = $form['id'];
+            $existingData_mail->user_mailformat = $form['user_mailformat'];
+            $existingData_mail->remind_mailformat = $form['remind_mailformat'];
+            $existingData_mail->admin_mailformat = $form['admin_mailformat'];
             $existingData_mail->save();
         } else {
             // 条件に合致するデータが存在しない場合は新規作成
             $newData_mail = new mail;
-            $newData_mail->format_id = $conduct_form['id'];
-            $newData_mail->user_mailformat = $conduct_form['user_mailformat'];
-            $newData_mail->remind_mailformat = $conduct_form['remind_mailformat'];
-            $newData_mail->admin_mailformat = $conduct_form['admin_mailformat'];
+            $newData_mail->format_id = $form['id'];
+            $newData_mail->user_mailformat = $form['user_mailformat'];
+            $newData_mail->remind_mailformat = $form['remind_mailformat'];
+            $newData_mail->admin_mailformat = $form['admin_mailformat'];
             $newData_mail->save();
         }
             
@@ -231,8 +232,8 @@ class IhqsController extends Controller
         //\DB::table('formats')->insert($format_form);
         
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
-        
-        return view('fs.management',['formats' => $formats]);
+
+        return view('fs.conductankatepreview',['form' => $form,'csv_array' => $csv_array]);
     }
 
 }

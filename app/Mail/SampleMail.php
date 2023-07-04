@@ -12,15 +12,17 @@ use Illuminate\Queue\SerializesModels;
 class SampleMail extends Mailable
 {
     use Queueable, SerializesModels;
+    
+    public $userMailFormat;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($userMailFormat)
     {
-        //
+        $this->userMailFormat = $userMailFormat;
     }
 
     /**
@@ -35,8 +37,8 @@ class SampleMail extends Mailable
                     ->subject('Test Email')
                     ->with([
                         'name' => 'masato',
-                        'message' => 'This is a sample email.',
-                    ]);
+                        'message' => 'This is a sample email.'],
+                         $this->userMailFormat);
     }
      
     public function envelope()
