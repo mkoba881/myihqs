@@ -11,6 +11,12 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    
+    public function isAdmin()
+    {
+        // ユーザーが管理者であるかどうかを判定するロジックを実装する
+        return $this->role === 'admin'; // もしくは適切な判定ロジックを追加する
+    }
 
     /**
      * The attributes that are mass assignable.

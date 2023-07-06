@@ -13,9 +13,11 @@
                 <h2>機能選択画面</h2>
             </div>
         </div>
-        <div class="card-contents">
-            <a href="{{ route('fs.management')}}">アンケートフォームを確認・作成・編集する</a>
-        </div>
+        @if (Auth::user()->isAdmin())
+            <div class="card-contents">
+                <a href="{{ route('fs.management')}}">アンケートフォームを確認・作成・編集する</a>
+            </div>
+        @endif
         <div class="card-contents">
             <a href="{{ route('fs.analysis')}}">アンケートを集計する</a>
         </div>
