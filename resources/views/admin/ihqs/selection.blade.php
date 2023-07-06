@@ -17,10 +17,10 @@
             <div class="card-contents">
                 <a href="{{ route('fs.management')}}">アンケートフォームを確認・作成・編集する</a>
             </div>
+            <div class="card-contents">
+                <a href="{{ route('fs.analysis')}}">アンケートを集計する</a>
+            </div>
         @endif
-        <div class="card-contents">
-            <a href="{{ route('fs.analysis')}}">アンケートを集計する</a>
-        </div>
         <div class="card-contents">
             <a href="{{ route('fs.answer')}}">アンケートに回答する</a>
         </div>
