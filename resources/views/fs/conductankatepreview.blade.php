@@ -61,6 +61,7 @@
             <!--メール送信箇所        -->
             <form action="{{ route('mail.testmail')}}" method="get">
                 <input type="hidden" name="user_mailformat" value="<?=$form['user_mailformat']?>">
+                <input type="hidden" name="id" value="<?=$form['id']?>">
                 <input type="submit" value="送信" class="btn btn-primary">
                 @csrf
             </form>

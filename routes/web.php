@@ -5,8 +5,8 @@ use App\Http\Controllers\Admin\IhqsController;
 //use App\Mail\TestMail;//メール用コントローラー
 use App\Mail\SampleMail;//メール用コントローラー
 use App\Http\Controllers\MailSendController;//メール用コントローラー
-use App\Http\Controllers\Api\ContactController;//メール用コントローラー
-
+//use App\Http\Controllers\Api\ContactController;//メール用コントローラー
+use App\Http\Controllers\SurveyController;//アンケートリンク複合用
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +27,15 @@ Route::controller(IhqsController::class)->prefix('admin')->name('admin.')->middl
     Route::get('ihqs/selection', 'add')->name('ihqs.selection');
 });
 
+//アンケートリンク生成用ルーティング
+// Route::controller(SurveyController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
+//     Route::get('answer/{hash}', 'show')->name('answer');
+// });
+Route::get('/fs/answer/{hash}', [SurveyController::class, 'show'])->name('survey.answer');
+
 Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
     Route::get('analysis', 'analysis')->name('analysis');
-    Route::get('answer', 'answer')->name('answer');
+    //Route::get('answer', 'answer')->name('answer');
     Route::get('management', 'management')->name('management');
     Route::get('answerend', 'answerend')->name('answerend');
     Route::get('make', 'make')->name('make');
@@ -49,14 +55,6 @@ Route::controller(MailSendController::class)->prefix('mail')->name('mail.')->mid
     Route::get('testmail', 'send')->name('testmail');
 });
 
-
-//Route::get('contact', 'App\Http\Controllers\Api\ContactController@sendContactMail')->name('emails.send');
-//Route::get('mail/testmail', 'App\Http\Controllers\MailSendController@sendMail')->name('emails.send');
-//Route::get('/mails/sendMail', [MailSendController::class, 'sendMail'])->name('emails.send');
-// Route::controller(MailSendController::class)->prefix('mail')->name('emails.')->middleware('auth')->group(function() {
-//     //Route::post('send', 'sendMail')->name('send');
-//     Route::get('testmail', 'sendMail')->name('send');
-// });
 
 
 Auth::routes();

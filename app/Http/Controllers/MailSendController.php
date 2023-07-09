@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 //namespace App\Mail;
 
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Format;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 
 //use App\Mail\TestMail;//メール送信用
@@ -19,16 +22,31 @@ class MailSendController extends Controller
         $form = $request->all();
         unset($form['_token']); 
         //dd($form);
-        // $name = 'テスト ユーザー';
-        // $email =  'mkoba881@gmail.com';
         $csv_array = session('csv_array');
         //dd($csv_array);
+        $id=$form['id'];
+        //$hash = Crypt::encrypt($id);
+        //$hash = Crypt::decryptString($hash);
+        //dd($hash);
+        //$hash = urlencode($hash); // URLエンコード
+        //dd($hash);
+        //$hash = urldecode($hash); // URLエンコード
+        //dd($hash);
+        //$hash = Crypt::decryptString($hash);
         
-        //$recipients = ['mkoba881@gmail.com', 'mkoba8814@gmail.com'];
+        //dd($hash);
+        
+        $hash = urlencode(Crypt::encryptString($id));
+        //$hash = Str::random(50);
+        //dd($hash);
+        $link = route('survey.answer', $hash);
+        //dd($link);
+        $dd_array=[$hash,$link];
+        dd($dd_array);
+        
         $recipients = [];
         //dd($recipients);
 
-        
         //CSVからメールアドレスの配列を作成
         foreach ($csv_array as $index => $data) {
             //dd($index);
@@ -42,22 +60,13 @@ class MailSendController extends Controller
             }
         }
         
-        //dd($recipients);
-        //Mail::to($recipients)->send(new SampleMail());
         
         foreach ($recipients as $recipient) {
         //dd($recipient);
             Mail::to($recipient)->send(new SampleMail($form['user_mailformat']));
         }
 
-        //Mail::send(new TestMail($name, $email));
-        //ひとまず送信できたやつ
-        // Mail::send('mail.testmail', [
-        //     'name' => $name,
-        // ], function ($message) use ($email) {
-        //     $message->to($email)
-        //         ->subject('テストタイトル');
-        // });
+        
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
         return view('fs.management',['formats' => $formats]);
     }
