@@ -14,15 +14,17 @@ class SampleMail extends Mailable
     use Queueable, SerializesModels;
     
     public $userMailFormat;
+    public $url_link;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userMailFormat)
+    public function __construct($userMailFormat,$url_link)
     {
         $this->userMailFormat = $userMailFormat;
+        $this->url_link = $url_link;
     }
 
     /**
@@ -33,12 +35,14 @@ class SampleMail extends Mailable
      
      public function build()
     {
+
         return $this->view('mail.testmail')
                     ->subject('Test Email')
                     ->with([
                         'name' => 'masato',
-                        'message' => 'This is a sample email.'],
-                         $this->userMailFormat);
+                        'message' => 'This is a sample email.',
+                        'userMailFormat' => $this->userMailFormat,
+                        'link' => $this->url_link,]);
     }
      
     public function envelope()

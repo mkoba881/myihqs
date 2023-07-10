@@ -39,10 +39,10 @@ class MailSendController extends Controller
         $hash = urlencode(Crypt::encryptString($id));
         //$hash = Str::random(50);
         //dd($hash);
-        $link = route('survey.answer', $hash);
+        $url_link = route('survey.answer', $hash);
         //dd($link);
-        $dd_array=[$hash,$link];
-        dd($dd_array);
+        // $dd_array=[$hash,$link];
+        // dd($dd_array);
         
         $recipients = [];
         //dd($recipients);
@@ -60,10 +60,10 @@ class MailSendController extends Controller
             }
         }
         
-        
+        //dd($link);
         foreach ($recipients as $recipient) {
         //dd($recipient);
-            Mail::to($recipient)->send(new SampleMail($form['user_mailformat']));
+            Mail::to($recipient)->send(new SampleMail($form['user_mailformat'],$url_link));
         }
 
         

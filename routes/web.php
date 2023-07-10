@@ -35,7 +35,7 @@ Route::get('/fs/answer/{hash}', [SurveyController::class, 'show'])->name('survey
 
 Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
     Route::get('analysis', 'analysis')->name('analysis');
-    //Route::get('answer', 'answer')->name('answer');
+    Route::get('answer', 'answer')->name('answer');
     Route::get('management', 'management')->name('management');
     Route::get('answerend', 'answerend')->name('answerend');
     Route::get('make', 'make')->name('make');
