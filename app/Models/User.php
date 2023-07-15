@@ -17,6 +17,11 @@ class User extends Authenticatable
         // ユーザーが管理者であるかどうかを判定するロジックを実装する
         return $this->role === 'admin'; // もしくは適切な判定ロジックを追加する
     }
+    
+    public function Answer()
+    {
+        return $this->hasMany('App\Models\Answer');
+    }
 
     /**
      * The attributes that are mass assignable.

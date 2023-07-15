@@ -12,7 +12,6 @@
             <div class="col-md-8 mx-auto">
                 <h2>アンケート作成画面</h2>
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data"><!--フォームの作成 -->
-                    
                     @if (count($errors) > 0)<!-- `$errors` は `validate` で弾かれた内容を記憶する配列 -->
                         <ul>
                             @foreach($errors->all() as $e)

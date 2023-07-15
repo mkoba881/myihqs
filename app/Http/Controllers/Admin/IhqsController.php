@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // 以下の1行を追記することで、Format Modelが扱えるようになる
 use App\Models\Format;
@@ -11,6 +12,8 @@ use App\Models\Item;
 use App\Models\Detail;
 use App\Models\Mail;
 use App\Models\User;
+use App\Models\Answer;
+
 
 class IhqsController extends Controller
 {
@@ -37,8 +40,35 @@ class IhqsController extends Controller
         return view('fs.management',['formats' => $formats]);
     }
 
-    public function answerend()
+    public function answerend(Request $request)
     {
+        $user_id = Auth::id(); // ログインユーザーの user_id を取得
+        //dd($user_id);
+        $answer = $request->all();//フォームの中身を全部とってきている
+        unset($answer['_token']);
+        //dd($answer);
+        
+        // 既存のレコードを更新するか新規作成するかを判断する
+        $existingRecord = Answer::where('user_id', $user_id)
+                                ->where('detail_id', $answer['detail_id'])
+                                ->first();
+    
+        if ($existingRecord) {
+            // 既存のレコードが存在する場合、更新する
+            $existingRecord->update([
+                'answer_result' => '1',
+                'priority' => '1',
+            ]);
+        } else {
+            // 既存のレコードが存在しない場合、新規作成する
+            Answer::create([
+                'user_id' => $user_id,
+                'detail_id' => $answer['detail_id'],
+                'answer_result' => '1',
+                'priority' => '1',
+            ]);
+        }
+        
         return view('fs.answerend');
     }
 
