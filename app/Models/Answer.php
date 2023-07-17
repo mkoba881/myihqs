@@ -12,6 +12,8 @@ class Answer extends Model
     protected $guarded = array('id');
     
     public static $rules = array(
+    'format_id' => 'required',
+    'item_id' => 'required',
     'detail_id' => 'required',
     'user_id' => 'required',
     'answer_result' => 'required',

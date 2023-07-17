@@ -41,17 +41,17 @@
                     </div>
                     
                     <h2>・参考リンク</h2>
-                    <h2 style="margin-bottom: 30px;">{{$detail[0]["rf_url"]}}</h2>
+                    <!--<h2 style="margin-bottom: 30px;">{{$detail[0]["rf_url"]}}</h2>-->
+                    <a href="{{$detail[0]["rf_url"]}}" target="_blank">{{$detail[0]["rf_url"]}}</a>
                     <div  style="margin-bottom: 30px;">
                         <h2>参考画像</h2>
                         @if ($detail[0]["rf_image"])
                             <img src="{{ secure_asset('uploads/' . $detail[0]["rf_image"]) }}">
                         @endif
-                        <!--<a href="$detail[0]["rf_url"]" target="_blank">{{$detail[0]["rf_url"]}}</a>-->
                     </div>
+                    <input type="hidden" name="format_id" value="<?=$format[0]["id"]?>">
+                    <input type="hidden" name="item_id" value="<?=$item[0]["id"]?>">
                     <input type="hidden" name="detail_id" value="<?=$detail[0]["id"]?>">
-                    
-                    
                     @csrf
                    <input type="submit" class="btn btn-primary" value="アンケートを終了する" style="margin-bottom: 30px;">
                 </form>

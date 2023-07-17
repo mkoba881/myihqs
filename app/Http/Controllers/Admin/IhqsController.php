@@ -24,7 +24,9 @@ class IhqsController extends Controller
 
     public function analysis()
     {
-        return view('fs.analysis');
+        $formats = Format::pluck('name', 'id');
+        //dd($formats);
+        return view('fs.analysis')->with('formats', $formats);
     }
 
     public function answer()
@@ -49,23 +51,27 @@ class IhqsController extends Controller
         //dd($answer);
         
         // 既存のレコードを更新するか新規作成するかを判断する
-        $existingRecord = Answer::where('user_id', $user_id)
+        $existingRecord = Answer::where('format_id', $answer['format_id'])
+                                ->where('item_id', $answer['item_id'])
                                 ->where('detail_id', $answer['detail_id'])
+                                ->where('user_id', $user_id)
                                 ->first();
     
         if ($existingRecord) {
             // 既存のレコードが存在する場合、更新する
             $existingRecord->update([
-                'answer_result' => '1',
-                'priority' => '1',
+                'answer_result' => $answer['answer_result'],
+                'priority' => $answer['priority'],
             ]);
         } else {
             // 既存のレコードが存在しない場合、新規作成する
             Answer::create([
-                'user_id' => $user_id,
+                'format_id' => $answer['format_id'],
+                'item_id' => $answer['item_id'],
                 'detail_id' => $answer['detail_id'],
-                'answer_result' => '1',
-                'priority' => '1',
+                'user_id' => $user_id,
+                'answer_result' => $answer['answer_result'],
+                'priority' => $answer['priority'],
             ]);
         }
         
@@ -83,10 +89,6 @@ class IhqsController extends Controller
         $this->validate($request, Format::$rules);
         $this->validate($request, Item::$rules);
         $this->validate($request, Detail::$rules);
-        //$format = new Format;
-        //$detail = new Detail;
-        
-        
         
         $form = $request->all();//フォームの中身を全部とってきている
         
@@ -96,11 +98,7 @@ class IhqsController extends Controller
         $format_form=array(
             'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end'],'status'=>$form['status']
             );  
-        //$format_formにcreated_atを追加すればよい。
-        //dd($format_form);    
-        // $array = array(
-        // 'name' => $value,
-        // );
+
         $format_id = \DB::table('formats')->insertGetId($format_form);
         //dd($format_id);
         // $format->fill($form);
@@ -215,13 +213,6 @@ class IhqsController extends Controller
         }
         //dd($form);
 
-        // $form=array(
-        //     "user_mailformat" => $conduct_form['user_mailformat'],'remind_mailformat' => $conduct_form['remind_mailformat'],
-        //     'admin_mailformat' => $conduct_form['admin_mailformat'],'start'=>$conduct_form['start'],'end'=>$conduct_form['end'],
-        //     );
-        //dd($form);
-
-
         $existingData = format::where('id', $form['id'])->first();
         $existingData_mail = mail::where('format_id', $form['id'])->first();
 
@@ -258,9 +249,6 @@ class IhqsController extends Controller
             $newData_mail->save();
         }
             
-        //\DB::table('mails')->insert($mail_form);
-        //\DB::table('formats')->insert($format_form);
-        
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
 
         return view('fs.conductankatepreview',['form' => $form,'csv_array' => $csv_array]);

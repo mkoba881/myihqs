@@ -1,12 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\IhqsController;
 //use App\Mail\TestMail;//メール用コントローラー
 use App\Mail\SampleMail;//メール用コントローラー
 use App\Http\Controllers\MailSendController;//メール用コントローラー
 //use App\Http\Controllers\Api\ContactController;//メール用コントローラー
 use App\Http\Controllers\SurveyController;//アンケートリンク複合用
+use App\Http\Controllers\AnalysisController;//アンケート分析用
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +30,10 @@ Route::controller(IhqsController::class)->prefix('admin')->name('admin.')->middl
     Route::get('ihqs/selection', 'add')->name('ihqs.selection');
 });
 
-//アンケートリンク生成用ルーティング
-// Route::controller(SurveyController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
-//     Route::get('answer/{hash}', 'show')->name('answer');
-// });
-Route::get('/fs/answer/{hash}', [SurveyController::class, 'show'])->name('survey.answer');
+Route::get('/fs/answer/{hash}', [SurveyController::class, 'show'])->middleware('auth')->name('survey.answer');
+
+Route::get('/fs/analysis/data', [AnalysisController::class, 'getData'])->name('data.get');
+
 
 Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
     Route::get('analysis', 'analysis')->name('analysis');
