@@ -85,16 +85,21 @@ class IhqsController extends Controller
     
     public function create(Request $request)
     {
+        // dd($request);
         // Validationを行う
-        $this->validate($request, Format::$rules);
-        $this->validate($request, Item::$rules);
-        $this->validate($request, Detail::$rules);
+        
+        $request->validate(Format::getValidationRules($request->input('questionCount')));
+        //$this->validate($request, Format::$rules);
+        //$this->validate($request, Item::$rules);
+        //$this->validate($request, Detail::$rules);
         
         $form = $request->all();//フォームの中身を全部とってきている
         
         // フォームから送信されてきた_tokenを削除する
         unset($form['_token']);
-        //dd($form);    
+        dd($form);
+        
+        
         $format_form=array(
             'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end'],'status'=>$form['status']
             );  
