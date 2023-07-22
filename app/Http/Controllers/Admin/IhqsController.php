@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 // 以下の1行を追記することで、Format Modelが扱えるようになる
 use App\Models\Format;
@@ -83,75 +84,126 @@ class IhqsController extends Controller
         return view('fs.make');
     }
     
+
     public function create(Request $request)
     {
-        // dd($request);
         // Validationを行う
-        
         $request->validate(Format::getValidationRules($request->input('questionCount')));
-        //$this->validate($request, Format::$rules);
-        //$this->validate($request, Item::$rules);
-        //$this->validate($request, Detail::$rules);
-        
-        $form = $request->all();//フォームの中身を全部とってきている
-        
-        // フォームから送信されてきた_tokenを削除する
+    
+        $form = $request->all();
         unset($form['_token']);
-        dd($form);
-        
-        
-        $format_form=array(
-            'name'=>$form['ankate_name'],'start'=>$form['start'],'end'=>$form['end'],'status'=>$form['status']
-            );  
-
-        $format_id = \DB::table('formats')->insertGetId($format_form);
-        //dd($format_id);
-        // $format->fill($form);
-        // $format->save();
-        $item_form=array(
-            'name'=>$form['question_name'],'format_id'=>$format_id,'sortorder'=>$form['sortorder']
-            );
-        $item_id = \DB::table('items')->insertGetId($item_form);
-        //dd($item_id);
-        $detail_form=array(
-            'item_id'=>$item_id,'question'=>$form['question'],'option1'=>$form['option1'],'option2'=>$form['option2'],'option3'=>$form['option3'],'option4'=>$form['option4'],'option5'=>$form['option5'],'priority'=>$form['priority'],'rf_url'=>$form['rf_url']
-            );
-        
-        // dd($detail_form);
-
-        //$file =  $request->rf_image;
-        $file =  $request->file('rf_image');
-        // dd($file);
-        // 画像のアップロード
-        if($file){
-            // ランダムなファイル名作成
-            $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
-            $target_path = public_path('uploads');
-            //dd($target_path);
-            // アップロード処理
-            $path=$file->storeAs('',$image,'image');
-
-        }else{
-            // 画像が選択されていなければ空文字をセット
-            $image = '';
+    
+        $format_form = [
+            'name' => $form['ankate_name'],
+            'start' => $form['start'],
+            'end' => $form['end'],
+            'status' => $form['status']
+        ];
+    
+        // フォーマットがすでに存在するかチェック
+        $existingFormat = Format::where('name', $form['ankate_name'])
+            ->where('start', $form['start'])
+            ->where('end', $form['end'])
+            ->first();
+    
+        if ($existingFormat) {
+            // すでに同じフォーマットが存在する場合は更新
+            $existingFormat->update($format_form);
+            $format_id = $existingFormat->id;
+        } else {
+            // 新しいフォーマットを追加
+            $format_id = DB::table('formats')->insertGetId($format_form);
         }
-        
-        $detail_form['rf_image']=$image;
-        
-        //dd($detail_form);
-        \DB::table('details')->insert($detail_form);
-        
+    
+        $questionCount = $request->input('questionCount');
+    
+        for ($i = 1; $i <= $questionCount; $i++) {
+            $item_form = [
+                'name' => $form['question_name' . $i],
+                'format_id' => $format_id,
+                'sortorder' => $form['sortorder' . $i]
+            ];
+    
+            // 質問項目がすでに存在するかチェック
+            $existingItem = Item::where('format_id', $format_id)
+                ->where('name', $form['question_name' . $i])
+                ->first();
+    
+            if ($existingItem) {
+                // すでに同じ質問項目が存在する場合は更新
+                $existingItem->update($item_form);
+                $item_id = $existingItem->id;
+            } else {
+                // 新しい質問項目を追加
+                $item_id = DB::table('items')->insertGetId($item_form);
+            }
+    
+            $detail_form = [
+                'item_id' => $item_id,
+                'question' => $form['question' . $i],
+                'option1' => $form['option' . $i . '_1'],
+                'option2' => $form['option' . $i . '_2'],
+                'option3' => $form['option' . $i . '_3'],
+                'option4' => $form['option' . $i . '_4'],
+                'option5' => $form['option' . $i . '_5'],
+                'priority' => $form['priority' . $i],
+                'rf_url' => $form['rf_url' . $i]
+            ];
+    
+            // 質問項目の詳細情報がすでに存在するかチェック
+            $existingDetail = Detail::where('item_id', $item_id)
+                ->orderBy('item_id', 'desc')
+                ->first();
+    
+            if ($existingDetail) {
+                // すでに同じ質問項目の詳細情報が存在する場合は更新
+                $existingDetail->update($detail_form);
+            } else {
+                // 新しい質問項目の詳細情報を追加
+                $file = $request->file('rf_image' . $i);
+                if ($file) {
+                    // ランダムなファイル名作成
+                    $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
+                    $target_path = public_path('uploads');
+                    $path = $file->storeAs('', $image, 'image');
+                    $detail_form['rf_image'] = $image;
+                } else {
+                    $detail_form['rf_image'] = '';
+                }
+    
+                DB::table('details')->insert($detail_form);
+            }
+        }
+    
         $format = Format::find($format_id);
-        $item= Item::find($item_id);
-        $detail= Detail::where('item_id', $item_id)->orderBy('item_id','desc')->get()->first();//getとfirtstの意味を後程確認
-        //dd($detail);
-        return view('fs.makepreview',['format'=> $format,'item'=> $item,'detail'=> $detail]);
+        $items = Item::where('format_id', $format_id)->get();
+    
+        // 質問の詳細情報を取得して配列に格納
+        $details = [];
+        foreach ($items as $item) {
+            $detail = Detail::where('item_id', $item->id)->orderBy('item_id', 'desc')->first();
+            $details[] = $detail;
+        }
+        //dd($details);
+    
+        return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);
     }
 
-    public function deleteankate()  
+    public function deleteankate(Request $request)  
     {
-        return view('fs.deleteankate');
+    
+    $ankateIds = $request->input('ankate_ids');
+    
+    //dd($ankateIds);
+    if (!empty($ankateIds)) {
+        // チェックボックスで選択されたアンケートを取得し、statusを3に更新
+        Format::whereIn('id', $ankateIds)->update(['status' => 3]);
+    }    
+        
+        
+    return redirect()->route('fs.management')->with('success', '選択したアンケートが削除されました。');
     }
+    
     public function conductankate(Request $request)
     {
         $form = $request->all();//フォームの中身を全部とってきている

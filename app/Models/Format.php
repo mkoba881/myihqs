@@ -17,6 +17,7 @@ class Format extends Model
     {
         $rules = [
             'ankate_name' => 'required',
+            'questionCount'=> 'required|integer|min:1',
         ];
     
         for ($i = 1; $i <= $questionCount; $i++) {

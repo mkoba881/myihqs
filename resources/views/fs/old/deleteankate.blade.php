@@ -13,7 +13,7 @@
                 <h2>アンケート削除画面</h2>
             </div>
             <div class="col-md-8 mx-auto">
-                <h3>本当に削除していいですか？</h3>
+                <h3>本当に削除していいですか？(ボツ案)</h3>
             </div>
             <div class="card-contents">
                 <a href="{{ route('fs.management')}}" class="btn btn-primary">いいえ</a>
