@@ -84,12 +84,51 @@ class IhqsController extends Controller
         return view('fs.make');
     }
     
+    public function edit($id)
+    {
+        //$form = Format::find($id);
+        //dd($id);
+        //dd($form);
+        // 必要な追加のチェックやデータ処理を行います
+
+        //$questionCount = $request->input('questionCount');
+        $questionCount = Item::where('format_id', $id)->count();
+        //dd($questionCount);
+        $format = Format::find($id);
+        //dd($format);
+        $items = Item::where('format_id', $id)->get();
+        //dd($items);
+    
+        // 質問の詳細情報を取得して配列に格納
+        $details = [];
+        foreach ($items as $item) {
+            $detail = Detail::where('item_id', $item->id)->orderBy('item_id', 'desc')->first();
+            
+            if ($detail && !empty($detail->rf_image)) {
+                // 参考画像が存在する場合はフラグをtrueに設定
+                $detail->has_reference_image = true;
+            } else {
+                // 参考画像が存在しない場合はフラグをfalseに設定
+                $detail = new Detail();
+                $detail->has_reference_image = false;
+            }
+
+                
+            $details[] = $detail;
+        }
+        //dd($format);
+    
+        return view('fs.edit', ['questionCount' => $questionCount,'format' => $format, 'items' => $items, 'details' => $details]);
+        //return view('edit', compact('ankate'));
+    }
+    
 
     public function create(Request $request)
     {
         // Validationを行う
         $request->validate(Format::getValidationRules($request->input('questionCount')));
     
+    //dd($request);
         $form = $request->all();
         unset($form['_token']);
     

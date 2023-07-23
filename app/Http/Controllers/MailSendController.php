@@ -25,24 +25,9 @@ class MailSendController extends Controller
         $csv_array = session('csv_array');
         //dd($csv_array);
         $id=$form['id'];
-        //$hash = Crypt::encrypt($id);
-        //$hash = Crypt::decryptString($hash);
-        //dd($hash);
-        //$hash = urlencode($hash); // URLエンコード
-        //dd($hash);
-        //$hash = urldecode($hash); // URLエンコード
-        //dd($hash);
-        //$hash = Crypt::decryptString($hash);
-        
-        //dd($hash);
         
         $hash = urlencode(Crypt::encryptString($id));
-        //$hash = Str::random(50);
-        //dd($hash);
         $url_link = route('survey.answer', $hash);
-        //dd($link);
-        // $dd_array=[$hash,$link];
-        // dd($dd_array);
         
         $recipients = [];
         //dd($recipients);

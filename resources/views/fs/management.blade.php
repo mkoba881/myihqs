@@ -25,6 +25,8 @@
                                     <th>前回実施日</th>
                                     <th>作成日</th>
                                     <th>更新日</th>
+                                    <th>開始日</th>
+                                    <th>終了日</th>
                                     <th>ステータス（仮表示後程削除）</th>
                                     <th>実施内容</th>
                                 </tr>
@@ -39,6 +41,8 @@
                                             <td>{{ $ankate->previous_at }}</td>
                                             <td>{{ $ankate->created_at }}</td>
                                             <td>{{ $ankate->updated_at }}</td>
+                                            <td>{{ $ankate->start }}</td>
+                                            <td>{{ $ankate->end }}</td>
                                             <td>{{ $ankate->status }}</td>
                                             <td>
                                                 @if ($ankate->status === 2)
@@ -47,7 +51,7 @@
                                                     </div>
                                                 @endif
                                                 <div>
-                                                    <a href="{{ route('fs.make', ['id' => $ankate->id]) }}" class="btn btn-primary">編集</a>
+                                                    <a href="{{ route('fs.edit', ['id' => $ankate->id]) }}" class="btn btn-primary">編集</a>
                                                 </div>
                                             </td>
                                         </tr>
