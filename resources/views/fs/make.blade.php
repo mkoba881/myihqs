@@ -51,9 +51,9 @@
                         <div class="alert alert-danger">{{ $errors->first('questionCount') }}</div>
                     @endif
                 
-                    @php
-                        $questionCount = old('questionCount');
-                    @endphp
+                    <!--@php-->
+                        //$questionCount = old('questionCount');
+                    <!--@endphp-->
                 
                     <div id="questions"></div> <!-- 追加 -->
                 
@@ -166,8 +166,6 @@
                         });
                     </script>
                 </form>
-
-                
                 
                 
             </div>

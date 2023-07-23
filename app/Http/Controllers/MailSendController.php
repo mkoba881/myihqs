@@ -70,5 +70,14 @@ class MailSendController extends Controller
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
         return view('fs.management',['formats' => $formats]);
     }
+    
+    public function cronMail($userMailFormat, $url_link)
+    {
+        // メール送信のロジックを実装する
+        // $userMailFormatと$url_linkを使ってカスタムなメール送信を行う
+        // ...
+        Mail::to($userMailFormat)->send(new SampleMail($userMailFormat, $url_link));
+
+    }
 
 }
