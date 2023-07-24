@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -103,19 +104,20 @@ class IhqsController extends Controller
         $details = [];
         foreach ($items as $item) {
             $detail = Detail::where('item_id', $item->id)->orderBy('item_id', 'desc')->first();
-            
+            //dd($detail);
             if ($detail && !empty($detail->rf_image)) {
                 // 参考画像が存在する場合はフラグをtrueに設定
                 $detail->has_reference_image = true;
             } else {
                 // 参考画像が存在しない場合はフラグをfalseに設定
-                $detail = new Detail();
                 $detail->has_reference_image = false;
             }
 
                 
             $details[] = $detail;
+            //dd($details);
         }
+        //dd($details);
         //dd($format);
     
         return view('fs.edit', ['questionCount' => $questionCount,'format' => $format, 'items' => $items, 'details' => $details]);
@@ -127,36 +129,42 @@ class IhqsController extends Controller
     {
         // Validationを行う
         $request->validate(Format::getValidationRules($request->input('questionCount')));
+        $format_id = $request->input('format_id', null);
+        //dd($request->all());
+
     
-    //dd($request);
+        
         $form = $request->all();
         unset($form['_token']);
-    
-        $format_form = [
-            'name' => $form['ankate_name'],
-            'start' => $form['start'],
-            'end' => $form['end'],
-            'status' => $form['status']
-        ];
-    
-        // フォーマットがすでに存在するかチェック
-        $existingFormat = Format::where('name', $form['ankate_name'])
-            ->where('start', $form['start'])
-            ->where('end', $form['end'])
-            ->first();
-    
-        if ($existingFormat) {
-            // すでに同じフォーマットが存在する場合は更新
-            $existingFormat->update($format_form);
-            $format_id = $existingFormat->id;
+        
+          // フォーマットがすでに存在するかチェック
+        if ($format_id) {
+            $format = Format::find($format_id);
+            $format->update([
+                'name' => $request->input('ankate_name'),
+                'start' => $request->input('start'),
+                'end' => $request->input('end'),
+                'status' => $request->input('status')
+            ]);
         } else {
-            // 新しいフォーマットを追加
-            $format_id = DB::table('formats')->insertGetId($format_form);
+            $format = Format::create([
+                'name' => $request->input('ankate_name'),
+                'start' => $request->input('start'),
+                'end' => $request->input('end'),
+                'status' => $request->input('status')
+            ]);
+            $format_id = $format->id; // 新規作成したフォーマットのIDを取得
         }
-    
+            
+
+
         $questionCount = $request->input('questionCount');
+        // dd($questionCount);
     
         for ($i = 1; $i <= $questionCount; $i++) {
+            
+            
+        //itemに関する処理
             $item_form = [
                 'name' => $form['question_name' . $i],
                 'format_id' => $format_id,
@@ -165,64 +173,89 @@ class IhqsController extends Controller
     
             // 質問項目がすでに存在するかチェック
             $existingItem = Item::where('format_id', $format_id)
-                ->where('name', $form['question_name' . $i])
-                ->first();
-    
+                   ->where('name', $form['question_name' . $i])
+                   ->first();
+
             if ($existingItem) {
                 // すでに同じ質問項目が存在する場合は更新
                 $existingItem->update($item_form);
                 $item_id = $existingItem->id;
             } else {
                 // 新しい質問項目を追加
-                $item_id = DB::table('items')->insertGetId($item_form);
+                $item = Item::create($item_form);
+                $item_id = $item->id;
             }
-    
+            
+            
+        //detailに関する処理データを取るところ
             $detail_form = [
-                'item_id' => $item_id,
-                'question' => $form['question' . $i],
-                'option1' => $form['option' . $i . '_1'],
-                'option2' => $form['option' . $i . '_2'],
-                'option3' => $form['option' . $i . '_3'],
-                'option4' => $form['option' . $i . '_4'],
-                'option5' => $form['option' . $i . '_5'],
-                'priority' => $form['priority' . $i],
-                'rf_url' => $form['rf_url' . $i]
-            ];
-    
+            'item_id' => $item_id,
+            'question' => $form['question' . $i],
+            'option1' => $form['option' . $i . '_1'],
+            'option2' => $form['option' . $i . '_2'],
+            'option3' => $form['option' . $i . '_3'],
+            'option4' => $form['option' . $i . '_4'],
+            'option5' => $form['option' . $i . '_5'],
+            'priority' => $form['priority' . $i],
+            'rf_url' => $form['rf_url' . $i],
+            //'rf_image' => $form['rf_image' . $i],
+        ];
+        
+        //画像を保存するところ
+            $file = $request->file('rf_image' . $i);
+            //dd($file);
+            if ($file) {
+                // ランダムなファイル名作成
+                $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
+                $target_path = public_path('uploads/'); // もしくはpublic_path('uploads')でディレクトリを指定
+                if (!is_dir($target_path)) {
+                    mkdir($target_path, 0755, true);
+                }
+            
+                // アップロード処理
+                $file->move($target_path, $image);
+                $detail_form['rf_image']=$image;
+                //dd($file);
+                //$path = $file->storeAs('', $image, 'image');
+            } else {
+                // 画像が選択されていなければ空文字をセット
+                $existingDetail = Detail::where('item_id', $item_id)->first();
+                // 既存のデータが存在する場合、元の画像名をそのまま保持
+                // 既存のデータが存在しない場合、空文字列をセット
+                $detail_form['rf_image'] = $existingDetail ? $existingDetail->rf_image : '';
+            }
+            
+
+
+        //更新するところ
             // 質問項目の詳細情報がすでに存在するかチェック
-            $existingDetail = Detail::where('item_id', $item_id)
-                ->orderBy('item_id', 'desc')
-                ->first();
+            $existingDetail = Detail::where('item_id', $item_id)->first();
+            //dd($existingDetail);
     
             if ($existingDetail) {
                 // すでに同じ質問項目の詳細情報が存在する場合は更新
                 $existingDetail->update($detail_form);
             } else {
                 // 新しい質問項目の詳細情報を追加
-                $file = $request->file('rf_image' . $i);
-                if ($file) {
-                    // ランダムなファイル名作成
-                    $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
-                    $target_path = public_path('uploads');
-                    $path = $file->storeAs('', $image, 'image');
-                    $detail_form['rf_image'] = $image;
-                } else {
-                    $detail_form['rf_image'] = '';
-                }
-    
-                DB::table('details')->insert($detail_form);
+                \DB::table('details')->insert($detail_form);
             }
+            
+
         }
     
         $format = Format::find($format_id);
         $items = Item::where('format_id', $format_id)->get();
+        //dd($items);
     
         // 質問の詳細情報を取得して配列に格納
         $details = [];
+        
         foreach ($items as $item) {
-            $detail = Detail::where('item_id', $item->id)->orderBy('item_id', 'desc')->first();
+            // item_idに対応するdetailsテーブルのレコードを取得
+            $detail = Detail::where('item_id', $item->id)->orderBy('id', 'desc')->first();
             $details[] = $detail;
         }
+   
         //dd($details);
     
         return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);

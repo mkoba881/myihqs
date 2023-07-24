@@ -12,7 +12,17 @@
             <div class="col-md-8 mx-auto">
                 <h1>アンケート編集画面</h1>
                 
+                <p>{{$format}}</p>
+                <p>{{$items}}</p>
+                @foreach ($details as $detail)
+                    <p>{{ $detail }}</p>
+                @endforeach
+
+                
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">
+                     <!-- 既存のフォーマットIDを隠しフィールドとして追加 -->
+                    <input type="hidden" name="format_id" value="{{ $format->id }}">
+                    
                     @if (count($errors) > 0)
                         <ul>
                             @foreach($errors->all() as $e)
@@ -100,17 +110,21 @@
                                         <input type="text" class="form-control" name="rf_url{{ $index + 1 }}" value="{{ old('rf_url' . ($index + 1), $details[$index]->rf_url) }}">
                                     </div>
                                 </div>
+                                
                                 <div class="form-group row">
                                     <label class="col-md-2">参考画像</label>
                                     <div class="col-md-5">
-                                        <input type="file" class="form-control-file" name="rf_image{{ $index + 1 }}">
                                         @if ($details[$index]->has_reference_image)
+                                            <!--<img src="{{ secure_asset('uploads/' . $details[$index]->rf_image) }}">-->
+                                            <input type="file" class="form-control-file" name="rf_image{{ $index + 1 }}">
                                             <span class="selected">選択済み</span>
                                         @else
+                                            <input type="file" class="form-control-file" name="rf_image{{ $index + 1 }}">
                                             <span class="not-selected">未選択</span>
                                         @endif
                                     </div>
                                 </div>
+                                
                                 <div class="form-group row">
                                     <label class="col-md-2">並び順</label>
                                     <div class="col-md-10">
@@ -132,7 +146,6 @@
                 
                     @csrf
                     <input type="submit" class="btn btn-primary" value="次へ進む">
-                    
                     <script>
                         // カウント数の変更時に質問部分を動的に表示する
                         const questionCountInput = document.querySelector('input[name="questionCount"]');

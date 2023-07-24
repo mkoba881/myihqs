@@ -19,6 +19,13 @@ class Detail extends Model
     'option5' => 'required',
     'priority' => 'required',
     );
+    
+    // // Itemとのリレーションを追加
+    // public function item()
+    // {
+    //     return $this->belongsTo(Item::class);
+    // }
+    
     public function Answer()
     {
         return $this->hasMany('App\Models\Answer');
