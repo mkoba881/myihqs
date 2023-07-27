@@ -127,139 +127,257 @@ class IhqsController extends Controller
 
     public function create(Request $request)
     {
-        // Validationを行う
-        $request->validate(Format::getValidationRules($request->input('questionCount')));
-        $format_id = $request->input('format_id', null);
-        //dd($request->all());
+        
+    $request->validate(Format::getValidationRules($request->input('questionCount')));
 
+    $format_id = $this->saveOrUpdateFormat($request);
+
+    $questionCount = $request->input('questionCount');
+
+    for ($i = 1; $i <= $questionCount; $i++) {
+        $item_id = $this->saveOrUpdateItem($request, $format_id, $i);
+        $this->saveOrUpdateDetail($request, $item_id, $i);
+    }
+
+    $format = Format::find($format_id);
+    $items = Item::where('format_id', $format_id)->get();
+    $details = $this->getQuestionDetails($items);
+
+    return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);
     
+        // // Validationを行う
+        // $request->validate(Format::getValidationRules($request->input('questionCount')));
+        // $format_id = $request->input('format_id', null);
+        // //dd($request->all());
         
-        $form = $request->all();
-        unset($form['_token']);
+        // $form = $request->all();
+        // unset($form['_token']);
         
-          // フォーマットがすでに存在するかチェック
+        //   // フォーマットがすでに存在するかチェック
+        // if ($format_id) {
+        //     $format = Format::find($format_id);
+        //     $format->update([
+        //         'name' => $request->input('ankate_name'),
+        //         'start' => $request->input('start'),
+        //         'end' => $request->input('end'),
+        //         'status' => $request->input('status')
+        //     ]);
+        // } else {
+        //     $format = Format::create([
+        //         'name' => $request->input('ankate_name'),
+        //         'start' => $request->input('start'),
+        //         'end' => $request->input('end'),
+        //         'status' => $request->input('status')
+        //     ]);
+        //     $format_id = $format->id; // 新規作成したフォーマットのIDを取得
+        // }
+            
+
+
+        // $questionCount = $request->input('questionCount');
+        // // dd($questionCount);
+    
+        // for ($i = 1; $i <= $questionCount; $i++) {
+            
+            
+        // //itemに関する処理
+        //     $item_form = [
+        //         'name' => $form['question_name' . $i],
+        //         'format_id' => $format_id,
+        //         'sortorder' => $form['sortorder' . $i]
+        //     ];
+    
+        //     // 質問項目がすでに存在するかチェック
+        //     $existingItem = Item::where('format_id', $format_id)
+        //           ->where('name', $form['question_name' . $i])
+        //           ->first();
+
+        //     if ($existingItem) {
+        //         // すでに同じ質問項目が存在する場合は更新
+        //         $existingItem->update($item_form);
+        //         $item_id = $existingItem->id;
+        //     } else {
+        //         // 新しい質問項目を追加
+        //         $item = Item::create($item_form);
+        //         $item_id = $item->id;
+        //     }
+            
+            
+        // //detailに関する処理データを取るところ
+        //     $detail_form = [
+        //     'item_id' => $item_id,
+        //     'question' => $form['question' . $i],
+        //     'option1' => $form['option' . $i . '_1'],
+        //     'option2' => $form['option' . $i . '_2'],
+        //     'option3' => $form['option' . $i . '_3'],
+        //     'option4' => $form['option' . $i . '_4'],
+        //     'option5' => $form['option' . $i . '_5'],
+        //     'priority' => $form['priority' . $i],
+        //     'rf_url' => $form['rf_url' . $i],
+        //     //'rf_image' => $form['rf_image' . $i],
+        // ];
+        
+        // //画像を保存するところ
+        //     $file = $request->file('rf_image' . $i);
+        //     //dd($file);
+        //     if ($file) {
+        //         // ランダムなファイル名作成
+        //         $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
+        //         $target_path = public_path('uploads/'); // もしくはpublic_path('uploads')でディレクトリを指定
+        //         if (!is_dir($target_path)) {
+        //             mkdir($target_path, 0755, true);
+        //         }
+            
+        //         // アップロード処理
+        //         $file->move($target_path, $image);
+        //         $detail_form['rf_image']=$image;
+        //         //dd($file);
+        //         //$path = $file->storeAs('', $image, 'image');
+        //     } else {
+        //         // 画像が選択されていなければ空文字をセット
+        //         $existingDetail = Detail::where('item_id', $item_id)->first();
+        //         // 既存のデータが存在する場合、元の画像名をそのまま保持
+        //         // 既存のデータが存在しない場合、空文字列をセット
+        //         $detail_form['rf_image'] = $existingDetail ? $existingDetail->rf_image : '';
+        //     }
+        
+        // //更新するところ
+        //     // 質問項目の詳細情報がすでに存在するかチェック
+        //     $existingDetail = Detail::where('item_id', $item_id)->first();
+        //     //dd($existingDetail);
+    
+        //     if ($existingDetail) {
+        //         // すでに同じ質問項目の詳細情報が存在する場合は更新
+        //         $existingDetail->update($detail_form);
+        //     } else {
+        //         // 新しい質問項目の詳細情報を追加
+        //         \DB::table('details')->insert($detail_form);
+        //     }
+            
+
+        // }
+    
+        // $format = Format::find($format_id);
+        // $items = Item::where('format_id', $format_id)->get();
+        // //dd($items);
+    
+        // // 質問の詳細情報を取得して配列に格納
+        // $details = [];
+        
+        // foreach ($items as $item) {
+        //     // item_idに対応するdetailsテーブルのレコードを取得
+        //     $detail = Detail::where('item_id', $item->id)->orderBy('id', 'desc')->first();
+        //     $details[] = $detail;
+        // }
+   
+        // //dd($details);
+    
+        // return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);
+        
+    }
+    
+    private function saveOrUpdateFormat(Request $request)
+    {
+        $format_id = $request->input('format_id', null);
+    
+        $formatData = [
+            'name' => $request->input('ankate_name'),
+            'start' => $request->input('start'),
+            'end' => $request->input('end'),
+            'status' => $request->input('status')
+        ];
+    
         if ($format_id) {
             $format = Format::find($format_id);
-            $format->update([
-                'name' => $request->input('ankate_name'),
-                'start' => $request->input('start'),
-                'end' => $request->input('end'),
-                'status' => $request->input('status')
-            ]);
+            $format->update($formatData);
         } else {
-            $format = Format::create([
-                'name' => $request->input('ankate_name'),
-                'start' => $request->input('start'),
-                'end' => $request->input('end'),
-                'status' => $request->input('status')
-            ]);
-            $format_id = $format->id; // 新規作成したフォーマットのIDを取得
+            $format = Format::create($formatData);
+            $format_id = $format->id;
         }
-            
-
-
-        $questionCount = $request->input('questionCount');
-        // dd($questionCount);
     
-        for ($i = 1; $i <= $questionCount; $i++) {
-            
-            
-        //itemに関する処理
-            $item_form = [
-                'name' => $form['question_name' . $i],
-                'format_id' => $format_id,
-                'sortorder' => $form['sortorder' . $i]
-            ];
+        return $format_id;
+    }
     
-            // 質問項目がすでに存在するかチェック
-            $existingItem = Item::where('format_id', $format_id)
-                   ->where('name', $form['question_name' . $i])
-                   ->first();
-
-            if ($existingItem) {
-                // すでに同じ質問項目が存在する場合は更新
-                $existingItem->update($item_form);
-                $item_id = $existingItem->id;
-            } else {
-                // 新しい質問項目を追加
-                $item = Item::create($item_form);
-                $item_id = $item->id;
-            }
-            
-            
-        //detailに関する処理データを取るところ
-            $detail_form = [
-            'item_id' => $item_id,
-            'question' => $form['question' . $i],
-            'option1' => $form['option' . $i . '_1'],
-            'option2' => $form['option' . $i . '_2'],
-            'option3' => $form['option' . $i . '_3'],
-            'option4' => $form['option' . $i . '_4'],
-            'option5' => $form['option' . $i . '_5'],
-            'priority' => $form['priority' . $i],
-            'rf_url' => $form['rf_url' . $i],
-            //'rf_image' => $form['rf_image' . $i],
+    private function saveOrUpdateItem(Request $request, $format_id, $index)
+    {
+        $itemData = [
+            'name' => $request->input('question_name' . $index),
+            'format_id' => $format_id,
+            'sortorder' => $request->input('sortorder' . $index)
         ];
-        
-        //画像を保存するところ
-            $file = $request->file('rf_image' . $i);
-            //dd($file);
-            if ($file) {
-                // ランダムなファイル名作成
-                $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
-                $target_path = public_path('uploads/'); // もしくはpublic_path('uploads')でディレクトリを指定
-                if (!is_dir($target_path)) {
-                    mkdir($target_path, 0755, true);
-                }
-            
-                // アップロード処理
-                $file->move($target_path, $image);
-                $detail_form['rf_image']=$image;
-                //dd($file);
-                //$path = $file->storeAs('', $image, 'image');
-            } else {
-                // 画像が選択されていなければ空文字をセット
-                $existingDetail = Detail::where('item_id', $item_id)->first();
-                // 既存のデータが存在する場合、元の画像名をそのまま保持
-                // 既存のデータが存在しない場合、空文字列をセット
-                $detail_form['rf_image'] = $existingDetail ? $existingDetail->rf_image : '';
-            }
-            
-
-
-        //更新するところ
-            // 質問項目の詳細情報がすでに存在するかチェック
-            $existingDetail = Detail::where('item_id', $item_id)->first();
-            //dd($existingDetail);
     
-            if ($existingDetail) {
-                // すでに同じ質問項目の詳細情報が存在する場合は更新
-                $existingDetail->update($detail_form);
-            } else {
-                // 新しい質問項目の詳細情報を追加
-                \DB::table('details')->insert($detail_form);
-            }
-            
-
+        $existingItem = Item::where('format_id', $format_id)
+            ->where('name', $request->input('question_name' . $index))
+            ->first();
+    
+        if ($existingItem) {
+            $existingItem->update($itemData);
+            $item_id = $existingItem->id;
+        } else {
+            $item = Item::create($itemData);
+            $item_id = $item->id;
         }
     
-        $format = Format::find($format_id);
-        $items = Item::where('format_id', $format_id)->get();
-        //dd($items);
+        return $item_id;
+    }
     
-        // 質問の詳細情報を取得して配列に格納
+    private function saveOrUpdateDetail(Request $request, $item_id, $index)
+    {
+        // detailのデータを作成
+        $detail_form = [
+            'item_id' => $item_id,
+            'question' => $request->input('question' . $index),
+            'option1' => $request->input('option' . $index . '_1'),
+            'option2' => $request->input('option' . $index . '_2'),
+            'option3' => $request->input('option' . $index . '_3'),
+            'option4' => $request->input('option' . $index . '_4'),
+            'option5' => $request->input('option' . $index . '_5'),
+            'priority' => $request->input('priority' . $index),
+            'rf_url' => $request->input('rf_url' . $index),
+            //'rf_image' => $request->input('rf_image' . $index),
+        ];
+    
+        // 画像処理のコード
+        $file = $request->file('rf_image' . $index);
+        if ($file) {
+            $image = \Auth::user()->name . time() . hash_file('sha1', $file) . '.' . $file->getClientOriginalExtension();
+            $target_path = public_path('uploads/');
+            if (!is_dir($target_path)) {
+                mkdir($target_path, 0755, true);
+            }
+    
+            $file->move($target_path, $image);
+            $detail_form['rf_image'] = $image;
+        } else {
+            // 画像が選択されていなければ空文字をセット
+            $existingDetail = Detail::where('item_id', $item_id)->first();
+            $detail_form['rf_image'] = $existingDetail ? $existingDetail->rf_image : '';
+        }
+    
+        // 更新処理 or 新規追加処理
+        $existingDetail = Detail::where('item_id', $item_id)->first();
+        if ($existingDetail) {
+            // すでに同じ質問項目の詳細情報が存在する場合は更新
+            $existingDetail->update($detail_form);
+        } else {
+            // 新しい質問項目の詳細情報を追加
+            \DB::table('details')->insert($detail_form);
+        }
+    }
+    
+    private function getQuestionDetails($items)
+    {
         $details = [];
-        
+    
         foreach ($items as $item) {
-            // item_idに対応するdetailsテーブルのレコードを取得
             $detail = Detail::where('item_id', $item->id)->orderBy('id', 'desc')->first();
             $details[] = $detail;
         }
-   
-        //dd($details);
     
-        return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);
+        return $details;
     }
+    //createメソッド終わり
+    
 
     public function deleteankate(Request $request)  
     {
