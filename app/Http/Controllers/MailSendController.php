@@ -10,6 +10,7 @@ use App\Models\Format;
 use App\Models\Mail as MailModel; // Mailモデルのクラスに別名をつける
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+//use Illuminate\Support\Facades\Route;
 
 
 //use App\Mail\TestMail;//メール送信用
@@ -73,8 +74,9 @@ class MailSendController extends Controller
         $id=$form['id'];
         
         $hash = urlencode(Crypt::encryptString($id));
-        $url_link = route('survey.answer', $hash);
-        
+        //dd($hash);
+        $url_link = route('survey.answer', $hash);//URLの生成
+        //dd($url_link);
         $recipients = [];
         //dd($recipients);
 
@@ -92,10 +94,10 @@ class MailSendController extends Controller
         }
         
         //dd($link);
-        // foreach ($recipients as $recipient) {
-        // //dd($recipient);
-        //     Mail::to($recipient)->send(new SampleMail($form['user_mailformat'],$url_link));
-        // }
+        foreach ($recipients as $recipient) {
+        //dd($recipient);
+            Mail::to($recipient)->send(new SampleMail($form['user_mailformat'],$url_link));
+        }
         
         
         // メールデータの保存処理を呼び出す
@@ -106,25 +108,27 @@ class MailSendController extends Controller
         return view('fs.management',['formats' => $formats]);
     }
     
-    public function cronMail($recipients, $userMailFormats)
+    public function cronMail($recipients, $userMailFormats, $formatId)
     {
+        //dd($formatId);
         //dd($userMailFormats);
         //dd($recipients);
         // 送信先が存在する場合にメール送信
+    
+        
+        $hostUrl = env('HOST_URL');
+        //dd($awsConsoleUrl);
+        $hash = urlencode(Crypt::encryptString($formatId));
+        $url_link = $hostUrl . '/fs/answer/' . $hash;
+        //$url_link = route('survey.answer', $hash);//URLの生成
+        //dd($url_link);
+    
+       
         if (!empty($recipients)) {
             foreach ($recipients as $recipient) {
-                // メール本文をエスケープしていることを確認するため、htmlspecialchars関数を使ってエスケープする
-                //dd($userMailFormats);
-                //$userMailFormat = htmlspecialchars($userMailFormats[$recipient] ?? '', ENT_QUOTES, 'UTF-8');
-                $url_link = 'https://example.com'; // 送信するURLリンクをここで設定
-
-                //$userMailFormat = htmlspecialchars($userMailFormats[$recipient], ENT_QUOTES, 'UTF-8');
-
-                // メール送信のロジックを実装する
-                // $recipientと$userMailFormatを使ってカスタムなメール送信を行う
+        
                 Mail::to($recipient)->send(new SampleMail($userMailFormats, $url_link));
 
-                //$this->info('Custom email sent successfully to: ' . $recipient);
                 echo 'Custom email sent successfully to: ' . $recipient . PHP_EOL;
 
             }
@@ -133,11 +137,5 @@ class MailSendController extends Controller
             //$this->info('No emails to send.');
         }
     }
-        
-        
-        // メール送信のロジックを実装する
-        // $userMailFormatと$url_linkを使ってカスタムなメール送信を行う
-        // ...
-        //Mail::to($userMailFormat)->send(new SampleMail($userMailFormat, $url_link));
         
 }

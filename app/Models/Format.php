@@ -43,5 +43,11 @@ class Format extends Model
     {
         return $this->hasMany('App\Models\Mail');
     }
+    
+    public function Survey_Participant()
+    {
+        return $this->hasMany('App\Models\Survey_Participant');
+    }
+
 
 }

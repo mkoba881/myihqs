@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Format;
 use App\Models\Mail;
 use App\Http\Controllers\MailSendController; // メールコントローラーの名前に応じて修正
+use Illuminate\Support\Facades\Crypt;
 
 
 class SendEmailsCronJob extends Command
@@ -36,16 +37,19 @@ class SendEmailsCronJob extends Command
 
         // メール送信先のメールアドレスを格納する配列
         $recipients = ['mkoba881@gmail.com', 'mkoba8814@gmail.com']; // 送信先メールアドレスをここで設定
-        //dd($validFormats);
+        //dd($validFormatIds);
         // Mailモデルを使用して$userMailFormatsを取得する
         $userMailFormats = Mail::whereIn('format_id', $validFormatIds)->pluck('user_mailformat', 'format_id')->toArray();
         
         // フォーマットごとにメール送信を行う
         
         foreach ($validFormatIds as $formatId) {
+            //dd($formatId);
+            //dd($hash);
+            //dd($url_link);
             $userMailFormat = $userMailFormats[$formatId] ?? null;
             if ($userMailFormat) {
-                $this->sendMailToRecipients($userMailFormat, $recipients);
+                $this->sendMailToRecipients($userMailFormat, $recipients, $formatId);
             }
         }
             
@@ -68,9 +72,10 @@ class SendEmailsCronJob extends Command
         // }
     }
     
-    private function sendMailToRecipients($userMailFormat, $recipients)
+    private function sendMailToRecipients($userMailFormat, $recipients, $formatId)
     {
-        $url_link = 'https://example.com'; // 送信するURLリンクをここで設定
+        //dd($url_link);
+        //dd($formatId);
        //dd($userMailFormat);
         //dd($recipients);
 
@@ -78,7 +83,7 @@ class SendEmailsCronJob extends Command
         // 送信先が存在する場合にメール送信
         if (!empty($recipients)) {
             $mailController = new MailSendController();
-            $mailController->cronMail($recipients, $userMailFormat);
+            $mailController->cronMail($recipients, $userMailFormat, $formatId);
 
             $this->info('Custom emails sent successfully.');
         } else {
