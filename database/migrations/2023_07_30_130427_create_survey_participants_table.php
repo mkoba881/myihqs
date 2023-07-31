@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('survey_participants', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("user_id");
+            $table->bigInteger("format_id");
             $table->string('email');
             $table->timestamps();
         });

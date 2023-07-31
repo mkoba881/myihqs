@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Format;
+use App\Models\User;
+use App\Models\SurveyParticipant;
 use App\Models\Mail as MailModel; // Mailモデルのクラスに別名をつける
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -19,17 +21,65 @@ use App\Mail\SampleMail;//メール送信用
 
 class MailSendController extends Controller
 {
-    public function saveMailData(Request $request)
+    
+    private function setPasswordForNewUsers()
+    {
+        $newUsers = User::whereNull('password')->get();
+    
+        foreach ($newUsers as $user) {
+            $user->password = bcrypt('Password123!'); // パスワードを"Password123!"に設定
+            $user->save();
+        }
+    }
+
+    public function saveMailData(Request $request, array $csv_array)
     {
         $form = $request->all();
         unset($form['_token']);
-        //dd($form);
+    
+        // CSVデータからメールアドレスの配列を作成
+        $recipients = [];
+        foreach ($csv_array as $index => $data) {
+            if ($index === 0) {
+                continue; // ヘッダー行をスキップします
+            }
+            if (isset($data[1])) {
+                $recipients[] = $data[1]; // メールアドレスの値を配列に追加します
+            }
+        }
+    
+        // $recipientsループ内でユーザーIDを取得し、survey_participantsテーブルに保存
+        foreach ($recipients as $recipient) {
+            // ユーザーIDを取得するために、usersテーブルからメールアドレスを検索
+            $user = User::where('email', $recipient)->first();
+    
+            // ユーザーIDが取得できた場合の処理
+            if ($user) {
+                $userId = $user->id;
+            } else {
+                // 新しいユーザーを作成
+                $newUser = new User();
+                $newUser->name = $csv_array[$index][0]; // CSVデータの該当する行の名前をユーザー名に設定
+                $newUser->email = $recipient; // メールアドレスをUserテーブルのemail属性に設定
+                // 他に必要な新しいユーザー情報があれば設定する
+                // ...
+                $newUser->save();
+    
+                // 新しいユーザーのIDを取得
+                $userId = $newUser->id;
+            }
+    
+            // survey_participantsテーブルに保存
+            $surveyParticipant = new SurveyParticipant();
+            $surveyParticipant->format_id = $form['id'];
+            $surveyParticipant->user_id = $userId;
+            $surveyParticipant->save();
+        }
+        // 初期パスワードを設定するメソッドを呼び出す
+        $this->setPasswordForNewUsers();
+    
+        // Formatテーブルのデータ保存
         $existingData = Format::where('id', $form['id'])->first();
-        //$existingData_mail = Mail::where('format_id', $form['id'])->first();
-        $existingData_mail = MailModel::where('format_id', $form['id'])->first();
-
-
-        
         if ($existingData) {
             // 条件に合致するデータが存在する場合は更新
             $existingData->start = $form['start'];
@@ -37,14 +87,15 @@ class MailSendController extends Controller
             $existingData->save();
         } else {
             // 条件に合致するデータが存在しない場合は新規作成
-            $newData = new format;
+            $newData = new Format;
             $newData->id = $form['id'];
             $newData->start = $form['start'];
             $newData->end = $form['end'];
             $newData->save();
         }
-        
-        
+    
+        // MailModelテーブルのデータ保存
+        $existingData_mail = MailModel::where('format_id', $form['id'])->first();
         if ($existingData_mail) {
             // 条件に合致するデータが存在する場合は更新
             $existingData_mail->format_id = $form['id'];
@@ -54,7 +105,7 @@ class MailSendController extends Controller
             $existingData_mail->save();
         } else {
             // 条件に合致するデータが存在しない場合は新規作成
-            $newData_mail = new MailModel;//暫定の名前
+            $newData_mail = new MailModel;
             $newData_mail->format_id = $form['id'];
             $newData_mail->user_mailformat = $form['user_mailformat'];
             $newData_mail->remind_mailformat = $form['remind_mailformat'];
@@ -62,6 +113,8 @@ class MailSendController extends Controller
             $newData_mail->save();
         }
     }
+        
+
 
     
     public function send(Request $request)
@@ -99,10 +152,12 @@ class MailSendController extends Controller
             Mail::to($recipient)->send(new SampleMail($form['user_mailformat'],$url_link));
         }
         
-        
+        //dd($form);
+        //dd($request);
+        //dd($recipients);
         // メールデータの保存処理を呼び出す
-        $this->saveMailData($request);
-
+        $this->saveMailData($request, $csv_array);
+        
         
         $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
         return view('fs.management',['formats' => $formats]);
