@@ -22,15 +22,15 @@ use App\Mail\SampleMail;//メール送信用
 class MailSendController extends Controller
 {
     
-    private function setPasswordForNewUsers()
-    {
-        $newUsers = User::whereNull('password')->get();
+    // private function setPasswordForNewUsers()
+    // {
+    //     $newUsers = User::whereNull('password')->get();
     
-        foreach ($newUsers as $user) {
-            $user->password = bcrypt('Password123!'); // パスワードを"Password123!"に設定
-            $user->save();
-        }
-    }
+    //     foreach ($newUsers as $user) {
+    //         $user->password = bcrypt('Password123!'); // パスワードを"Password123!"に設定
+    //         $user->save();
+    //     }
+    // }
 
     public function saveMailData(Request $request, array $csv_array)
     {
@@ -52,31 +52,42 @@ class MailSendController extends Controller
         foreach ($recipients as $recipient) {
             // ユーザーIDを取得するために、usersテーブルからメールアドレスを検索
             $user = User::where('email', $recipient)->first();
+            //dd($recipient);
     
             // ユーザーIDが取得できた場合の処理
             if ($user) {
                 $userId = $user->id;
             } else {
                 // 新しいユーザーを作成
+                //dd($recipient);
                 $newUser = new User();
+                //dd($newUser);
                 $newUser->name = $csv_array[$index][0]; // CSVデータの該当する行の名前をユーザー名に設定
                 $newUser->email = $recipient; // メールアドレスをUserテーブルのemail属性に設定
-                // 他に必要な新しいユーザー情報があれば設定する
-                // ...
+                $newUser->password = bcrypt('Password123!'); // 固定の初期パスワードを設定
                 $newUser->save();
     
                 // 新しいユーザーのIDを取得
                 $userId = $newUser->id;
             }
-    
-            // survey_participantsテーブルに保存
-            $surveyParticipant = new SurveyParticipant();
-            $surveyParticipant->format_id = $form['id'];
-            $surveyParticipant->user_id = $userId;
-            $surveyParticipant->save();
+            
+             // 既存の組み合わせを検索
+            $existingParticipant = SurveyParticipant::where('user_id', $userId)
+                                                   ->where('format_id', $form['id'])
+                                                   ->where('email', $recipient)
+                                                   ->first();
+            
+            // 既存の組み合わせが存在しない場合のみ、survey_participantsテーブルに保存
+            if (!$existingParticipant) {
+                $surveyParticipant = new SurveyParticipant();
+                $surveyParticipant->user_id = $userId;
+                $surveyParticipant->format_id = $form['id'];
+                $surveyParticipant->email = $recipient;
+                $surveyParticipant->save();
+            }
         }
         // 初期パスワードを設定するメソッドを呼び出す
-        $this->setPasswordForNewUsers();
+        // $this->setPasswordForNewUsers();
     
         // Formatテーブルのデータ保存
         $existingData = Format::where('id', $form['id'])->first();
@@ -114,9 +125,6 @@ class MailSendController extends Controller
         }
     }
         
-
-
-    
     public function send(Request $request)
     {
         $form = $request->all();
