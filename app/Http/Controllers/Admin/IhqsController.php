@@ -46,36 +46,74 @@ class IhqsController extends Controller
 
     public function answerend(Request $request)
     {
-        $user_id = Auth::id(); // ログインユーザーの user_id を取得
-        //dd($user_id);
-        $answer = $request->all();//フォームの中身を全部とってきている
-        unset($answer['_token']);
-        //dd($answer);
+     
+        $user_id = Auth::id();
+        $answers = $request->all();
+        unset($answers['_token']);
         
-        // 既存のレコードを更新するか新規作成するかを判断する
-        $existingRecord = Answer::where('format_id', $answer['format_id'])
-                                ->where('item_id', $answer['item_id'])
-                                ->where('detail_id', $answer['detail_id'])
-                                ->where('user_id', $user_id)
-                                ->first();
+        foreach ($answers['answer_result'] as $index => $answerResult) {
+            $format_id = $answers['format_id'];
+            $item_id = $answers['item_id'][$index];
+            $detail_id = $answers['detail_id'][$index];
+            $priority = $answers['priority'][$index];
+            
+            // 既存のレコードを更新するか新規作成するかを判断する
+            $existingRecord = Answer::where('format_id', $format_id)
+                                    ->where('item_id', $item_id)
+                                    ->where('detail_id', $detail_id)
+                                    ->where('user_id', $user_id)
+                                    ->first();
     
-        if ($existingRecord) {
-            // 既存のレコードが存在する場合、更新する
-            $existingRecord->update([
-                'answer_result' => $answer['answer_result'],
-                'priority' => $answer['priority'],
-            ]);
-        } else {
-            // 既存のレコードが存在しない場合、新規作成する
-            Answer::create([
-                'format_id' => $answer['format_id'],
-                'item_id' => $answer['item_id'],
-                'detail_id' => $answer['detail_id'],
-                'user_id' => $user_id,
-                'answer_result' => $answer['answer_result'],
-                'priority' => $answer['priority'],
-            ]);
-        }
+            if ($existingRecord) {
+                // 既存のレコードが存在する場合、更新する
+                $existingRecord->update([
+                    'answer_result' => $answerResult,
+                    'priority' => $priority,
+                ]);
+            } else {
+                // 既存のレコードが存在しない場合、新規作成する
+                Answer::create([
+                    'format_id' => $format_id,
+                    'item_id' => $item_id,
+                    'detail_id' => $detail_id,
+                    'user_id' => $user_id,
+                    'answer_result' => $answerResult,
+                    'priority' => $priority,
+                ]);
+            }
+        } 
+        
+    
+        // $user_id = Auth::id(); // ログインユーザーの user_id を取得
+        // //dd($user_id);
+        // $answer = $request->all();//フォームの中身を全部とってきている
+        // unset($answer['_token']);
+        // dd($answer);
+        
+        // // 既存のレコードを更新するか新規作成するかを判断する
+        // $existingRecord = Answer::where('format_id', $answer['format_id'])
+        //                         ->where('item_id', $answer['item_id'])
+        //                         ->where('detail_id', $answer['detail_id'])
+        //                         ->where('user_id', $user_id)
+        //                         ->first();
+    
+        // if ($existingRecord) {
+        //     // 既存のレコードが存在する場合、更新する
+        //     $existingRecord->update([
+        //         'answer_result' => $answer['answer_result'],
+        //         'priority' => $answer['priority'],
+        //     ]);
+        // } else {
+        //     // 既存のレコードが存在しない場合、新規作成する
+        //     Answer::create([
+        //         'format_id' => $answer['format_id'],
+        //         'item_id' => $answer['item_id'],
+        //         'detail_id' => $answer['detail_id'],
+        //         'user_id' => $user_id,
+        //         'answer_result' => $answer['answer_result'],
+        //         'priority' => $answer['priority'],
+        //     ]);
+        // }
         
         return view('fs.answerend');
     }

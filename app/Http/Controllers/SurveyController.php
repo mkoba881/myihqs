@@ -24,10 +24,18 @@ class SurveyController extends Controller
         //$format = Format::find($id); // IDを使用してFormatテーブルを取得
         $format = Format::where('id', $id)->get();
         //dd($format[0]['id']);
-        $item = Item::where('format_id', $id)->get();
-        //dd($item[0]['name']);
-        $detail = Detail::where('item_id', $item[0]["id"])->get();
-        //dd($detail);
-        return view('fs.answer', compact('format','item','detail'));
+        $items = Item::where('format_id', $id)->get();
+        //dd($items);
+        //$detail = Detail::where('item_id', $item[0]["id"])->get();
+        
+        $details = collect(); // $detailsを空のコレクションとして初期化
+        
+        foreach ($items as $item) {
+            $detail = Detail::where('item_id', $item->id)->get();
+            $details = $details->merge($detail);
+        }
+        //dd($details);
+        
+        return view('fs.answer', compact('format','items','details'));
     }
 }
