@@ -1,19 +1,17 @@
 <?php
 
 namespace App\Console\Commands;
-
 use Illuminate\Console\Command;
+use App\Models\SurveyParticipant;
 use App\Models\Format;
 use App\Models\Mail;
 use App\Http\Controllers\MailSendController; // メールコントローラーの名前に応じて修正
 use Illuminate\Support\Facades\Crypt;
 
-
 class SendEmailsCronJob extends Command
 {
     protected $signature = 'send_emails';
     protected $description = 'Send emails using the MailSendController'; // メールコントローラーの名前に応じて修正
-
     /**
      * Execute the console command.
      *
@@ -25,11 +23,6 @@ class SendEmailsCronJob extends Command
         // 本日の日付を取得
         $currentDate = now()->toDateString();
         
-        // 有効なフォーマットIDとメールアドレスを取得
-        // $validFormats = Format::where('status', 2)
-        //                       ->whereDate('start', '<=', $currentDate)
-        //                       ->whereDate('end', '>=', $currentDate)
-        //                       ->get();
         $validFormatIds = Format::where('status', 2)
                         ->whereDate('start', '<=', $currentDate)
                         ->whereDate('end', '>=', $currentDate)
@@ -42,64 +35,30 @@ class SendEmailsCronJob extends Command
         $userMailFormats = Mail::whereIn('format_id', $validFormatIds)->pluck('user_mailformat', 'format_id')->toArray();
         
         // フォーマットごとにメール送信を行う
-        
         foreach ($validFormatIds as $formatId) {
-            //dd($formatId);
-            //dd($hash);
-            //dd($url_link);
             $userMailFormat = $userMailFormats[$formatId] ?? null;
             if ($userMailFormat) {
                 $this->sendMailToRecipients($userMailFormat, $recipients, $formatId);
             }
         }
-            
-
-        // メール本文の内容（$userMailFormat）はMailテーブルから取得する
-        // $userMailFormats = Mail::whereIn('format_id', $validFormats->pluck('id'))->pluck('user_mailformat', 'format_id');
-        // //$userMailFormats = Mail::whereIn('format_id', $validFormats->pluck('id'))->pluck('user_mailformat', 'format_id')->values();
-        //dd($userMailFormats);
-
-        
-        //dd($userMailFormats);
-        // 送信先が存在する場合にメール送信
-        // if (!empty($recipients)) {
-        //     $mailController = new MailSendController();
-        //     $mailController->cronMail($recipients, $userMailFormats); // MailSendControllerのcronMailメソッドに送信先メールアドレスとメール本文の配列を渡す
-
-        //     $this->info('Custom emails sent successfully.');
-        // } else {
-        //     $this->info('No emails to send.');
-        // }
     }
     
     private function sendMailToRecipients($userMailFormat, $recipients, $formatId)
     {
-        //dd($url_link);
-        //dd($formatId);
-       //dd($userMailFormat);
+        
+        $recipients = SurveyParticipant::where('format_id', $formatId)
+            ->orderBy('email') // メールアドレスでソート
+            ->pluck('email');
         //dd($recipients);
-
-
+        
         // 送信先が存在する場合にメール送信
         if (!empty($recipients)) {
             $mailController = new MailSendController();
             $mailController->cronMail($recipients, $userMailFormat, $formatId);
-
             $this->info('Custom emails sent successfully.');
         } else {
             $this->info('No emails to send.');
         }
     }
     
-    // public function handle()
-    // {
-    // $userMailFormat = 'mkoba881@gmail.com'; // 例として固定の値を代入
-    // $url_link = 'https://example.com'; // 例として固定の値を代入
-    // //dd($userMailFormat);
-
-    // $mailController = new MailSendController();
-    // $mailController->cronMail($userMailFormat, $url_link); // 新しいメソッドを呼び出す
-
-    // $this->info('Custom emails sent successfully.');
-    // }
 }

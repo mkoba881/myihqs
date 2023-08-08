@@ -8,9 +8,10 @@
             <div class="col-md-8 mx-auto">
                 <h2>アンケート管理画面</h2>
             </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.make')}}">アンケートフォームを作成する</a>
-            </div>
+        </div>
+        <div class="card-contents">
+            <a class="button" href="{{ route('fs.make')}}">アンケートフォームを作成</a>
+        </div>
             <h3>アンケート一覧</h3>
             <form action="{{ route('fs.deleteankate') }}" method="POST" id="deleteForm">
                 @csrf
@@ -19,15 +20,15 @@
                         <table class="table table-dark table-bordered border-light">
                             <thead>
                                 <tr>
-                                    <th>チェック</th>
-                                    <th>アンケートID</th>
+                                    <th></th>
+                                    <th>ID</th>
                                     <th>アンケート名</th>
                                     <th>前回実施日</th>
                                     <th>作成日</th>
                                     <th>更新日</th>
                                     <th>開始日</th>
                                     <th>終了日</th>
-                                    <th>ステータス（仮表示後程削除）</th>
+                                    <!--<th>ステータス（仮表示後程削除）</th>-->
                                     <th>実施内容</th>
                                 </tr>
                             </thead>
@@ -43,11 +44,11 @@
                                             <td>{{ $ankate->updated_at }}</td>
                                             <td>{{ $ankate->start }}</td>
                                             <td>{{ $ankate->end }}</td>
-                                            <td>{{ $ankate->status }}</td>
+                                            <!--<td>{{ $ankate->status }}</td>-->
                                             <td>
                                                 @if ($ankate->status === 2)
                                                     <div>
-                                                        <a href="{{ route('fs.conductankate', ['id' => $ankate->id]) }}" class="btn btn-primary">アンケートを実施する</a>
+                                                        <a href="{{ route('fs.conductankate', ['id' => $ankate->id]) }}" class="btn btn-primary">アンケート実施</a>
                                                     </div>
                                                 @endif
                                                 <div>
