@@ -21,17 +21,6 @@ use App\Mail\SampleMail;//メール送信用
 
 class MailSendController extends Controller
 {
-    
-    // private function setPasswordForNewUsers()
-    // {
-    //     $newUsers = User::whereNull('password')->get();
-    
-    //     foreach ($newUsers as $user) {
-    //         $user->password = bcrypt('Password123!'); // パスワードを"Password123!"に設定
-    //         $user->save();
-    //     }
-    // }
-
     public function saveMailData(Request $request, array $csv_array)
     {
         $form = $request->all();
