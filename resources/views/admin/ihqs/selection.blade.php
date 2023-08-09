@@ -13,18 +13,19 @@
                 <h2>機能選択画面</h2>
             </div>
         </div>
-        @if (Auth::user()->isAdmin())
-            <div class="card-contents">
-                <a href="{{ route('fs.management')}}">アンケートフォームを確認・作成・編集する</a>
+        <div class="row justify-content-center">
+            @if (Auth::user()->isAdmin())
+                <div class="card-contents mb-4 text-center">
+                    <a class="button" href="{{ route('fs.management')}}">アンケートフォームを確認・作成・編集する</a>
+                </div>
+                <div class="card-contents mb-4 text-center">
+                    <a class="button" href="{{ route('fs.analysis')}}">アンケートを集計する</a>
+                </div>
+            @endif
+            <div class="card-contents text-center">
+                <a class="button" href="{{ route('fs.answer')}}">アンケートに回答する</a>
             </div>
-            <div class="card-contents">
-                <a href="{{ route('fs.analysis')}}">アンケートを集計する</a>
-            </div>
-        @endif
-        <div class="card-contents">
-            <a href="{{ route('fs.answer')}}">アンケートに回答する</a>
         </div>
-
     </div>
     <!--　ルーティング検討コード<form action="{{ route('fs.analysis') }}" method="get">
     <form action="{{ route('fs.answer') }}" method="get">

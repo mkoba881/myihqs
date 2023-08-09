@@ -24,8 +24,7 @@
                                     <th>ID</th>
                                     <th>アンケート名</th>
                                     <th>前回実施日</th>
-                                    <th>作成日</th>
-                                    <th>更新日</th>
+                                    <th>作成日 / 更新日</th>
                                     <th>開始日</th>
                                     <th>終了日</th>
                                     <!--<th>ステータス（仮表示後程削除）</th>-->
@@ -40,8 +39,17 @@
                                             <td>{{ $ankate->id }}</td>
                                             <td>{{ $ankate->name }}</td>
                                             <td>{{ $ankate->previous_at }}</td>
-                                            <td>{{ $ankate->created_at }}</td>
-                                            <td>{{ $ankate->updated_at }}</td>
+                                            <td>
+                                                @if ($ankate->created_at)
+                                                    作成日: {{ $ankate->created_at->format('Y-m-d H:i:s') }}<br>
+                                                @endif
+                                                @if ($ankate->updated_at)
+                                                    更新日: {{ $ankate->updated_at->format('Y-m-d H:i:s') }}
+                                                @endif
+                                            </td>
+                                            <!--<td>{{ $ankate->created_at }}</td>-->
+                                            <!--<td>{{ $ankate->updated_at }}</td>-->
+                                            
                                             <td>{{ $ankate->start }}</td>
                                             <td>{{ $ankate->end }}</td>
                                             <!--<td>{{ $ankate->status }}</td>-->
