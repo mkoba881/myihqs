@@ -20,7 +20,7 @@
                         <table class="table table-dark table-bordered border-light">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th><input type="checkbox" id="selectAllCheckbox"></th>
                                     <th>ID</th>
                                     <th>アンケート名</th>
                                     <th>前回実施日</th>
@@ -98,5 +98,20 @@
             });
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            
+            // ヘッダーのチェックボックスがクリックされたときの処理
+            selectAllCheckbox.addEventListener('click', function() {
+                const isChecked = selectAllCheckbox.checked;
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = isChecked;
+                });
+            });
+        });
+    </script>
+
 
 @endsection
