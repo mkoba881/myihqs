@@ -15,6 +15,7 @@ use App\Models\Detail;
 use App\Models\Mail;
 use App\Models\User;
 use App\Models\Answer;
+use App\Models\SurveyParticipant;
 
 
 class IhqsController extends Controller
@@ -280,54 +281,160 @@ class IhqsController extends Controller
     public function conductankate(Request $request)
     {
         $form = $request->all();//フォームの中身を全部とってきている
-        $id = $form['id'];
+        if (isset($form['id'])) {
+                $id = $form['id'];
         //dd($id);
+        // idを使ってmailテーブルからデータを抜き出す
+        $mailData = Mail::where('id', $id)->first();
+        $formatData = Format::where('id', $id)->first();
+        //dd($mailData);
+    
+            if ($mailData) {
+                $user_mailformat = $mailData->user_mailformat;
+                $remind_mailformat = $mailData->remind_mailformat;
+                $admin_mailformat = $mailData->admin_mailformat;
+                $start = $formatData->start;
+                $end = $formatData->end;
+    
+                // メールフォーマットをビューに渡す
+                return view('fs.conductankate', compact('id', 'user_mailformat', 'remind_mailformat', 'admin_mailformat', 'start', 'end'));
+            } else {
+                // データが存在しない場合の処理を追加
+                $user_mailformat = "";
+                $remind_mailformat = "";
+                $admin_mailformat = "";
+                $start = $formatData->start;
+                $end = $formatData->end;
+                return view('fs.conductankate', compact('id', 'user_mailformat', 'remind_mailformat', 'admin_mailformat', 'start', 'end'));
+            }
+        } else {
+            // $id が存在しない場合の処理を追加
+            // 例えば、エラーメッセージを表示する等
+        }
+        
+        
         return view('fs.conductankate',compact('id'));
     }
+    
+    
     public function conductankatepreview(Request $request)
     {
-        //dd($request);
         // Validationを行う
         $this->validate($request, Mail::$rules);
-     
-        $form = $request->all();//フォームの中身を全部とってきている
+    
+        $form = $request->all();
+    
         // フォームから送信されてきた_tokenを削除する
         unset($form['_token']);
-        //dd($form);
-        //dd($form["csvFile"]);
+    
+        $fileName = empty($form["csvFile"]) ? 'default.csv' : $form["csvFile"];
+    
+        if (file_exists($fileName)) {
+            // ファイルが存在する場合の処理
+            $command = "file -i " . $fileName;
+            $output = [];
+            $status = "";
+            exec($command, $output, $status);
+            preg_match("/charset=(.*)/", $output[0], $charset);
+    
+            $fp = fopen($fileName, 'r');
+            $csv_array = array();
+    
+            // 配列へ格納
+            while ($line = fgetcsv($fp)) {
+                $csv_array[] = $line;
+            }
+    
+            fclose($fp);
+    
+            // 変換処理
+            if ($charset[1] != "utf-8") {
+                mb_convert_variables("UTF-8", "SJIS", $csv_array);
+            }
+            //ddd($csv_array);
+    
+        } else {
+            
+            // ファイルが存在しない場合の処理
+            $csv_array = array();
+            //dd($csv_array);
         
-        $fileName = empty($argv[1]) ? $form["csvFile"] : $argv[1];
-        //dd($fileName);
-        
-        $command = "file -i " . $fileName;
-        $output = [];
-        $status = "";
-        exec($command, $output, $status);
-        //dd($output);
-        preg_match("/charset=(.*)/", $output[0], $charset);
-        //dd($charset);
-
-        $fp = fopen($form["csvFile"], 'r');
-        //dd($fp);
-        
-        $csv_array = array();
-        
-        //配列へ格納
-        while($line = fgetcsv($fp)){
-          $csv_array[] = $line;
-          //dd($line);
+            // 既存のテーブルからデータを取得してcsv_arrayに追加する処理
+            $participants = SurveyParticipant::where('format_id', $form["id"])->get();
+            
+            foreach ($participants as $participant) {
+                $row = array();
+                
+                // メールアドレスを元にUserテーブルから名前を取得
+                $user = User::where('email', $participant->email)->first();
+                
+                if ($user) {
+                    // ユーザーの名前を追加
+                    $row[] = $user->name;
+                } else {
+                    // もしUserテーブルに対応するユーザーが見つからない場合の処理
+                    $row[] = '';
+                }
+                
+                // メールアドレスを取得するカラムに合わせて修正
+                $row[] = $participant->email;
+                
+                $csv_array[] = $row;
+            }
+            
+            //dd($csv_array);
+                    
         }
         
-        //変換処理
-        if ($charset[1]=="utf-8") { }
-        else{
-            mb_convert_variables("UTF-8", "SJIS", $csv_array); 
-        }
-     
-        fclose($fp);
-        //dd($csv_array);
-        return view('fs.conductankatepreview',compact('form','csv_array'));
+        return view('fs.conductankatepreview', compact('form', 'csv_array'));
+        
     }
+
+    
+    // public function conductankatepreview(Request $request)
+    // {
+    //     //dd($request);
+    //     // Validationを行う
+    //     $this->validate($request, Mail::$rules);
+     
+    //     $form = $request->all();//フォームの中身を全部とってきている
+    //     // フォームから送信されてきた_tokenを削除する
+    //     unset($form['_token']);
+    //     //dd($form);
+    //     //dd($form["csvFile"]);
+        
+    //     $fileName = empty($argv[1]) ? $form["csvFile"] : $argv[1];
+    //     //dd($fileName);
+        
+    //     $command = "file -i " . $fileName;
+    //     $output = [];
+    //     $status = "";
+    //     exec($command, $output, $status);
+    //     //dd($output);
+    //     preg_match("/charset=(.*)/", $output[0], $charset);
+    //     //dd($charset);
+
+    //     $fp = fopen($form["csvFile"], 'r');
+    //     //dd($fp);
+        
+    //     $csv_array = array();
+        
+    //     //配列へ格納
+    //     while($line = fgetcsv($fp)){
+    //       $csv_array[] = $line;
+    //       //dd($line);
+    //     }
+        
+    //     //変換処理
+    //     if ($charset[1]=="utf-8") { }
+    //     else{
+    //         mb_convert_variables("UTF-8", "SJIS", $csv_array); 
+    //     }
+     
+    //     fclose($fp);
+    //     //dd($csv_array);
+    //     return view('fs.conductankatepreview',compact('form','csv_array'));
+    // }
 
     public function saveconductankate(Request $request)  
     {
