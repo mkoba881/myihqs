@@ -24,29 +24,31 @@
                         
                         <div class="form-group row" style="margin-bottom: 30px;">
                             <select class="form-control" name="answer_result[{{ $index }}]">
-                                <option value="1">①</option>
-                                <option value="2">②</option>
-                                <option value="3">③</option>
-                                <option value="4">④</option>
-                                <option value="5">⑤</option>
+                                <option value="1" {{ $answers[$index]->answer_result === 1 ? 'selected' : '' }}>①</option>
+                                <option value="2" {{ $answers[$index]->answer_result === 2 ? 'selected' : '' }}>②</option>
+                                <option value="3" {{ $answers[$index]->answer_result === 3 ? 'selected' : '' }}>③</option>
+                                <option value="4" {{ $answers[$index]->answer_result === 4 ? 'selected' : '' }}>④</option>
+                                <option value="5" {{ $answers[$index]->answer_result === 5 ? 'selected' : '' }}>⑤</option>
                             </select>
                         </div>
                         
                         <h2>・優先度</h2>
                         <div class="form-group row" style="margin-bottom: 30px;">
                             <select class="form-control" name="priority[{{ $index }}]">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value="1" {{ $answers[$index]->priority === 1 ? 'selected' : '' }}>1</option>
+                                <option value="2" {{ $answers[$index]->priority === 2 ? 'selected' : '' }}>2</option>
+                                <option value="3" {{ $answers[$index]->priority === 3 ? 'selected' : '' }}>3</option>
+                                <option value="4" {{ $answers[$index]->priority === 4 ? 'selected' : '' }}>4</option>
+                                <option value="5" {{ $answers[$index]->priority === 5 ? 'selected' : '' }}>5</option>
                             </select>
                         </div>
                         
                         <h2>・参考リンク</h2>
-                        <a href="{{ $details[$index]["rf_url"] }}" target="_blank">{{ $details[$index]["rf_url"] }}</a>
                         <div style="margin-bottom: 30px;">
-                            <h2>参考画像</h2>
+                            <a href="{{ $details[$index]["rf_url"] }}" target="_blank" >{{ $details[$index]["rf_url"] }}</a>
+                        </div>
+                        <div style="margin-bottom: 30px;">
+                            <h2>・参考画像</h2>
                             @if ($details[$index]["rf_image"])
                                 <img src="{{ secure_asset('uploads/' . $details[$index]["rf_image"]) }}">
                             @endif
