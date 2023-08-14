@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h1>アンケート実施プレビュー画面</h1>
-                <h2>取得対象のメールアドレス</h2>
+                <h2>■取得対象のメールアドレス</h2>
                     <div class="list-news col-md-12 mx-auto">
                         <table class="table table-dark table-bordered border-light"> 
                           <thead>
@@ -32,22 +32,22 @@
                             </tbody>
                         </table>
                     </div>
-                <h2>取得している変数、暫定表示後程削除</h2>
-                <p>{{var_dump($csv_array)}}</p>
-                <h2>アンケート回答メールフォーマット（ユーザー向け）</h2>
-                <p>{{$form["user_mailformat"]}}</p>
-                <h2>アンケート回答メールフォーマット（ユーザー向け催促用）</h2>
-                <p>{{$form["remind_mailformat"]}}</p>
-                <h2>アンケート回答メールフォーマット（管理者用）</h2>
-                <p>{{$form["admin_mailformat"]}}</p>
-                <h2>開始日</h2>
+                <!--<h2>取得している変数、暫定表示後程削除</h2>-->
+                <!--<p>{{var_dump($csv_array)}}</p>-->
+                <h2>■アンケート回答メールフォーマット（ユーザー向け）</h2>
+                    <p>{!!nl2br(e($form["user_mailformat"]))!!}</p>
+                <h2>■アンケート回答メールフォーマット（ユーザー向け催促用）</h2>
+                    <p>{!! nl2br(e($form["remind_mailformat"])) !!}</p>
+                <h2>■アンケート回答メールフォーマット（管理者用）</h2>
+                    <p>{!! nl2br(e($form["admin_mailformat"])) !!}</p>
+                <h2>■開始日</h2>
                 <p>{{$form["start"]}}</p>
-                <h2>終了日</h2>
+                <h2>■終了日</h2>
                 <p>{{$form["end"]}}</p>
             </div>
-            <p>以下は暫定表示後程削除</p>
-            <textarea class="hight-adjust">{{var_dump($form)}}</textarea>
-            <p>{{$form["user_mailformat"]}}</p>
+            <!--<p>以下は暫定表示後程削除</p>-->
+            <!--<textarea class="hight-adjust">{{var_dump($form)}}</textarea>-->
+            <!--<p>{{$form["user_mailformat"]}}</p>-->
             
             <form action="{{ route('fs.saveconductankate') }}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="form" value="{{ json_encode($form) }}">

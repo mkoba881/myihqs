@@ -24,22 +24,22 @@
                         
                         <div class="form-group row" style="margin-bottom: 30px;">
                             <select class="form-control" name="answer_result[{{ $index }}]">
-                                <option value="1" {{ $answers[$index]->answer_result === 1 ? 'selected' : '' }}>①</option>
-                                <option value="2" {{ $answers[$index]->answer_result === 2 ? 'selected' : '' }}>②</option>
-                                <option value="3" {{ $answers[$index]->answer_result === 3 ? 'selected' : '' }}>③</option>
-                                <option value="4" {{ $answers[$index]->answer_result === 4 ? 'selected' : '' }}>④</option>
-                                <option value="5" {{ $answers[$index]->answer_result === 5 ? 'selected' : '' }}>⑤</option>
+                                    <option value="1" {{ isset($answers[$index]) && $answers[$index]->answer_result === 1 ? 'selected' : '' }}>①</option>
+                                    <option value="2" {{ isset($answers[$index]) && $answers[$index]->answer_result === 2 ? 'selected' : '' }}>②</option>
+                                    <option value="3" {{ isset($answers[$index]) && $answers[$index]->answer_result === 3 ? 'selected' : '' }}>③</option>
+                                    <option value="4" {{ isset($answers[$index]) && $answers[$index]->answer_result === 4 ? 'selected' : '' }}>④</option>
+                                    <option value="5" {{ isset($answers[$index]) && $answers[$index]->answer_result === 5 ? 'selected' : '' }}>⑤</option>
                             </select>
                         </div>
                         
                         <h2>・優先度</h2>
                         <div class="form-group row" style="margin-bottom: 30px;">
                             <select class="form-control" name="priority[{{ $index }}]">
-                                <option value="1" {{ $answers[$index]->priority === 1 ? 'selected' : '' }}>1</option>
-                                <option value="2" {{ $answers[$index]->priority === 2 ? 'selected' : '' }}>2</option>
-                                <option value="3" {{ $answers[$index]->priority === 3 ? 'selected' : '' }}>3</option>
-                                <option value="4" {{ $answers[$index]->priority === 4 ? 'selected' : '' }}>4</option>
-                                <option value="5" {{ $answers[$index]->priority === 5 ? 'selected' : '' }}>5</option>
+                                <option value="1" {{ isset($answers[$index]) && $answers[$index]->priority === 1 ? 'selected' : '' }}>1</option>
+                                <option value="2" {{ isset($answers[$index]) && $answers[$index]->priority === 2 ? 'selected' : '' }}>2</option>
+                                <option value="3" {{ isset($answers[$index]) && $answers[$index]->priority === 3 ? 'selected' : '' }}>3</option>
+                                <option value="4" {{ isset($answers[$index]) && $answers[$index]->priority === 4 ? 'selected' : '' }}>4</option>
+                                <option value="5" {{ isset($answers[$index]) && $answers[$index]->priority === 5 ? 'selected' : '' }}>5</option>
                             </select>
                         </div>
                         

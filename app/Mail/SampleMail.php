@@ -36,7 +36,8 @@ class SampleMail extends Mailable
      public function build()
     {
 
-        return $this->view('mail.testmail')
+        return $this->text('mail.textmail') // Add this line to set the text version of the email
+                    //->view('mail.testmail')
                     ->subject('Test Email')
                     ->with([
                         'name' => 'masato',

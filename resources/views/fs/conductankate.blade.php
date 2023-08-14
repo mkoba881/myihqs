@@ -31,19 +31,19 @@
                     <div class="form-group row">
                         <label class="col-md-2">アンケート回答メールフォーマット（ユーザー向け）</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" name="user_mailformat" rows="20">{{ old('user_mailformat', $user_mailformat) }}</textarea>
+                            <textarea class="form-control" name="user_mailformat" rows="20">@empty(old('user_mailformat', $user_mailformat))@include('mailformats.user_mail_default')@else{{ old('user_mailformat', $user_mailformat) }}@endempty</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2">アンケート回答メールフォーマット（ユーザー向け催促用）</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" name="remind_mailformat" rows="20">{{ old('remind_mailformat', $remind_mailformat) }}</textarea>
+                            <textarea class="form-control" name="remind_mailformat" rows="20">@empty(old('remind_mailformat', $remind_mailformat))@include('mailformats.remind_mail_default')@else{{ old('remind_mailformat', $remind_mailformat) }}@endempty</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2">アンケート回答メールフォーマット（管理者用）</label>
                         <div class="col-md-10">
-                            <textarea class="form-control" name="admin_mailformat" rows="20">{{ old('admin_mailformat', $user_mailformat) }}</textarea>
+                            <textarea class="form-control" name="admin_mailformat" rows="20">@empty(old('admin_mailformat', $admin_mailformat))@include('mailformats.admin_mail_default')@else{{ old('admin_mailformat', $admin_mailformat) }}@endempty</textarea>
                         </div>
                     </div>
                     <div class="form-group row">
