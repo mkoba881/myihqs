@@ -57,6 +57,14 @@
                                 </div>
                             </div>
                         </form>
+                        
+                        <div class="mt-3">
+                            <p>まだアカウントを作成していない場合は、以下のボタンをクリックしてアカウントを作成できます。</p>
+                            <a href="{{ route('register') }}" class="btn btn-success">
+                                {{ __('新規登録') }}
+                            </a>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

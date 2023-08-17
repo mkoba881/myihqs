@@ -77,5 +77,12 @@
             @yield('content')
         </main>
     </div>
+    <!-- ナビゲーションバーや他のコンテンツ -->
+
+    @if(config('app.debug'))
+        {!! Debugbar::render() !!}
+    @endif
+
+    <!-- フッターや他のコンテンツ -->
 </body>
 </html>

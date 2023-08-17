@@ -55,4 +55,28 @@ class SurveyController extends Controller
         
         return view('fs.answer', compact('format','items','details', 'userId', 'answers'));
     }
+    
+    public function getSurveyDetails($formatId)
+    {
+        // format_idに基づいてItemテーブルとDetailテーブルからデータを取得する例
+        $items = Item::where('format_id', $formatId)->get();
+        
+        // $itemsに対応するDetailデータを取得する
+        $detailsByItem = [];
+        foreach ($items as $item) {
+            $details = Detail::where('item_id', $item->id)->get();
+            $detailsByItem[$item->id] = $details;
+        }
+        //dd($items);
+        //dd($detailsByItem);
+        
+        // 取得したデータをJSON形式で返す
+        return response()->json([
+            'items' => $items,
+            'detailsByItem' => $detailsByItem,
+        ]);
+}
+
+    
+    
 }

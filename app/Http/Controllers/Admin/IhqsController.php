@@ -20,11 +20,24 @@ use App\Models\SurveyParticipant;
 
 class IhqsController extends Controller
 {
-    public function add()
+    public function selection()
     {
+        //dd($surveys);
         return view('admin.ihqs.selection');
     }
 
+    public function selectanswer()
+    {
+        $userId = Auth::user()->id;
+        // ユーザーに紐づく有効なフォーマットIDを取得
+        $formatIds = SurveyParticipant::where('user_id', $userId)->pluck('format_id')->toArray();
+        // フォーマットIDに基づいてアンケート情報を取得
+        $surveys = Format::whereIn('id', $formatIds)->get(['id', 'name']);
+        //dd($surveys);
+
+        return view('fs.selectanswer', ['surveys' => $surveys]);
+    }
+    
     public function analysis()
     {
         $formats = Format::pluck('name', 'id');
@@ -52,12 +65,16 @@ class IhqsController extends Controller
         $answers = $request->all();
         unset($answers['_token']);
         
+        //dd($answers['answer_result']);
+        //dd($answers['priority']);
+        //dd($answers);
+        
         foreach ($answers['answer_result'] as $index => $answerResult) {
             $format_id = $answers['format_id'];
-            $item_id = $answers['item_id'][$index];
-            $detail_id = $answers['detail_id'][$index];
+            $item_id = $answers['item_id'][$index][0];//多次元配列のため[0]がないと「Array to string conversion」のエラーがでる。
+            $detail_id = $answers['detail_id'][$index][0];
             $priority = $answers['priority'][$index];
-            
+            //dd($priority);
             // 既存のレコードを更新するか新規作成するかを判断する
             $existingRecord = Answer::where('format_id', $format_id)
                                     ->where('item_id', $item_id)
@@ -73,6 +90,11 @@ class IhqsController extends Controller
                 ]);
             } else {
                 // 既存のレコードが存在しない場合、新規作成する
+            //var_dump($detail_id);
+            //var_dump($answerResult);
+            //dd($priority);
+            //print_r($priority);
+            //dd(debug_backtrace());
                 Answer::create([
                     'format_id' => $format_id,
                     'item_id' => $item_id,
@@ -83,8 +105,6 @@ class IhqsController extends Controller
                 ]);
             }
         } 
-        
-
         return view('fs.answerend');
     }
 
@@ -389,52 +409,6 @@ class IhqsController extends Controller
         return view('fs.conductankatepreview', compact('form', 'csv_array'));
         
     }
-
-    
-    // public function conductankatepreview(Request $request)
-    // {
-    //     //dd($request);
-    //     // Validationを行う
-    //     $this->validate($request, Mail::$rules);
-     
-    //     $form = $request->all();//フォームの中身を全部とってきている
-    //     // フォームから送信されてきた_tokenを削除する
-    //     unset($form['_token']);
-    //     //dd($form);
-    //     //dd($form["csvFile"]);
-        
-    //     $fileName = empty($argv[1]) ? $form["csvFile"] : $argv[1];
-    //     //dd($fileName);
-        
-    //     $command = "file -i " . $fileName;
-    //     $output = [];
-    //     $status = "";
-    //     exec($command, $output, $status);
-    //     //dd($output);
-    //     preg_match("/charset=(.*)/", $output[0], $charset);
-    //     //dd($charset);
-
-    //     $fp = fopen($form["csvFile"], 'r');
-    //     //dd($fp);
-        
-    //     $csv_array = array();
-        
-    //     //配列へ格納
-    //     while($line = fgetcsv($fp)){
-    //       $csv_array[] = $line;
-    //       //dd($line);
-    //     }
-        
-    //     //変換処理
-    //     if ($charset[1]=="utf-8") { }
-    //     else{
-    //         mb_convert_variables("UTF-8", "SJIS", $csv_array); 
-    //     }
-     
-    //     fclose($fp);
-    //     //dd($csv_array);
-    //     return view('fs.conductankatepreview',compact('form','csv_array'));
-    // }
 
     public function saveconductankate(Request $request)  
     {

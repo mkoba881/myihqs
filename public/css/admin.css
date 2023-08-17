@@ -1,3 +1,4 @@
+@charset "UTF-8";
 body {
   background-repeat: no-repeat;
   background-position: center;
@@ -61,4 +62,33 @@ body {
 
 .hight-adjust {
   height: 20em;
+}
+
+body.home-page {
+  background-image: url("/myihqs/images/background.jpg"); /* 背景画像のパスを適宜変更 */
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container.home-page {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 80%;
+}
+
+.button.home-page {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.welcome-text {
+  color: #ff9900; /* 目立つ色に変更 */
+  font-size: 24px; /* フォントサイズを調整 */
 }

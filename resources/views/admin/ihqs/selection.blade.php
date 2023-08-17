@@ -21,13 +21,17 @@
                 <div class="card-contents mb-4 text-center">
                     <a class="button" href="{{ route('fs.analysis')}}">アンケートを集計する</a>
                 </div>
+                {{-- ここに管理者専用のリンクを追加 --}}
+                <div class="card-contents mb-4 text-center">
+                    <a class="button" href="{{ route('admin.assign_role_form')}}">管理者権限を付与する</a>
+                </div>
             @endif
             <div class="card-contents text-center">
-                <a class="button" href="{{ route('fs.answer')}}">アンケートに回答する</a>
+                <a class="button" href="{{ route('fs.selectanswer')}}">アンケートに回答する</a>
             </div>
         </div>
     </div>
-    <!--　ルーティング検討コード<form action="{{ route('fs.analysis') }}" method="get">
-    <form action="{{ route('fs.answer') }}" method="get">
-    <form action="{{ route('fs.management') }}" method="get">-->
+    
+
+    
 @endsection

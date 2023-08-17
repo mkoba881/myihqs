@@ -3,10 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\IhqsController;
-//use App\Mail\TestMail;//メール用コントローラー
+use App\Http\Controllers\Admin\AdminController;
 use App\Mail\SampleMail;//メール用コントローラー
 use App\Http\Controllers\MailSendController;//メール用コントローラー
-//use App\Http\Controllers\Api\ContactController;//メール用コントローラー
 use App\Http\Controllers\SurveyController;//アンケートリンク複合用
 use App\Http\Controllers\AnalysisController;//アンケート分析用
 
@@ -23,20 +22,34 @@ use App\Http\Controllers\AnalysisController;//アンケート分析用
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('survey');
+});
+
+Route::get('/custom-route', function () {
+    return view('survey'); // ビューファイルの名前に変更
+});
+
+//管理者権限付与用
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function() {
+    Route::get('assign-role', [AdminController::class, 'assignRoleForm'])->name('assign_role_form');
+    Route::post('assign-role', [AdminController::class, 'assignRole'])->name('assign_role');
 });
 
 Route::controller(IhqsController::class)->prefix('admin')->name('admin.')->middleware('auth')->group(function() {
-    Route::get('ihqs/selection', 'add')->name('ihqs.selection');
+    Route::get('ihqs/selection', 'selection')->name('ihqs.selection');
 });
 
 Route::get('/fs/answer/{hash}', [SurveyController::class, 'show'])->middleware('auth')->name('survey.answer');
 
 Route::get('/fs/analysis/data', [AnalysisController::class, 'getData'])->name('data.get');
 
+//選択画面用のルーティング
+//Route::get('/api/get_survey_details/{formatId}', 'SurveyController@getSurveyDetails');
+Route::get('/api/get_survey_details/{formatId}', [SurveyController::class, 'getSurveyDetails'])->name('get.survey');
 
 Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware('auth')->group(function() {
     Route::get('analysis', 'analysis')->name('analysis');
+    Route::get('selectanswer', 'selectanswer')->name('selectanswer');
     Route::get('answer', 'answer')->name('answer');
     Route::get('management', 'management')->name('management');
     Route::post('answerend', 'answerend')->name('answerend');

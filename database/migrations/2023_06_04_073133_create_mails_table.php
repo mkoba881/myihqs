@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("format_id");
-            $table->string('user_mailformat');
-            $table->string('remind_mailformat');
-            $table->string('admin_mailformat');
+            $table->text('user_mailformat');
+            $table->text('remind_mailformat');
+            $table->text('admin_mailformat');
             $table->timestamps();
         });
     }
