@@ -57,12 +57,15 @@
             
     
             function createAnswerContent(data) {
+                //const userId = data.userId;
+                const answers = data.answers;
                 const items = data.items;
                 const detailsByItem = data.detailsByItem;
                 
                 const baseUrl = 'https://myapp.server-on.net/myihqs/uploads/'; // 固定のベースURL
 
-                
+                //console.log('userId:', userId);
+                console.log('answers:', answers);
                 console.log('Items:', items); // 全アイテムのデータをコンソールに表示
     　　          console.log('DetailsByItem:', detailsByItem); // 全詳細のデータをコンソールに表示
 
@@ -85,30 +88,30 @@
                             <h2>■${item.name}. ${detail.question}</h2>
                             <h2>・回答の選択肢</h2>
                             <!-- 選択肢を表示 -->
-    
+                            
                             <div class="form-group row" style="margin-bottom: 30px;">
                                 <select class="form-control" name="answer_result[${itemIndex}]">
-                                    <option value="1">①</option>
-                                    <option value="2">②</option>
-                                    <option value="3">③</option>
-                                    <option value="4">④</option>
-                                    <option value="5">⑤</option>
+                                    <option value="1" ${answers[itemIndex]?.answer_result === 1 ? 'selected' : ''}>①</option>
+                                    <option value="2" ${answers[itemIndex]?.answer_result === 2 ? 'selected' : ''}>②</option>
+                                    <option value="3" ${answers[itemIndex]?.answer_result === 3 ? 'selected' : ''}>③</option>
+                                    <option value="4" ${answers[itemIndex]?.answer_result === 4 ? 'selected' : ''}>④</option>
+                                    <option value="5" ${answers[itemIndex]?.answer_result === 5 ? 'selected' : ''}>⑤</option>
                                 </select>
                             </div>
-    
+                            
                             <h2>・優先度</h2>
                             <!-- 優先度の選択肢を表示 -->
-    
+
                             <div class="form-group row" style="margin-bottom: 30px;">
                                 <select class="form-control" name="priority[${itemIndex}]">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
+                                    <option value="1" ${answers[itemIndex]?.priority === 1 ? 'selected' : ''}>1</option>
+                                    <option value="2" ${answers[itemIndex]?.priority === 2 ? 'selected' : ''}>2</option>
+                                    <option value="3" ${answers[itemIndex]?.priority === 3 ? 'selected' : ''}>3</option>
+                                    <option value="4" ${answers[itemIndex]?.priority === 4 ? 'selected' : ''}>4</option>
+                                    <option value="5" ${answers[itemIndex]?.priority === 5 ? 'selected' : ''}>5</option>
                                 </select>
                             </div>
-    
+                            
                             <h2>・参考リンク</h2>
                             <div style="margin-bottom: 30px;">
                                 <a href="${detail.rf_url}" target="_blank">${detail.rf_url}</a>
@@ -117,10 +120,6 @@
                             <div style="margin-bottom: 30px;">
                                 <img src="${imagePath}" id="${referenceImageId}" style="max-width: 100%;">
                             </div>
-                            <!--<div style="margin-bottom: 30px;">-->
-                            <!--    <h2>・参考画像</h2>-->
-                            <!--    <img src="${imagePath}" id="referenceImage_${item.id}_${detail.id}" style="max-width: 100%;">-->
-                            <!--</div>-->
                             
                             <input type="hidden" name="format_id" value="${selectedFormatId}">
                             <input type="hidden" name="item_id[${itemIndex}][]" value="${item.id}">

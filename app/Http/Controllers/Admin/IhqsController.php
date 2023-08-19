@@ -290,7 +290,7 @@ class IhqsController extends Controller
     
     //dd($ankateIds);
     if (!empty($ankateIds)) {
-        // チェックボックスで選択されたアンケートを取得し、statusを3に更新
+        // チェックボックスで選択���れたアンケートを取得し、statusを3に更新
         Format::whereIn('id', $ankateIds)->update(['status' => 3]);
     }    
         

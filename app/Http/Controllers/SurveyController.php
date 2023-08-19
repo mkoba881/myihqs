@@ -58,20 +58,38 @@ class SurveyController extends Controller
     
     public function getSurveyDetails($formatId)
     {
+        $userId = Auth::user()->id;
+        //dd($userId);
         // format_idに基づいてItemテーブルとDetailテーブルからデータを取得する例
         $items = Item::where('format_id', $formatId)->get();
         
         // $itemsに対応するDetailデータを取得する
         $detailsByItem = [];
+        $answers = [];
+        
         foreach ($items as $item) {
             $details = Detail::where('item_id', $item->id)->get();
             $detailsByItem[$item->id] = $details;
+        
+            // ログインユーザーのIDと対応するAnswerレコードを取得
+            $answer = Answer::where('format_id', $formatId)
+                ->where('item_id', $item->id)
+                ->where('user_id', $userId)
+                ->first();
+                
+            if ($answer) {
+            $answers[] = $answer; // []演算子を使用して要素を追加
+            }
+    
+        
         }
-        //dd($items);
-        //dd($detailsByItem);
+        
+        //dd($answers);
         
         // 取得したデータをJSON形式で返す
         return response()->json([
+            'answers' => $answers,
+            //'userId' => $userId,
             'items' => $items,
             'detailsByItem' => $detailsByItem,
         ]);
