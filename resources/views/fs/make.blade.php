@@ -51,10 +51,6 @@
                         <div class="alert alert-danger">{{ $errors->first('questionCount') }}</div>
                     @endif
                 
-                    <!--@php-->
-                        //$questionCount = old('questionCount');
-                    <!--@endphp-->
-                
                     <div id="questions"></div> <!-- 追加 -->
                 
                 
@@ -166,12 +162,7 @@
                         });
                     </script>
                 </form>
-                
-                
             </div>
-            <!--<div class="card-contents">-->
-            <!--    <a href="{{ route('fs.makepreview')}}" class="btn btn-primary">次へ進む</a>-->
-            <!--</div>-->
         </div>
     </div>
 @endsection 

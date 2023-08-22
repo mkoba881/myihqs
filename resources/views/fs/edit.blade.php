@@ -12,13 +12,6 @@
             <div class="col-md-8 mx-auto">
                 <h1>アンケート編集画面</h1>
                 
-                <p>{{$format}}</p>
-                <p>{{$items}}</p>
-                @foreach ($details as $detail)
-                    <p>{{ $detail }}</p>
-                @endforeach
-
-                
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">
                      <!-- 既存のフォーマットIDを隠しフィールドとして追加 -->
                     <input type="hidden" name="format_id" value="{{ $format->id }}">

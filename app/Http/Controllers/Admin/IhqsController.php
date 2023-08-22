@@ -40,7 +40,7 @@ class IhqsController extends Controller
     
     public function analysis()
     {
-        $formats = Format::pluck('name', 'id');
+        $formats = Format::where('status', '<>', 3)->pluck('name', 'id');
         //dd($formats);
         return view('fs.analysis')->with('formats', $formats);
     }
