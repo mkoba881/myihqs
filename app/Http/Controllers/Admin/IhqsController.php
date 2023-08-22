@@ -108,6 +108,66 @@ class IhqsController extends Controller
         return view('fs.answerend');
     }
 
+    public function selectanswerend(Request $request)
+    {
+     
+        $user_id = Auth::id();
+        //dd($user_id);
+        $answers = $request->all();
+        unset($answers['_token']);
+        
+        //dd($answers['answer_result']);
+        //dd($answers['priority']);
+        //dd($answers);
+        
+        foreach ($answers['answer_result'] as $index => $answerResult) {
+            $format_id = $answers['format_id'];
+            $item_id = $answers['item_id'][$index][0];//多次元配列のため[0]がないと「Array to string conversion」のエラーがでる。
+            $detail_id = $answers['detail_id'][$index][0];
+            $priority = $answers['priority'][$index];
+            //dd($priority);
+            // 既存のレコードを更新するか新規作成するかを判断する
+            $existingRecord = Answer::where('format_id', $format_id)
+                                    ->where('item_id', $item_id)
+                                    ->where('detail_id', $detail_id)
+                                    ->where('user_id', $user_id)
+                                    ->first();
+    
+            if ($existingRecord) {
+                // 既存のレコードが存在する場合、更新する
+                $existingRecord->update([
+                    'answer_result' => $answerResult,
+                    'priority' => $priority,
+                ]);
+            } else {
+                // 既存のレコードが存在しない場合、新規作成する
+            //var_dump($detail_id);
+            //var_dump($answerResult);
+            //dd($priority);
+            //print_r($priority);
+            //dd(debug_backtrace());
+                Answer::create([
+                    'format_id' => $format_id,
+                    'item_id' => $item_id,
+                    'detail_id' => $detail_id,
+                    'user_id' => $user_id,
+                    'answer_result' => $answerResult,
+                    'priority' => $priority,
+                ]);
+            }
+        } 
+        
+        // ユーザーに紐づく有効なフォーマットIDを取得
+        $formatIds = SurveyParticipant::where('user_id', $user_id)->pluck('format_id')->toArray();
+        // フォーマットIDに基づいてアンケート情報を取得
+        $surveys = Format::whereIn('id', $formatIds)->get(['id', 'name']);
+        //dd($surveys);
+
+        return view('fs.selectanswer', ['surveys' => $surveys]);
+
+    }
+
+
     public function make()
     {
         return view('fs.make');
@@ -290,7 +350,7 @@ class IhqsController extends Controller
     
     //dd($ankateIds);
     if (!empty($ankateIds)) {
-        // チェックボックスで選択���れたアンケートを取得し、statusを3に更新
+        // チェックボックスで選択�����れたアンケートを取得し、statusを3に更新
         Format::whereIn('id', $ankateIds)->update(['status' => 3]);
     }    
         

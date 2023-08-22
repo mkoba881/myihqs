@@ -53,6 +53,7 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::get('answer', 'answer')->name('answer');
     Route::get('management', 'management')->name('management');
     Route::post('answerend', 'answerend')->name('answerend');
+    Route::post('selectanswerend', 'selectanswerend')->name('selectanswerend');
     Route::get('make', 'make')->name('make');
     Route::get('edit/{id}', 'edit')->name('edit');
     Route::post('create', 'create')->name('create');

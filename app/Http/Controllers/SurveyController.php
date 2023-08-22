@@ -89,7 +89,7 @@ class SurveyController extends Controller
         // 取得したデータをJSON形式で返す
         return response()->json([
             'answers' => $answers,
-            //'userId' => $userId,
+            'userId' => $userId,
             'items' => $items,
             'detailsByItem' => $detailsByItem,
         ]);

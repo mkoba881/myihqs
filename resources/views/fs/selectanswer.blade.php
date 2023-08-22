@@ -57,14 +57,14 @@
             
     
             function createAnswerContent(data) {
-                //const userId = data.userId;
+                const userId = data.userId;
                 const answers = data.answers;
                 const items = data.items;
                 const detailsByItem = data.detailsByItem;
                 
                 const baseUrl = 'https://myapp.server-on.net/myihqs/uploads/'; // 固定のベースURL
 
-                //console.log('userId:', userId);
+                console.log('userId:', userId);
                 console.log('answers:', answers);
                 console.log('Items:', items); // 全アイテムのデータをコンソールに表示
     　　          console.log('DetailsByItem:', detailsByItem); // 全詳細のデータをコンソールに表示
@@ -72,7 +72,7 @@
     
                 let content = `
                     <h2>アンケート名: ${surveySelect.options[surveySelect.selectedIndex].text}</h2>
-                    <form action="{{ route('fs.answerend') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('fs.selectanswerend') }}" method="post" enctype="multipart/form-data">
                 `;
     
                 items.forEach((item, itemIndex) => {
