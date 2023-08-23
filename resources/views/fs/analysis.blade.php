@@ -26,7 +26,7 @@
         </div>
     </div>
     {{-- Chart.jsのスクリプトを読み込む --}}
-    <script src="{{ mix('js/app.js') }}"></script> <!-- Laravel MixでビルドされたJavaScriptファイル -->
+    <script src="{{ asset('myihqs/js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
@@ -59,32 +59,42 @@
         
         // グローバルスコープにmyChartを宣言
         let myChart;
-
-
+        
         function drawGraph(data) {
             const ctx = document.getElementById('myChart').getContext('2d');
-           
+    
             if (typeof myChart !== 'undefined') {
                 myChart.destroy();
             }
     
+            const datasets = [];
+            data.forEach(item => {
+                datasets.push({
+                    label: item.label,
+                    data: Object.values(item.data),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                });
+            });
+    
             myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'アンケート項目の優先度について',
-                        data: data.values,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
+                    labels: Object.keys(data[0].data),
+                    datasets: datasets,
                 },
                 options: {
                     responsive: true,
                     scales: {
                         y: {
                             beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'アンケート項目の優先度について'
                         }
                     }
                 }

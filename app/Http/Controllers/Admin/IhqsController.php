@@ -90,11 +90,6 @@ class IhqsController extends Controller
                 ]);
             } else {
                 // 既存のレコードが存在しない場合、新規作成する
-            //var_dump($detail_id);
-            //var_dump($answerResult);
-            //dd($priority);
-            //print_r($priority);
-            //dd(debug_backtrace());
                 Answer::create([
                     'format_id' => $format_id,
                     'item_id' => $item_id,
@@ -141,11 +136,6 @@ class IhqsController extends Controller
                 ]);
             } else {
                 // 既存のレコードが存在しない場合、新規作成する
-            //var_dump($detail_id);
-            //var_dump($answerResult);
-            //dd($priority);
-            //print_r($priority);
-            //dd(debug_backtrace());
                 Answer::create([
                     'format_id' => $format_id,
                     'item_id' => $item_id,

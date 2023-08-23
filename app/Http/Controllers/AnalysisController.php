@@ -5,37 +5,51 @@ use App\Models\Format;
 use App\Models\Item;
 use App\Models\Detail;
 use App\Models\Answer;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
     
+namespace App\Http\Controllers;
+
+use App\Models\Answer;
+use App\Models\Item;
+use App\Models\Detail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class AnalysisController extends Controller
 {
     public function getData(Request $request)
     {
-        // データの取得処理（例：データベースクエリやAPIリクエストなど）
-        // 取得したデータをJSON形式でレスポンスとして返す
-    
-    $formatId = $request->input('format_id');
-    //dd($formatId);
-    $itemIds = Item::where('format_id', $formatId)->pluck('id');
-    $itemName = Item::where('format_id', $formatId)->pluck('name');
-    $detailIds = Detail::whereIn('item_id', $itemIds)->pluck('id');
-    $count = Answer::whereIn('format_id', [$formatId])
-              ->whereIn('item_id', $itemIds)
-              ->whereIn('detail_id', $detailIds)
-              ->count();
-    //dd($count);
-    //dd($itemName);
+        $formatId = $request->input('format_id');
+        $itemIds = Item::where('format_id', $formatId)->pluck('id');
+        $itemNames = Item::where('format_id', $formatId)->pluck('name');
+        $detailIds = Detail::whereIn('item_id', $itemIds)->pluck('id');
+        $countByPriority = Answer::whereIn('format_id', [$formatId])
+            ->whereIn('item_id', $itemIds)
+            ->whereIn('detail_id', $detailIds)
+            ->select('item_id', 'priority', DB::raw('count(*) as count'))
+            ->groupBy('item_id', 'priority')
+            ->orderBy('item_id')
+            ->orderBy('priority')
+            ->get();
+        
+        $formattedData = [];
+        foreach ($countByPriority as $item) {
+            $itemId = $item->item_id;
+            $priority = $item->priority;
+            $count = $item->count;
 
-    //$formats =  $request->all();//フォームの中身を全部とってきている
-    
+            if (!isset($formattedData[$itemId])) {
+                $formattedData[$itemId] = [
+                    'label' => $itemNames[$itemId - 1], // -1 to match array indexing
+                    'data' => []
+                ];
+            }
 
-    return response()->json([
-        'labels' => [$itemName],
-        //  'labels' => ['Apples', 'Oranges', 'Bananas'],
-        'values' => [$count],
-        //  'values' => [10, 15, 5],
-    ]);
+            $formattedData[$itemId]['data'][$priority] = $count;
+        }
+        //dd($formattedData);
 
+        return response()->json(array_values($formattedData));
     }
 }

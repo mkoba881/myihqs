@@ -95,6 +95,4 @@ class SurveyController extends Controller
         ]);
 }
 
-    
-    
 }
