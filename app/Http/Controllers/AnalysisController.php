@@ -23,6 +23,7 @@ class AnalysisController extends Controller
         $formatId = $request->input('format_id');
         $itemIds = Item::where('format_id', $formatId)->pluck('id');
         $itemNames = Item::where('format_id', $formatId)->pluck('name');
+        //dd($itemNames);
         $detailIds = Detail::whereIn('item_id', $itemIds)->pluck('id');
         $countByPriority = Answer::whereIn('format_id', [$formatId])
             ->whereIn('item_id', $itemIds)
@@ -34,20 +35,29 @@ class AnalysisController extends Controller
             ->get();
         
         $formattedData = [];
+        
         foreach ($countByPriority as $item) {
             $itemId = $item->item_id;
             $priority = $item->priority;
             $count = $item->count;
-
+        
             if (!isset($formattedData[$itemId])) {
                 $formattedData[$itemId] = [
-                    'label' => $itemNames[$itemId - 1], // -1 to match array indexing
+                    'label' => '',
                     'data' => []
                 ];
             }
-
+        
             $formattedData[$itemId]['data'][$priority] = $count;
         }
+        
+        // $itemNames を使って label を設定
+        $counter = 0;
+        foreach ($formattedData as $itemId => $data) {
+            $formattedData[$itemId]['label'] = isset($itemNames[$counter]) ? $itemNames[$counter] : '';
+            $counter++;
+        }
+        
         //dd($formattedData);
 
         return response()->json(array_values($formattedData));
