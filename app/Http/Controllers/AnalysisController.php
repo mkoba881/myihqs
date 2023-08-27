@@ -34,21 +34,19 @@ class AnalysisController extends Controller
             ->orderBy('priority')
             ->get();
         
+        //dd($countByPriority);
         $formattedData = [];
         
         foreach ($countByPriority as $item) {
             $itemId = $item->item_id;
+            //dd($itemId);
             $priority = $item->priority;
+            //dd($priority);
             $count = $item->count;
         
-            if (!isset($formattedData[$itemId])) {
-                $formattedData[$itemId] = [
-                    'label' => '',
-                    'data' => []
-                ];
-            }
         
             $formattedData[$itemId]['data'][$priority] = $count;
+            //dd($formattedData );
         }
         
         // $itemNames を使って label を設定

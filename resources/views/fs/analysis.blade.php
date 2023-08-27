@@ -27,80 +27,159 @@
     </div>
     {{-- Chart.jsのスクリプトを読み込む --}}
     <script src="{{ asset('myihqs/js/app.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
+    <!-- 最新バージョンのChart.jsを読み込む -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.js"></script>
+
 
 
     <script>
-        document.getElementById('formatId').addEventListener('change', handleFormSubmit);
-
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            
-            var formatId = document.getElementById('formatId').value;
-        
-            // データを取得してグラフを描画する処理を実行する
-            fetch('{{ route('data.get') }}?format_id=' + formatId)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);//これが切り分けコマンド
-                    drawGraph(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-        }
+    document.getElementById('formatId').addEventListener('change', handleFormSubmit);
     
+    function handleFormSubmit(event) {
+        event.preventDefault();
         
-        // ページロード時に初期のグラフを描画する
-        window.addEventListener('DOMContentLoaded', function() {
-        handleFormSubmit(new Event('change'));
-        });
+        var formatId = document.getElementById('formatId').value;
+    
+        // データを取得してグラフを描画する処理を実行する
+        fetch('{{ route('data.get') }}?format_id=' + formatId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // これが切り分けコマンド
+                drawGraph(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    
+    // グラフを描画する関数を定義
+    function drawGraph(data) {
+        const ctx = document.getElementById('myChart').getContext('2d');
         
         // グローバルスコープにmyChartを宣言
         let myChart;
         
-        function drawGraph(data) {
-            const ctx = document.getElementById('myChart').getContext('2d');
+        // すでにチャートが存在している場合は破棄する
+        if (myChart) {
+            myChart.destroy();
+        }
+        
+        var labels = [];
+
+        
+        //console.log(data[0]['data'][1]); 
+        //console.log(data[0]['data'][2]); 
+        
+                
+        //var datasets = [];
+        
+    for (let i = 0; i < data.length; i++) {
+        //   let currentData = data[i]['data'];
+        //   let datasetArray = [];
+        
+        //   for (let priority = 1; priority <= 5; priority++) {
+        //       datasetArray.push({
+        //           label: '優先度' + priority,
+        //           data: currentData[priority] || 0,
+        //           backgroundColor: getBackgroundColor(priority)
+        //       });
+        //   }
+          
+        //   datasets.push(...datasetArray);
+           labels.push(data[i]['label']);
+            
+      }
+        
+        var datasets= [{
+                label: '優先度１',
+                data: [10, 2,3],
+                backgroundColor: 'rgba(255, 100, 100, 1)'
+            },
+            {
+                label: '優先度２',
+                data: [1, 10,4],
+                backgroundColor: 'rgba(100, 100, 255, 1)'
+            },
+                
+            {
+                label: '優先度３',
+                data: [0, 8,5],
+                backgroundColor: 'rgba(100, 100, 30, 1)'
+            },
+            {
+                label: '優先度４',
+                data: [3, 6,6],
+                backgroundColor: 'rgba(100, 100, 50, 1)'
+            },
+            {
+                label: '優先度５',
+                data: [2, 4,7],
+                backgroundColor: 'rgba(100, 100, 150, 1)'
+            },
     
-            if (typeof myChart !== 'undefined') {
-                myChart.destroy();
-            }
-    
-            const datasets = [];
-            data.forEach(item => {
-                datasets.push({
-                    label: item.label,
-                    data: Object.values(item.data),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                });
-            });
-    
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data[0].data),
-                    datasets: datasets,
+            ]
+
+        // console.log(data[0]['label']);
+        // console.log(data[1]['label']);
+
+        labels.push("質問３");//仮の項目
+        console.log(datasets); 
+        console.log(labels); 
+        
+        
+        var options = {
+            scales: {
+                x:{
+                    display: true,
+                    title:{
+                        display: true,
+                        text: '質問名'
+                    }
                 },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                y:{
+                    display: true,
+                    min: 300,
+                    title:{
+                        display: true,
+                        text: '人数'
                     },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'アンケート項目の優先度について'
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            return value + '台';
                         }
                     }
+                },
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'アンケート項目に対する人数'
                 }
-            });
-        }
-
+            }
+        };
+        
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels, // ここで質問のラベルを指定
+                datasets: datasets,
+                },
+            options: options
+        });
+    }
+    
+    function getBackgroundColor(index) {
+        const colors = [
+            'rgba(219,39,91,0.5)',
+            'rgba(130,201,169,0.5)',
+            'rgba(255,183,76,0.5)',
+            'rgba(255,100,76,0.5)',
+            'rgba(255,50,76,0.5)'
+        ];
+        
+        return colors[index % colors.length];
+    }
 
     </script>
 
