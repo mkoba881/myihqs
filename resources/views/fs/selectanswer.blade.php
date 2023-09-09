@@ -130,7 +130,7 @@
     
                 content += `
                     @csrf
-                    <input type="submit" class="btn btn-primary" value="アンケートを終了する" style="margin-bottom: 30px;">
+                    <input type="submit" class="btn btn-primary" value="回答結果を送信する" style="margin-bottom: 30px;">
                 </form>
                 `;
     

@@ -66,11 +66,6 @@
                     @csrf
                     <input type="submit" class="btn btn-primary" value="アンケートを終了する" style="margin-bottom: 30px;">
                 </form>
-
-                <h2>以下は後程削除</h2>
-                <p>{{$format}}</p>
-                <p>{{$items}}</p>
-                <p>{{$details}}</p>
             </div>
         </div>
     </div>
