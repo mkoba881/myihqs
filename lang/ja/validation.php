@@ -152,6 +152,22 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'ankate_name' => [
+            'required' => 'アンケート名に入力が必要です。',
+        ],
+        'start' => [
+            'required' => '開始日に入力が必要です。',
+        ],
+        'end' => [
+            'required' => '終了日に入力が必要です。',
+        ],
+        'questionCount' => [
+            'required' => '質問数に入力が必要です。',
+        ],
+        // 'question*' => [
+        //     'required' => '質問 :attribute に入力が必要です。',
+        // ],
+
     ],
 
     /*

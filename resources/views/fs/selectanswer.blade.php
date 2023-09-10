@@ -23,6 +23,9 @@
                     <!-- ここに回答画面の内容が表示されます -->
                 </div>
             </div>
+            <div class="card-contents">
+                <a class="button" href="{{ route('admin.ihqs.selection')}}">機能選択画面に戻る</a>
+            </div>
         </div>
     </div>
     

@@ -36,8 +36,4 @@
         var dataGetRoute = '{{ route('data.get') }}';
     </script>
 
-
-
-
-
 @endsection

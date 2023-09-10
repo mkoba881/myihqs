@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AnkateCreateRequest;
+
 use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
 
 // 以下の1行を追記することで、Format Modelが扱えるようになる
 use App\Models\Format;
@@ -203,7 +205,7 @@ class IhqsController extends Controller
     }
     
 
-    public function create(Request $request)
+    public function create(AnkateCreateRequest $request)
     {
         
     $request->validate(Format::getValidationRules($request->input('questionCount')));

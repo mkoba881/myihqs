@@ -58,10 +58,6 @@
                         <input type="hidden" name="item_id[{{ $index }}][]" value="{{ $item["id"] }}">
                         <input type="hidden" name="detail_id[{{ $index }}][]" value="{{ $details[$index]["id"] }}">
 
-                        
-                        <!--<input type="hidden" name="format_id" value="{{ $format[0]["id"] }}">-->
-                        <!--<input type="hidden" name="item_id[{{ $index }}]" value="{{ $item["id"] }}">-->
-                        <!--<input type="hidden" name="detail_id[{{ $index }}]" value="{{ $details[$index]["id"] }}">-->
                     @endforeach
                     @csrf
                     <input type="submit" class="btn btn-primary" value="アンケートを終了する" style="margin-bottom: 30px;">
