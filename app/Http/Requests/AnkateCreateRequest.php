@@ -30,7 +30,9 @@ class AnkateCreateRequest extends FormRequest
         $questionCount = $this->input('questionCount');
 
         for ($i = 1; $i <= $questionCount; $i++) {
+            $rules["question_name{$i}"] = 'required|string';
             $rules["question{$i}"] = 'required|string';
+            $rules["sortorder{$i}"] = 'required|string';
             // 他の質問に関するルールも追加
         }
 

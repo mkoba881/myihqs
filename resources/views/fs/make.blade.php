@@ -11,6 +11,19 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h1>アンケート作成画面</h1>
+                
+                @for ($i = 1; $i <= old('questionCount', 0); $i++)
+                    @error("question{$i}")
+                        <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
+                    @enderror
+                    @error("question_name{$i}")
+                        <div class="alert alert-danger">質問No、項目名に入力が必要です。</div>
+                    @enderror
+                    @error("sortorder{$i}")
+                        <div class="alert alert-danger">並び順に入力が必要です。</div>
+                    @enderror
+                @endfor 
+ 
 
                 @php
                     $oldQuestionNames = [];
@@ -21,17 +34,18 @@
                     $oldSortOrders = [];
                     
                     for ($i = 1; $i <= old('questionCount', 0); $i++) {
-                        $oldQuestionNames[] = old("question_name{$i}", '');
-                        $oldQuestions[] = old("question{$i}", '');
+                        $oldQuestionNames[$i] = old("question_name{$i}", '');
+                        $oldQuestions[$i] = old("question{$i}", '');
                         $oldOptions[$i] = [];
                         for ($j = 1; $j <= 5; $j++) {
                             $oldOptions[$i][] = old("option{$i}_{$j}", '');
                         }
-                        $oldPriorities[] = old("priority{$i}", '');
-                        $oldReferenceLinks[] = old("rf_url{$i}", '');
-                        $oldSortOrders[] = old("sortorder{$i}", '');
+                        $oldPriorities[$i] = old("priority{$i}", '');
+                        $oldReferenceLinks[$i] = old("rf_url{$i}", '');
+                        $oldSortOrders[$i] = old("sortorder{$i}", '');
                     }
                 @endphp
+                
 
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">
                     
@@ -97,11 +111,6 @@
 
                 </form>
                 
-                @for ($i = 1; $i <= old('questionCount', 0); $i++)
-                    @error("question{$i}")
-                        <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
-                    @enderror
-                @endfor 
             </div>
         </div>
     </div>
