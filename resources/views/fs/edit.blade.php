@@ -45,6 +45,7 @@
                         $oldSortOrders[$i] = old("sortorder{$i}", '');
                     }
                 @endphp
+                {{ json_encode($oldPriorities) }}
 
                 
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">
@@ -179,7 +180,12 @@
                     </div>
                 
                     @csrf
-                    <input type="submit" class="btn btn-primary" value="次へ進む">
+                    <input type="submit" class="button" value="次へ進む">
+                    
+                    <div class="card-contents">
+                        <a class="button" href="{{ route('fs.management')}}">アンケート管理画面に戻る</a>
+                    </div>
+                    
                 </form>
                 
             </div>

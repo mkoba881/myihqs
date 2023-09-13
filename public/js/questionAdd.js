@@ -14,6 +14,12 @@ const oldSortOrders = JSON.parse(questionsContainer.getAttribute('data-old-sort-
 function updateQuestions() {
     const questionCount = parseInt(questionCountInput.value);
 
+   // コンソールに oldPriorities 配列を出力
+   //console.log("oldPriorities:", oldPriorities);
+   //console.log("プロパティ 2 の値:", oldPriorities[2]);
+
+
+
     // 現在の質問数を取得
     const currentQuestionCount = questionsContainer.querySelectorAll('.question').length;
 
@@ -26,6 +32,8 @@ function updateQuestions() {
         // 質問部分を動的に追加
         for (let i = 0; i < newQuestionCount; i++) {
             const questionIndex = currentQuestionCount + i + 1;
+            
+            
             
             // 質問に関連する oldOptions 配列が存在するか確認
             const options = oldOptions[questionIndex] || ['', '', '', '', ''];
@@ -62,12 +70,12 @@ function updateQuestions() {
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2">優先度</label>
-                        <select class="form-control" name="priority${questionIndex}" value="${oldPriorities[questionIndex] || ''}">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" name="priority${questionIndex}">
+                            <option ${oldPriorities[questionIndex] === '1' ? 'selected' : ''}>1</option>
+                            <option ${oldPriorities[questionIndex] === '2' ? 'selected' : ''}>2</option>
+                            <option ${oldPriorities[questionIndex] === '3' ? 'selected' : ''}>3</option>
+                            <option ${oldPriorities[questionIndex] === '4' ? 'selected' : ''}>4</option>
+                            <option ${oldPriorities[questionIndex] === '5' ? 'selected' : ''}>5</option>
                         </select>
                     </div>
                     <div class="form-group row">
@@ -93,6 +101,21 @@ function updateQuestions() {
 
             questionsContainer.innerHTML += questionTemplate;
         }
+        
+        for (let i = 1; i <= questionCount; i++) {
+            const questionIndex = currentQuestionCount + i;
+            const selectElement = document.querySelector(`select[name="priority${questionIndex}"]`);
+            if (selectElement) {
+                // 選択ボックスの選択状態を設定
+                const selectedPriority = oldPriorities[questionIndex] || ''; // 選択されるべき優先度を取得
+                selectElement.value = selectedPriority;
+                
+                // セレクトボックスの値をコンソールに出力
+                //console.log("セレクトボックスの値:", selectElement.value);
+                
+            }
+        }
+        
     } else if (questionCount < currentQuestionCount) {
         // 不要な質問部分を削除
         const questionElements = questionsContainer.querySelectorAll('.question');
