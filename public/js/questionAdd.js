@@ -10,16 +10,68 @@ const oldPriorities = JSON.parse(questionsContainer.getAttribute('data-old-prior
 const oldReferenceLinks = JSON.parse(questionsContainer.getAttribute('data-old-reference-links'));
 const oldSortOrders = JSON.parse(questionsContainer.getAttribute('data-old-sort-orders'));
 
+// function handleImageChange(questionIndex, inputElement) {
+//     console.log(`handleImageChange called for questionIndex: ${questionIndex}`);
+//     const selectedFile = inputElement.files[0];
+
+//     if (selectedFile) {
+//         // 画像を選択したら sessionStorage に保存
+//         console.log(`Selected file for questionIndex: ${questionIndex}`, selectedFile);
+
+//         const reader = new FileReader();
+//         reader.onload = function(event) {
+//             // ファイルデータを Blob として保存
+//             sessionStorage.setItem(`selectedImage_${questionIndex}`, event.target.result);
+//             console.log(`Saved selectedImage_${questionIndex} to sessionStorage`);
+//         };
+//         reader.readAsArrayBuffer(selectedFile);
+//     } else {
+//         // ファイルが選択解除された場合は sessionStorage から削除
+//         console.log(`No file selected for questionIndex: ${questionIndex}`);
+//         sessionStorage.removeItem(`selectedImage_${questionIndex}`);
+//     }
+// }
+
+// function restoreImageSelections() {
+//     const imageUploadFields = document.querySelectorAll('input[type="file"]');
+    
+//     imageUploadFields.forEach((inputElement, questionIndex) => {
+//         console.log(`restoreImageSelections called for questionIndex: ${questionIndex}`);
+//         const index = questionIndex + 1;
+//         const fileData = sessionStorage.getItem(`selectedImage_${index}`);
+
+//         if (fileData) {
+//             console.log(`File data found in sessionStorage for questionIndex: ${index}`);
+            
+//             // ファイルデータを Blob オブジェクトに変換
+//             const blob = new Blob([fileData], { type: 'image/jpeg' }); // 画像の MIME タイプに合わせて修正
+
+//             // Blob オブジェクトから File オブジェクトを作成
+//             const fileName = `selectedImage_${index}.jpg`; // ファイル名は適切に修正
+//             const file = new File([blob], fileName, { type: 'image/jpeg' }); // 画像の MIME タイプに合わせて修正
+
+//             // DataTransfer オブジェクトを作成し、ファイルを追加
+//             const dataTransfer = new DataTransfer();
+//             dataTransfer.items.add(file);
+
+//             // フォームの input 要素に DataTransfer オブジェクトを設定
+//             inputElement.files = dataTransfer.files;
+            
+//             console.log(`Restored selectedImage_${index} for questionIndex: ${index}`);
+//         }
+//     });
+// }
+
+
+
+// バリデーションエラー時にフォームを再表示する場合、以下のように呼び出して画像を設定
+// restoreImageSelections();
 
 function updateQuestions() {
     const questionCount = parseInt(questionCountInput.value);
-
    // コンソールに oldPriorities 配列を出力
    //console.log("oldPriorities:", oldPriorities);
    //console.log("プロパティ 2 の値:", oldPriorities[2]);
-
-
-
     // 現在の質問数を取得
     const currentQuestionCount = questionsContainer.querySelectorAll('.question').length;
 
@@ -33,10 +85,11 @@ function updateQuestions() {
         for (let i = 0; i < newQuestionCount; i++) {
             const questionIndex = currentQuestionCount + i + 1;
             
-            
-            
             // 質問に関連する oldOptions 配列が存在するか確認
             const options = oldOptions[questionIndex] || ['', '', '', '', ''];
+
+          // 画像プレビューを初期化
+            const imagePreview = '';
 
             const questionTemplate = `
                 <div class="question">
@@ -87,7 +140,8 @@ function updateQuestions() {
                     <div class="form-group row">
                         <label class="col-md-2">参考画像</label>
                         <div class="col-md-5">
-                            <input type="file" class="form-control-file" name="rf_image${questionIndex}">
+                            <input type="file" class="form-control-file" name="rf_image${questionIndex}" onchange="handleImageChange(${questionIndex}, this)" data-selected-image="">
+                            <div class="image-preview">${imagePreview}</div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -98,9 +152,29 @@ function updateQuestions() {
                     </div>
                 </div>
             `;
-
             questionsContainer.innerHTML += questionTemplate;
         }
+        
+        // //画像 ページ読み込み時に選択済みの画像を設定
+        // restoreImageSelections();
+
+
+        // const fileInput = document.querySelector('input[type="file"]');
+        
+        // fileInput.addEventListener('change', (event) => {
+        //     const selectedFile = event.target.files[0]; // 選択されたファイル（最初のファイル）を取得
+        
+        //     if (selectedFile) {
+        //         console.log('選択されたファイル名:', selectedFile);
+        //         console.log('ファイルのタイプ:', selectedFile.type);
+        //         console.log('ファイルのサイズ（バイト）:', selectedFile.size);
+        
+        //         // ここで選択されたファイルに対する追加の処理を行うことができます
+        //     } else {
+        //         console.log('ファイルが選択されていません。');
+        //     }
+        // });
+
         
         for (let i = 1; i <= questionCount; i++) {
             const questionIndex = currentQuestionCount + i;
@@ -125,6 +199,9 @@ function updateQuestions() {
         }
     }
 }    
+
+
+
 // 質問数の変更時にイベントを発火
 questionCountInput.addEventListener('input', updateQuestions);
 

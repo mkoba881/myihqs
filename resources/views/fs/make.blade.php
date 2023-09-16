@@ -12,19 +12,92 @@
             <div class="col-md-8 mx-auto">
                 <h1>アンケート作成画面</h1>
                 
+                @php
+                    $imageError = false; // 画像エラーのフラグを初期化
+                    $surveyInfoError = false; // アンケート情報のエラーフラグを初期化
+                @endphp
+                
+                {{-- アンケート名のエラーメッセージ --}}
+                @error('ankate_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @php
+                        $surveyInfoError = true; // アンケート名のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 開始日のエラーメッセージ --}}
+                @error('start')
+                    <div class="alert alert-danger">開始日に入力が必要です。</div>
+                    @php
+                        $surveyInfoError = true; // 開始日のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 終了日のエラーメッセージ --}}
+                @error('end')
+                    <div class="alert alert-danger">終了日に入力が必要です。</div>
+                    @php
+                        $surveyInfoError = true; // 終了日のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 質問数のエラーメッセージ --}}
+                @error('questionCount')
+                    <div class="alert alert-danger">質問数に入力が必要です。</div>
+                    @php
+                        $surveyInfoError = true; // 質問数のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 質問と並び順のエラーメッセージ --}}
                 @for ($i = 1; $i <= old('questionCount', 0); $i++)
                     @error("question{$i}")
                         <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 質問のエラーがある場合にフラグを設定
+                        @endphp
                     @enderror
                     @error("question_name{$i}")
                         <div class="alert alert-danger">質問No、項目名に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 質問名のエラーがある場合にフラグを設定
+                        @endphp
                     @enderror
                     @error("sortorder{$i}")
                         <div class="alert alert-danger">並び順に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 並び順のエラーがある場合にフラグを設定
+                        @endphp
                     @enderror
-                @endfor 
- 
-
+                @endfor
+                
+                {{-- 質問と並び順のエラーメッセージ --}}
+                @for ($i = 1; $i <= old('questionCount', 0); $i++)
+                    @error("question{$i}")
+                        <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 質問のエラーがある場合にフラグを設定
+                        @endphp
+                    @enderror
+                    @error("question_name{$i}")
+                        <div class="alert alert-danger">質問No、項目名に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 質問名のエラーがある場合にフラグを設定
+                        @endphp
+                    @enderror
+                    @error("sortorder{$i}")
+                        <div class="alert alert-danger">並び順に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 並び順のエラーがある場合にフラグを設定
+                        @endphp
+                    @enderror
+                @endfor
+                
+                {{-- 画像またはアンケート情報のエラーメッセージ --}}
+                @if ($imageError || $surveyInfoError)
+                    <div class="alert alert-danger">参考画像が必要な場合お手数ですが再度設定してください。</div>
+                @endif
+                
                 @php
                     $oldQuestionNames = [];
                     $oldQuestions = [];
@@ -49,13 +122,6 @@
 
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">
                     
-                    @if ($errors->has('ankate_name') || $errors->has('start') || $errors->has('end') || $errors->has('questionCount'))
-                        <ul>
-                            @foreach($errors->all() as $e)
-                                <li>{{ $e }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
              
                     <div class="form-group row">
                         <label class="col-md-2"><b>アンケート名</b></label>

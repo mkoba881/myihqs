@@ -38,5 +38,5 @@ class AnkateCreateRequest extends FormRequest
 
         return $rules;
     }
-    
+
 }
