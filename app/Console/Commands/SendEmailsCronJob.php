@@ -41,39 +41,51 @@ class SendEmailsCronJob extends Command
         //     }
         // }
         
-        // フォーマットごとに分岐してメール送信を行う
+        //フォーマットごとに分岐してメール送信を行う
         foreach ($validFormatIds as $formatId) {
             $format = Format::find($formatId);
+            //dd($format);
             $userMailFormat = $userMailFormats[$formatId] ?? null;
+            
+            // $format->start と $format->end を Carbon インスタンスに変換
+            $formatStartDate = \Carbon\Carbon::parse($format->start)->format('Y-m-d');
+            $formatEndDate = \Carbon\Carbon::parse($format->end)->format('Y-m-d');
+            //dd($formatStartDate);
         
             // 本日の日付が開始日ならメールを送信
-            if ($format->start == $currentDate) {
-                $this->sendMailToRecipients($userMailFormat, $format);
+            if ($formatStartDate == $currentDate) {
+                //dd($formatStartDate == $currentDate);
+                $this->sendMailToRecipients($userMailFormat, $formatId);
+
             }
-            
+        
             // 本日の日付が終了日の一週間前ならメールを送信
             $oneWeekBeforeEndDate = now()->subWeek()->format('Y-m-d'); // 今日の日付から1週間前の日付を取得
-            if ($currentDate == $oneWeekBeforeEndDate && $format->end->diffInDays($format->start) >= 7) {
-                $this->sendMailToRecipients($userMailFormat, $format);
+            if ($currentDate == $oneWeekBeforeEndDate && $formatEndDate->diffInDays($formatStartDate) >= 7) {
+                $this->sendMailToRecipients($userMailFormat, $formatId);
+
             }
-            
+        
             // 本日の日付が終了日の3日前ならメールを送信
             $threeDaysBeforeEndDate = now()->subDays(3)->format('Y-m-d'); // 今日の日付から3日前の日付を取得
-            if ($currentDate == $threeDaysBeforeEndDate && $format->end->diffInDays($format->start) >= 3) {
-                $this->sendMailToRecipients($userMailFormat, $format);
+            if ($currentDate == $threeDaysBeforeEndDate && $formatEndDate->diffInDays($formatStartDate) >= 3) {
+                $this->sendMailToRecipients($userMailFormat, $formatId);
+
             }
-            
+        
             // 本日の日付が終了日の1日前ならメールを送信
             $oneDayBeforeEndDate = now()->subDay()->format('Y-m-d'); // 今日の日付から1日前の日付を取得
-            if ($currentDate == $oneDayBeforeEndDate && $format->end->diffInDays($format->start) >= 1) {
-                $this->sendMailToRecipients($userMailFormat, $format);
+            if ($currentDate == $oneDayBeforeEndDate && $formatEndDate->diffInDays($formatStartDate) >= 1) {
+                $this->sendMailToRecipients($userMailFormat, $formatId);
+
             }
-            
+        }
+
             //dd($oneWeekBeforeEndDate);
             //dd($threeDaysBeforeEndDate);
             //dd($oneDayBeforeEndDate);
             
-        }
+        
         
     }
     
