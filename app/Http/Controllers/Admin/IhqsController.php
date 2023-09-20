@@ -227,10 +227,25 @@ class IhqsController extends Controller
     //dd($items);
     
     $details = $this->getQuestionDetails($items);
-
-    return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);
-        
+    
+    // データがない場合にエラーメッセージを表示
+    if ($items->isEmpty()) {
+        return redirect()->route('fs.make')->with('error', 'データがありません。最初から入力してください。');
     }
+    
+    return view('fs.makepreview', ['format' => $format, 'items' => $items, 'details' => $details]);
+    }
+    
+    public function getcreate()
+    {
+        // エラーメッセージを生成
+        $errorMessage = "想定していない画面遷移です。最初から入力してください。";
+    
+        // ビューにエラーメッセージを渡す
+        return view('fs.errorview', ['errorMessage' => $errorMessage]);
+    }
+
+    
     
     private function saveOrUpdateFormat(Request $request)
     {
