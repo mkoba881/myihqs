@@ -10,62 +10,6 @@ const oldPriorities = JSON.parse(questionsContainer.getAttribute('data-old-prior
 const oldReferenceLinks = JSON.parse(questionsContainer.getAttribute('data-old-reference-links'));
 const oldSortOrders = JSON.parse(questionsContainer.getAttribute('data-old-sort-orders'));
 
-// function handleImageChange(questionIndex, inputElement) {
-//     console.log(`handleImageChange called for questionIndex: ${questionIndex}`);
-//     const selectedFile = inputElement.files[0];
-
-//     if (selectedFile) {
-//         // 画像を選択したら sessionStorage に保存
-//         console.log(`Selected file for questionIndex: ${questionIndex}`, selectedFile);
-
-//         const reader = new FileReader();
-//         reader.onload = function(event) {
-//             // ファイルデータを Blob として保存
-//             sessionStorage.setItem(`selectedImage_${questionIndex}`, event.target.result);
-//             console.log(`Saved selectedImage_${questionIndex} to sessionStorage`);
-//         };
-//         reader.readAsArrayBuffer(selectedFile);
-//     } else {
-//         // ファイルが選択解除された場合は sessionStorage から削除
-//         console.log(`No file selected for questionIndex: ${questionIndex}`);
-//         sessionStorage.removeItem(`selectedImage_${questionIndex}`);
-//     }
-// }
-
-// function restoreImageSelections() {
-//     const imageUploadFields = document.querySelectorAll('input[type="file"]');
-    
-//     imageUploadFields.forEach((inputElement, questionIndex) => {
-//         console.log(`restoreImageSelections called for questionIndex: ${questionIndex}`);
-//         const index = questionIndex + 1;
-//         const fileData = sessionStorage.getItem(`selectedImage_${index}`);
-
-//         if (fileData) {
-//             console.log(`File data found in sessionStorage for questionIndex: ${index}`);
-            
-//             // ファイルデータを Blob オブジェクトに変換
-//             const blob = new Blob([fileData], { type: 'image/jpeg' }); // 画像の MIME タイプに合わせて修正
-
-//             // Blob オブジェクトから File オブジェクトを作成
-//             const fileName = `selectedImage_${index}.jpg`; // ファイル名は適切に修正
-//             const file = new File([blob], fileName, { type: 'image/jpeg' }); // 画像の MIME タイプに合わせて修正
-
-//             // DataTransfer オブジェクトを作成し、ファイルを追加
-//             const dataTransfer = new DataTransfer();
-//             dataTransfer.items.add(file);
-
-//             // フォームの input 要素に DataTransfer オブジェクトを設定
-//             inputElement.files = dataTransfer.files;
-            
-//             console.log(`Restored selectedImage_${index} for questionIndex: ${index}`);
-//         }
-//     });
-// }
-
-
-
-// バリデーションエラー時にフォームを再表示する場合、以下のように呼び出して画像を設定
-// restoreImageSelections();
 
 function updateQuestions() {
     const questionCount = parseInt(questionCountInput.value);
@@ -155,26 +99,6 @@ function updateQuestions() {
             questionsContainer.innerHTML += questionTemplate;
         }
         
-        // //画像 ページ読み込み時に選択済みの画像を設定
-        // restoreImageSelections();
-
-
-        // const fileInput = document.querySelector('input[type="file"]');
-        
-        // fileInput.addEventListener('change', (event) => {
-        //     const selectedFile = event.target.files[0]; // 選択されたファイル（最初のファイル）を取得
-        
-        //     if (selectedFile) {
-        //         console.log('選択されたファイル名:', selectedFile);
-        //         console.log('ファイルのタイプ:', selectedFile.type);
-        //         console.log('ファイルのサイズ（バイト）:', selectedFile.size);
-        
-        //         // ここで選択されたファイルに対する追加の処理を行うことができます
-        //     } else {
-        //         console.log('ファイルが選択されていません。');
-        //     }
-        // });
-
         
         for (let i = 1; i <= questionCount; i++) {
             const questionIndex = currentQuestionCount + i;
@@ -200,6 +124,45 @@ function updateQuestions() {
     }
 }    
 
+
+function handleImageChange(questionIndex, inputElement) {
+    console.log(`handleImageChange called for questionIndex: ${questionIndex}`);
+    const selectedFile = inputElement.files[0];
+
+    if (selectedFile) {
+        const allowedExtensions = ['.jpeg', '.jpg', '.png']; // 許容する拡張子のリスト
+        const fileExtension = selectedFile.name.toLowerCase().slice((selectedFile.name.lastIndexOf(".") - 1 >>> 0) + 2);
+
+        // ファイルの拡張子が許容されていない場合
+        if (!allowedExtensions.includes('.' + fileExtension)) {
+            alert('JPEGまたはPNGフォーマットの画像ファイルを選択してください。');
+            inputElement.value = ''; // ファイル選択をクリア
+            return;
+        }
+
+        // ファイルサイズが5MBを超える場合
+        if (selectedFile.size > 5 * 1024 * 1024) {
+            alert('ファイルサイズが5MBを超えています。5MB以下のファイルを選択してください。');
+            inputElement.value = ''; // ファイル選択をクリア
+            return;
+        }
+
+        // 画像を選択したら sessionStorage に保存
+        console.log(`Selected file for questionIndex: ${questionIndex}`, selectedFile);
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            // ファイルデータを Blob として保存
+            sessionStorage.setItem(`selectedImage_${questionIndex}`, event.target.result);
+            console.log(`Saved selectedImage_${questionIndex} to sessionStorage`);
+        };
+        reader.readAsArrayBuffer(selectedFile);
+    } else {
+        // ファイルが選択解除された場合は sessionStorage から削除
+        console.log(`No file selected for questionIndex: ${questionIndex}`);
+        sessionStorage.removeItem(`selectedImage_${questionIndex}`);
+    }
+}
 
 
 // 質問数の変更時にイベントを発火
