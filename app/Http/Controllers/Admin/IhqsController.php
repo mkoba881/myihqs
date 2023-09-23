@@ -207,13 +207,14 @@ class IhqsController extends Controller
 
     public function create(AnkateCreateRequest $request)
     {
-        
+    //dd($request);
     $request->validate(Format::getValidationRules($request->input('questionCount')));
 
     $format_id = $this->saveOrUpdateFormat($request);
 
     $questionCount = $request->input('questionCount');
-
+    //($format_id);
+    //dd($questionCount);
     for ($i = 1; $i <= $questionCount; $i++) {
         $item_id = $this->saveOrUpdateItem($request, $format_id, $i);
         $this->saveOrUpdateDetail($request, $item_id, $i);
@@ -271,15 +272,19 @@ class IhqsController extends Controller
     
     private function saveOrUpdateItem(Request $request, $format_id, $index)
     {
+        //dd($request);
         $itemData = [
             'name' => $request->input('question_name' . $index),
             'format_id' => $format_id,
             'sortorder' => $request->input('sortorder' . $index)
         ];
-    
+        //dd($itemData);
+        
+        //アンケート項目名が同じだと２つが一つに集約してしまい正しく登録されない
         $existingItem = Item::where('format_id', $format_id)
             ->where('name', $request->input('question_name' . $index))
             ->first();
+        //dd($existingItem);
     
         if ($existingItem) {
             $existingItem->update($itemData);
@@ -288,6 +293,7 @@ class IhqsController extends Controller
             $item = Item::create($itemData);
             $item_id = $item->id;
         }
+        //dd($item_id);
     
         return $item_id;
     }

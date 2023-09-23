@@ -12,18 +12,69 @@
             <div class="col-md-8 mx-auto">
                 <h1>アンケート編集画面</h1>
                 
-                 @for ($i = 1; $i <= old('questionCount', 0); $i++)
+                @php
+                    $imageError = false; // 画像エラーのフラグを初期化
+                    $surveyInfoError = false; // アンケート情報のエラーフラグを初期化
+                @endphp
+                
+                {{-- アンケート名のエラーメッセージ --}}
+                @error('ankate_name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @php
+                        $surveyInfoError = true; // アンケート名のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 開始日のエラーメッセージ --}}
+                @error('start')
+                    <div class="alert alert-danger">開始日に入力が必要です。</div>
+                    @php
+                        $surveyInfoError = true; // 開始日のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 終了日のエラーメッセージ --}}
+                @error('end')
+                    <div class="alert alert-danger">終了日に入力が必要です。</div>
+                    @php
+                        $surveyInfoError = true; // 終了日のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 質問数のエラーメッセージ --}}
+                @error('questionCount')
+                    <div class="alert alert-danger">質問数に入力が必要です。</div>
+                    @php
+                        $surveyInfoError = true; // 質問数のエラーがある場合にフラグを設定
+                    @endphp
+                @enderror
+                
+                {{-- 質問と並び順のエラーメッセージ --}}
+                @for ($i = 1; $i <= old('questionCount', 0); $i++)
                     @error("question{$i}")
                         <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 質問のエラーがある場合にフラグを設定
+                        @endphp
                     @enderror
                     @error("question_name{$i}")
                         <div class="alert alert-danger">質問No、項目名に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 質問名のエラーがある場合にフラグを設定
+                        @endphp
                     @enderror
                     @error("sortorder{$i}")
                         <div class="alert alert-danger">並び順に入力が必要です。</div>
+                        @php
+                            $imageError = true; // 並び順のエラーがある場合にフラグを設定
+                        @endphp
                     @enderror
-                @endfor 
-
+                @endfor
+                
+                {{-- 画像またはアンケート情報のエラーメッセージ --}}
+                @if ($imageError || $surveyInfoError)
+                    <div class="alert alert-danger">参考画像が必要な場合お手数ですが再度設定してください。</div>
+                @endif
                 
                 @php
                     $oldQuestionNames = [];
@@ -151,10 +202,10 @@
                                     <label class="col-md-2">参考画像</label>
                                     <div class="col-md-5">
                                         @if ($details[$index]->has_reference_image)
-                                            <input type="file" class="form-control-file" name="rf_image{{ $index + 1 }}">
+                                            <input type="file" class="form-control-file edit-question-image-input" name="rf_image{{ $index + 1 }}">
                                             <span class="selected">選択済み</span>
                                         @else
-                                            <input type="file" class="form-control-file" name="rf_image{{ $index + 1 }}">
+                                            <input type="file" class="form-control-file edit-question-image-input" name="rf_image{{ $index + 1 }}">
                                             <span class="not-selected">未選択</span>
                                         @endif
                                     </div>

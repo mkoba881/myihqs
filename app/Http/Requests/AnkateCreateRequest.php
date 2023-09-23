@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AnkateCreateRequest extends FormRequest
 {
@@ -30,7 +31,10 @@ class AnkateCreateRequest extends FormRequest
         $questionCount = $this->input('questionCount');
 
         for ($i = 1; $i <= $questionCount; $i++) {
+            
+            
             $rules["question_name{$i}"] = 'required|string';
+            
             $rules["question{$i}"] = 'required|string';
             $rules["sortorder{$i}"] = 'required|string';
             // 他の質問に関するルールも追加

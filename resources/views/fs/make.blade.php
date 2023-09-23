@@ -71,28 +71,6 @@
                     @enderror
                 @endfor
                 
-                {{-- 質問と並び順のエラーメッセージ --}}
-                @for ($i = 1; $i <= old('questionCount', 0); $i++)
-                    @error("question{$i}")
-                        <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
-                        @php
-                            $imageError = true; // 質問のエラーがある場合にフラグを設定
-                        @endphp
-                    @enderror
-                    @error("question_name{$i}")
-                        <div class="alert alert-danger">質問No、項目名に入力が必要です。</div>
-                        @php
-                            $imageError = true; // 質問名のエラーがある場合にフラグを設定
-                        @endphp
-                    @enderror
-                    @error("sortorder{$i}")
-                        <div class="alert alert-danger">並び順に入力が必要です。</div>
-                        @php
-                            $imageError = true; // 並び順のエラーがある場合にフラグを設定
-                        @endphp
-                    @enderror
-                @endfor
-                
                 {{-- 画像またはアンケート情報のエラーメッセージ --}}
                 @if ($imageError || $surveyInfoError)
                     <div class="alert alert-danger">参考画像が必要な場合お手数ですが再度設定してください。</div>

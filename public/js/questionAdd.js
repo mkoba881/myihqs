@@ -164,10 +164,55 @@ function handleImageChange(questionIndex, inputElement) {
     }
 }
 
+// 画像選択フォームの要素を取得し、イベントリスナーを追加
+const editImageInputs2 = document.querySelectorAll('.edit-question-image-input'); // 変数名を変更
+editImageInputs2.forEach((inputElement, index) => {
+    inputElement.addEventListener('change', () => {
+        checkEditedQuestionImage(inputElement, index);
+    });
+});
+
+
+function checkEditedQuestionImage(inputElement, questionIndex) {
+    const selectedFile = inputElement.files[0];
+
+    if (selectedFile) {
+        const allowedExtensions = ['.jpeg', '.jpg', '.png']; // 許容する拡張子のリスト
+        const fileExtension = selectedFile.name.toLowerCase().slice((selectedFile.name.lastIndexOf(".") - 1 >>> 0) + 2);
+
+        // ファイルの拡張子が許容されていない場合
+        if (!allowedExtensions.includes('.' + fileExtension)) {
+            alert('JPEGまたはPNGフォーマットの画像ファイルを選択してください。');
+            inputElement.value = ''; // ファイル選択をクリア
+            return;
+        }
+
+        // ファイルサイズが5MBを超える場合
+        if (selectedFile.size > 5 * 1024 * 1024) {
+            alert('ファイルサイズが5MBを超えています。5MB以下のファイルを選択してください。');
+            inputElement.value = ''; // ファイル選択をクリア
+            return;
+        }
+
+        // 画像を選択したら何らかのアクションを実行
+        console.log(`Selected file for questionIndex: ${questionIndex}`, selectedFile);
+
+        // ここで編集に関する追加のロジックを実行できます
+    }
+}
+
+// 画像選択フォームの要素を取得し、イベントリスナーを追加
+const editImageInputs = document.querySelectorAll('.edit-question-image-input');
+editImageInputs.forEach((inputElement, index) => {
+    inputElement.addEventListener('change', () => {
+        checkEditedQuestionImage(inputElement, index);
+    });
+});
+
+
 
 // 質問数の変更時にイベントを発火
 questionCountInput.addEventListener('input', updateQuestions);
 
 // 初回表示時に質問を表示
 updateQuestions();
-    

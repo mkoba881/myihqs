@@ -15,8 +15,8 @@
                 
                 {{-- 繰り返し処理で質問の詳細情報を表示 --}}
                 @foreach ($items as $index => $item)
-                    <h2><b><span style="color: red;">●質問No.{{$item->sortorder}}</span></b></h2>
-                    <h2>{{$item->name}} . {{$details[$index]->question}}</h2>
+                    <h2><b><span style="color: red;">●質問No.{{$item->sortorder}} . {{$item->name}} </span></b></h2>
+                    <h2>質問文 . {{$details[$index]->question}}</h2>
                     <h2>・回答の選択肢</h2>
                     <h3>①{{$details[$index]->option1}}</h3>
                     <h3>②{{$details[$index]->option2}}</h3>
