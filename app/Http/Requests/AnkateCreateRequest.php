@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+
 class AnkateCreateRequest extends FormRequest
 {
     /**
@@ -30,25 +31,19 @@ class AnkateCreateRequest extends FormRequest
 
         $questionCount = $this->input('questionCount');
 
-        // for ($i = 1; $i <= $questionCount; $i++) {
-            
-            
-        //     $rules["question_name{$i}"] = 'required|string';
-            
-        //     $rules["question{$i}"] = 'required|string';
-        //     $rules["sortorder{$i}"] = 'required|string';
-        //     // 他の質問に関するルールも追加
-        // }
-        
         $existingQuestionNames = [];
         $existingQuestions = [];
         $existingSortOrders = [];
+
+
         
         for ($i = 1; $i <= $questionCount; $i++) {
             $questionNameKey = $this->input("question_name{$i}");
             $questionKey = $this->input("question{$i}");
             $sortOrderKey = $this->input("sortorder{$i}");
-        
+            
+            
+                
             // 既存のフィールド名と重複するかチェック
             if (in_array($questionNameKey, $existingQuestionNames)) {
                 die("質問名が重複しています。");
@@ -66,16 +61,19 @@ class AnkateCreateRequest extends FormRequest
             $existingQuestionNames[] = $questionNameKey;
             $existingQuestions[] = $questionKey;
             $existingSortOrders[] = $sortOrderKey;
-        
-            // バリデーションルールを設定
+            
+
+            
+            // // バリデーションルールを設定
             $rules["question_name{$i}"] = 'required|string';
             $rules["question{$i}"] = 'required|string';
             $rules["sortorder{$i}"] = 'required|string';
-        
-            // 他の質問に関するルールも追加
+            //他の質問に関するルールも追加
         }
         
+        //dd($validationErrors);
+            
         return $rules;
     }
-
+    
 }

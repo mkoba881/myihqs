@@ -51,6 +51,7 @@
                 
                 {{-- 質問と並び順のエラーメッセージ --}}
                 @for ($i = 1; $i <= old('questionCount', 0); $i++)
+                
                     @error("question{$i}")
                         <div class="alert alert-danger">質問 {{ $i }} に入力が必要です。</div>
                         @php
@@ -150,7 +151,9 @@
 
                     
                     @csrf
-                    <input type="submit" class="button" value="次へ進む">
+                    <input type="submit" class="button" id="nextButton" value="次へ進む">
+                    <div id="duplicateMessage" style="color: red;"></div>
+
                     
                     <div class="card-contents">
                         <a class="button" href="{{ route('fs.management')}}">アンケート管理画面に戻る</a>

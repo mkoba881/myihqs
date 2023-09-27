@@ -215,6 +215,7 @@ class IhqsController extends Controller
     $questionCount = $request->input('questionCount');
     //($format_id);
     //dd($questionCount);
+    
     for ($i = 1; $i <= $questionCount; $i++) {
         $item_id = $this->saveOrUpdateItem($request, $format_id, $i);
         $this->saveOrUpdateDetail($request, $item_id, $i);

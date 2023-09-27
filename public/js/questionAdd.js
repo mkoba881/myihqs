@@ -214,5 +214,106 @@ editImageInputs.forEach((inputElement, index) => {
 // 質問数の変更時にイベントを発火
 questionCountInput.addEventListener('input', updateQuestions);
 
+
+//重複確認処理ここから
+// 質問の重複を検知する関数
+function detectDuplicateQuestions() {
+    const questionCount = parseInt(questionCountInput.value);
+    const questionNames = new Set(); // 重複を検知するためにセットを使用
+
+    for (let i = 1; i <= questionCount; i++) {
+        const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
+        if (questionNameInput) {
+            const questionName = questionNameInput.value.trim();
+            if (questionNames.has(questionName)) {
+                return true; // 質問名が重複している場合は true を返す
+            }
+            questionNames.add(questionName);
+        }
+    }
+
+    return false; // 重複がない場合は false を返す
+}
+
+
+
+function blurEventListenerFunction() {
+    const hasDuplicateQuestions = detectDuplicateQuestions();
+    const nextButton = document.getElementById('nextButton');
+    const duplicateMessage = document.getElementById('duplicateMessage'); // メッセージ要素を取得
+
+
+    if (hasDuplicateQuestions) {
+        nextButton.disabled = true;
+        alert('質問No、項目名が重複しています。重複を解消してください。');
+        duplicateMessage.textContent = '重複している項目を解消してください。'; // メッセージを設定
+    } else {
+        nextButton.disabled = false;
+        duplicateMessage.textContent = ''; // 重複が解消された場合はメッセージをクリア
+    }
+}
+
+
+// blur イベントリスナーを追加
+function addBlurEventListeners() {
+    const questionCount = parseInt(questionCountInput.value);
+
+    for (let i = 1; i <= questionCount; i++) {
+        const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
+        if (questionNameInput) {
+            const blurEventListenerFunction = () => {
+                const hasDuplicateQuestions = detectDuplicateQuestions();
+                const nextButton = document.getElementById('nextButton');
+
+                if (hasDuplicateQuestions) {
+                    nextButton.disabled = true;
+                    alert('質問名が重複しています。重複を解消してください。');
+                } else {
+                    nextButton.disabled = false;
+                }
+            };
+
+            questionNameInput.addEventListener('blur', blurEventListenerFunction);
+
+            // removeEventListener の引数としてリスナー関数を指定
+            questionNameInput.removeEventListener('blur', blurEventListenerFunction);
+        }
+    }
+}
+
+function addBlurEventListenerToQuestionName(questionIndex) {
+    const questionNameInput = document.querySelector(`input[name="question_name${questionIndex}"]`);
+    if (questionNameInput) {
+        questionNameInput.addEventListener('blur', blurEventListenerFunction);
+    }
+}
+
+// 質問数の変更時に blur イベントリスナーを再設定
+questionCountInput.addEventListener('input', () => {
+    // 質問名の入力フィールドが変更されたため blur イベントリスナーを一旦削除
+    const questionNameInputs = document.querySelectorAll('input[name^="question_name"]');
+    questionNameInputs.forEach(input => {
+        input.removeEventListener('blur', blurEventListenerFunction);
+    });
+
+    // 質問名の入力フィールドが再生成されたので再度 blur イベントリスナーを追加
+    addBlurEventListeners();
+
+    // 質問の表示を更新
+    updateQuestions();
+
+    // 新しく生成された質問名の入力フィールドに blur イベントリスナーを追加
+    const newQuestionCount = parseInt(questionCountInput.value);
+    for (let i = 1; i <= newQuestionCount; i++) {
+        addBlurEventListenerToQuestionName(i);
+    }
+});
+
+
+// 初回に blur イベントリスナーを追加
+addBlurEventListeners();
+
+//重複確認処理ここまで
+
 // 初回表示時に質問を表示
 updateQuestions();
