@@ -44,12 +44,14 @@ function updateQuestions() {
                         <label class="col-md-2"><b>質問No、項目名</b></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="question_name${questionIndex}" id="question_name${questionIndex}" value="${oldQuestionNames[questionIndex] || ''}">
+                            <span class="error-message-question_name${questionIndex}" style="color: red;"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2">質問文</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="question${questionIndex}" id="question${questionIndex}" value="${oldQuestions[questionIndex] || ''}">
+                            <span class="error-message-question${questionIndex}" style="color: red;"></span>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -259,43 +261,51 @@ function detectDuplicateQuestions() {
     return false;
 }
 
+function detectDuplicateQuestionNameIds() {
+    const questionCount = parseInt(questionCountInput.value);
+    const questionIds = new Set();
 
-// function blurEventListenerFunctionForQuestionNames() {
-//     const hasDuplicateQuestionNames = detectDuplicateQuestionNames();
-//     const nextButton = document.getElementById('nextButton');
+    for (let i = 1; i <= questionCount; i++) {
+        const questionIdInput = document.querySelector(`input[name="question_name${i}"]`);
+        if (questionIdInput) {
+            const questionId = questionIdInput.value.trim();
+            if (questionId !== '') { // 空白でない場合のみセットに追加
+                if (questionIds.has(questionId)) {
+                    return true;
+                }
+                questionIds.add(questionId);
+            }
+        }
+    }
 
-//     if (hasDuplicateQuestionNames) {
-//         nextButton.disabled = true;
-//         console.log("bb");
-//         //alert('質問が重複しています。重複を解消してください。');
-//         duplicateMessage.textContent = '重複している項目を解消してください。';
-//     } else {
-//         console.log("bba");
-//         nextButton.disabled = false;
-//         duplicateMessage.textContent = '';
-//     }
-// }
+    return false;
+}
 
 
-// function blurEventListenerFunctionForQuestions() {
-//     const hasDuplicateQuestions = detectDuplicateQuestions();
-//     const nextButton = document.getElementById('nextButton');
+function detectDuplicateQuestionIds() {
+    const questionCount = parseInt(questionCountInput.value);
+    const questionIds = new Set();
 
-//     if (hasDuplicateQuestions) {
-//         nextButton.disabled = true;
-//         console.log("cc");
-//         //alert('質問が重複しています。重複を解消してください。');
-//         duplicateMessage.textContent = '重複している項目を解消してください。';
-//     } else {
-//         nextButton.disabled = false;
-//         duplicateMessage.textContent = '';
-//         console.log("dd");
-        
-//     }
-// }
+    for (let i = 1; i <= questionCount; i++) {
+        const questionIdInput = document.querySelector(`input[name="question${i}"]`);
+        if (questionIdInput) {
+            const questionId = questionIdInput.value.trim();
+            if (questionId !== '') { // 空白でない場合のみセットに追加
+                if (questionIds.has(questionId)) {
+                    return true;
+                }
+                questionIds.add(questionId);
+            }
+        }
+    }
+
+    return false;
+}
+
 
 function blurEventListenerFunctionForQuestionNames() {
     const hasDuplicateQuestionNames = detectDuplicateQuestionNames();
+    const hasDuplicateQuestionNameIds = detectDuplicateQuestionNameIds();
     const nextButton = document.getElementById('nextButton');
     
     const questionCount = parseInt(questionCountInput.value);
@@ -309,22 +319,33 @@ function blurEventListenerFunctionForQuestionNames() {
                 allFieldsValid = false;
                 break; // 質問名が空の場合、チェックを中断
             }
+            
+            const errorMessageElement = document.querySelector(`.error-message-question_name${i}`);
+            if (errorMessageElement) {
+                if (hasDuplicateQuestionNames) {
+                    errorMessageElement.textContent = '質問名が重複しているため解消してください。';
+                } else {
+                    errorMessageElement.textContent = '';
+                }
+            }
+            
         }
     }
-
-    if (hasDuplicateQuestionNames || !allFieldsValid) {
+    
+    if (hasDuplicateQuestionNames || hasDuplicateQuestionNameIds || !allFieldsValid) {
         nextButton.disabled = true;
         console.log("bb");
-        duplicateMessage.textContent = '重複している項目を解消してください。';
+        //duplicateMessage.textContent = '重複している項目を解消してください。';
     } else {
         console.log("bba");
         nextButton.disabled = false;
-        duplicateMessage.textContent = '';
+        //duplicateMessage.textContent = '';
     }
 }
 
 function blurEventListenerFunctionForQuestions() {
     const hasDuplicateQuestions = detectDuplicateQuestions();
+    const hasDuplicateQuestionIds = detectDuplicateQuestionIds();
     const nextButton = document.getElementById('nextButton');
 
     const questionCount = parseInt(questionCountInput.value);
@@ -338,17 +359,29 @@ function blurEventListenerFunctionForQuestions() {
                 allFieldsValid = false;
                 break; // 質問が空の場合、チェックを中断
             }
-        }
+        
+            const errorMessageElement = document.querySelector(`.error-message-question${i}`);
+            if (errorMessageElement) {
+                if (hasDuplicateQuestions) {
+                    errorMessageElement.textContent = '質問文が重複しているため解消してください。';
+                } else {
+                    errorMessageElement.textContent = '';
+                }
+            }
+        }    
     }
-
-    if (hasDuplicateQuestions || !allFieldsValid) {
+    
+    
+    if (hasDuplicateQuestions || hasDuplicateQuestionIds || !allFieldsValid) {
         nextButton.disabled = true;
         console.log("cc");
-        duplicateMessage.textContent = '重複している項目を解消してください。';
     } else {
-        nextButton.disabled = false;
-        duplicateMessage.textContent = '';
         console.log("dd");
+        if (document.querySelector('input[name^="question"]')) {
+            nextButton.disabled = false;
+        } else {
+            nextButton.disabled = true;
+        }
     }
 }
 
