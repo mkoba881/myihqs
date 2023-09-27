@@ -2,6 +2,8 @@
 // カウント数の変更時に質問部分を動的に表示する
 const questionCountInput = document.querySelector('input[name="questionCount"]');
 const questionsContainer = document.getElementById('questions');
+const duplicateMessage = document.getElementById('duplicateMessage');
+
 
 const oldQuestionNames = JSON.parse(questionsContainer.getAttribute('data-old-question-names'));
 const oldQuestions = JSON.parse(questionsContainer.getAttribute('data-old-questions'));
@@ -217,87 +219,219 @@ questionCountInput.addEventListener('input', updateQuestions);
 
 //重複確認処理ここから
 // 質問の重複を検知する関数
-function detectDuplicateQuestions() {
+function detectDuplicateQuestionNames() {
     const questionCount = parseInt(questionCountInput.value);
-    const questionNames = new Set(); // 重複を検知するためにセットを使用
+    const questionNames = new Set();
 
     for (let i = 1; i <= questionCount; i++) {
         const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
         if (questionNameInput) {
             const questionName = questionNameInput.value.trim();
-            if (questionNames.has(questionName)) {
-                return true; // 質問名が重複している場合は true を返す
+            if (questionName !== '') { // 空白でない場合のみセットに追加
+                if (questionNames.has(questionName)) {
+                    return true;
+                }
+                questionNames.add(questionName);
             }
-            questionNames.add(questionName);
         }
     }
 
-    return false; // 重複がない場合は false を返す
+    return false;
+}
+
+function detectDuplicateQuestions() {
+    const questionCount = parseInt(questionCountInput.value);
+    const questions = new Set();
+
+    for (let i = 1; i <= questionCount; i++) {
+        const questionInput = document.querySelector(`input[name="question${i}"]`);
+        if (questionInput) {
+            const question = questionInput.value.trim(); // 値をトリムして空白を削除
+            if (question !== '') { // 空白でない場合のみセットに追加
+                if (questions.has(question)) {
+                    return true;
+                }
+                questions.add(question);
+            }
+        }
+    }
+
+    return false;
 }
 
 
+// function blurEventListenerFunctionForQuestionNames() {
+//     const hasDuplicateQuestionNames = detectDuplicateQuestionNames();
+//     const nextButton = document.getElementById('nextButton');
 
-function blurEventListenerFunction() {
+//     if (hasDuplicateQuestionNames) {
+//         nextButton.disabled = true;
+//         console.log("bb");
+//         //alert('質問が重複しています。重複を解消してください。');
+//         duplicateMessage.textContent = '重複している項目を解消してください。';
+//     } else {
+//         console.log("bba");
+//         nextButton.disabled = false;
+//         duplicateMessage.textContent = '';
+//     }
+// }
+
+
+// function blurEventListenerFunctionForQuestions() {
+//     const hasDuplicateQuestions = detectDuplicateQuestions();
+//     const nextButton = document.getElementById('nextButton');
+
+//     if (hasDuplicateQuestions) {
+//         nextButton.disabled = true;
+//         console.log("cc");
+//         //alert('質問が重複しています。重複を解消してください。');
+//         duplicateMessage.textContent = '重複している項目を解消してください。';
+//     } else {
+//         nextButton.disabled = false;
+//         duplicateMessage.textContent = '';
+//         console.log("dd");
+        
+//     }
+// }
+
+function blurEventListenerFunctionForQuestionNames() {
+    const hasDuplicateQuestionNames = detectDuplicateQuestionNames();
+    const nextButton = document.getElementById('nextButton');
+    
+    const questionCount = parseInt(questionCountInput.value);
+    let allFieldsValid = true;
+
+    for (let i = 1; i <= questionCount; i++) {
+        const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
+        if (questionNameInput) {
+            const questionName = questionNameInput.value.trim();
+            if (questionName === '') {
+                allFieldsValid = false;
+                break; // 質問名が空の場合、チェックを中断
+            }
+        }
+    }
+
+    if (hasDuplicateQuestionNames || !allFieldsValid) {
+        nextButton.disabled = true;
+        console.log("bb");
+        duplicateMessage.textContent = '重複している項目を解消してください。';
+    } else {
+        console.log("bba");
+        nextButton.disabled = false;
+        duplicateMessage.textContent = '';
+    }
+}
+
+function blurEventListenerFunctionForQuestions() {
     const hasDuplicateQuestions = detectDuplicateQuestions();
     const nextButton = document.getElementById('nextButton');
-    const duplicateMessage = document.getElementById('duplicateMessage'); // メッセージ要素を取得
 
+    const questionCount = parseInt(questionCountInput.value);
+    let allFieldsValid = true;
 
-    if (hasDuplicateQuestions) {
+    for (let i = 1; i <= questionCount; i++) {
+        const questionInput = document.querySelector(`input[name="question${i}"]`);
+        if (questionInput) {
+            const question = questionInput.value.trim();
+            if (question === '') {
+                allFieldsValid = false;
+                break; // 質問が空の場合、チェックを中断
+            }
+        }
+    }
+
+    if (hasDuplicateQuestions || !allFieldsValid) {
         nextButton.disabled = true;
-        alert('質問No、項目名が重複しています。重複を解消してください。');
-        duplicateMessage.textContent = '重複している項目を解消してください。'; // メッセージを設定
+        console.log("cc");
+        duplicateMessage.textContent = '重複している項目を解消してください。';
     } else {
         nextButton.disabled = false;
-        duplicateMessage.textContent = ''; // 重複が解消された場合はメッセージをクリア
+        duplicateMessage.textContent = '';
+        console.log("dd");
     }
 }
 
 
+
 // blur イベントリスナーを追加
-function addBlurEventListeners() {
+
+
+function addBlurEventListenersForQuestionNames() {
     const questionCount = parseInt(questionCountInput.value);
 
     for (let i = 1; i <= questionCount; i++) {
         const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
         if (questionNameInput) {
-            const blurEventListenerFunction = () => {
+            const blurEventListenerFunctionForQuestionNames = () => {
+                const hasDuplicateQuestionNames = detectDuplicateQuestionNames();
+                const nextButton = document.getElementById('nextButton');
+
+                if (hasDuplicateQuestionNames) {
+                    nextButton.disabled = true;
+                    console.log("aaa");
+                    alert('質問名が重複しています。重複を解消してください。');
+                } else {
+                    nextButton.disabled = false;
+                    console.log("bbc");
+
+                }
+            };
+
+            questionNameInput.addEventListener('blur', blurEventListenerFunctionForQuestionNames);
+
+            // removeEventListener の引数としてリスナー関数を指定
+            questionNameInput.removeEventListener('blur', blurEventListenerFunctionForQuestionNames);
+        }
+    }
+}
+
+
+function addBlurEventListenersForQuestions() {
+    const questionCount = parseInt(questionCountInput.value);
+
+    for (let i = 1; i <= questionCount; i++) {
+        const questionInput = document.querySelector(`input[name="question${i}"]`);
+        if (questionInput) {
+            const blurEventListenerFunctionForQuestions = () => {
                 const hasDuplicateQuestions = detectDuplicateQuestions();
                 const nextButton = document.getElementById('nextButton');
 
                 if (hasDuplicateQuestions) {
                     nextButton.disabled = true;
-                    alert('質問名が重複しています。重複を解消してください。');
+                    alert('質問が重複しています。重複を解消してください。');
                 } else {
                     nextButton.disabled = false;
+                    console.log("bbd");
                 }
             };
 
-            questionNameInput.addEventListener('blur', blurEventListenerFunction);
+            questionInput.addEventListener('blur', blurEventListenerFunctionForQuestions);
 
             // removeEventListener の引数としてリスナー関数を指定
-            questionNameInput.removeEventListener('blur', blurEventListenerFunction);
+            questionInput.removeEventListener('blur', blurEventListenerFunctionForQuestions);
         }
     }
 }
 
+
 function addBlurEventListenerToQuestionName(questionIndex) {
     const questionNameInput = document.querySelector(`input[name="question_name${questionIndex}"]`);
     if (questionNameInput) {
-        questionNameInput.addEventListener('blur', blurEventListenerFunction);
+        questionNameInput.addEventListener('blur', blurEventListenerFunctionForQuestionNames);
     }
 }
 
-// 質問数の変更時に blur イベントリスナーを再設定
+//質問数の変更時に blur イベントリスナーを再設定
 questionCountInput.addEventListener('input', () => {
     // 質問名の入力フィールドが変更されたため blur イベントリスナーを一旦削除
     const questionNameInputs = document.querySelectorAll('input[name^="question_name"]');
     questionNameInputs.forEach(input => {
-        input.removeEventListener('blur', blurEventListenerFunction);
+        input.removeEventListener('blur', blurEventListenerFunctionForQuestionNames);
     });
 
     // 質問名の入力フィールドが再生成されたので再度 blur イベントリスナーを追加
-    addBlurEventListeners();
+    addBlurEventListenersForQuestionNames();
 
     // 質問の表示を更新
     updateQuestions();
@@ -310,8 +444,41 @@ questionCountInput.addEventListener('input', () => {
 });
 
 
+
+function addBlurEventListenerToQuestion(questionIndex) {
+    const questionInput = document.querySelector(`input[name="question${questionIndex}"]`);
+    if (questionInput) {
+        questionInput.addEventListener('blur', blurEventListenerFunctionForQuestions);
+    }
+}
+
+// 質問数の変更時に blur イベントリスナーを再設定
+questionCountInput.addEventListener('input', () => {
+    // 質問の入力フィールドが変更されたため blur イベントリスナーを一旦削除
+    const questionInputs = document.querySelectorAll('input[name^="question"]');
+    questionInputs.forEach(input => {
+        input.removeEventListener('blur', blurEventListenerFunctionForQuestions);
+    });
+
+    // 質問の入力フィールドが再生成されたので再度 blur イベントリスナーを追加
+    addBlurEventListenersForQuestions();
+
+    // 質問の表示を更新
+    updateQuestions();
+
+    // 新しく生成された質問の入力フィールドに blur イベントリスナーを追加
+    const newQuestionCount = parseInt(questionCountInput.value);
+    for (let i = 1; i <= newQuestionCount; i++) {
+        addBlurEventListenerToQuestion(i);
+    }
+});
+
+
+
 // 初回に blur イベントリスナーを追加
-addBlurEventListeners();
+addBlurEventListenersForQuestionNames();
+
+addBlurEventListenerToQuestion();
 
 //重複確認処理ここまで
 
