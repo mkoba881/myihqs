@@ -294,7 +294,6 @@ function blurEventListenerFunction() {
         if (questionNameInput) {
             const questionName = questionNameInput.value.trim();
             if (questionName === '') {
-                allFieldsValid = false;
                 break; // 質問名が空の場合、チェックを中断
             }
             
@@ -315,7 +314,6 @@ function blurEventListenerFunction() {
         if (questionInput) {
             const question = questionInput.value.trim();
             if (question === '') {
-                allFieldsValid = false;
                 break; // 質問が空の場合、チェックを中断
             }
         
@@ -335,7 +333,6 @@ function blurEventListenerFunction() {
         if (sortOrderInput) {
             const sortOrder = sortOrderInput.value.trim();
             if (sortOrder === '') {
-                allFieldsValid = false;
                 break; // 質問名が空の場合、チェックを中断
             }
             
@@ -504,6 +501,52 @@ questionCountInput.addEventListener('input', () => {
     }
 });
 
+// バリデーション実行後の初回と各フィールド更新時に重複確認を実行
+function validateAndCheckDuplicates() {
+    // ここにバリデーションのロジックを実装する
+    // 例: detectDuplicateQuestionNames(), detectDuplicateQuestions(), detectDuplicateSortOrders() を呼び出して重複をチェックする
+    // 質問数を取得
+    const questionCount = parseInt(questionCountInput.value);
+    console.log("aaa");
+    console.log(questionCount);
+
+    // // 画面が更新された後にもバリデーションを実行
+    // window.addEventListener('DOMContentLoaded', () => {
+    //     validateAndCheckDuplicates();
+    // });
+
+    // 質問名に対する blur イベントリスナーを追加
+    for (let i = 1; i <= questionCount; i++) {
+        const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
+        const questionInput = document.querySelector(`input[name="question${i}"]`);
+        const sortOrderInput = document.querySelector(`input[name="sortorder${i}"]`);
+    
+        if (questionNameInput || questionInput || sortOrderInput) {
+            const eventListener = () => {
+                // バリデーションと重複チェックを実行
+                blurEventListenerFunction();
+            };
+    
+            if (questionNameInput) {
+                questionNameInput.addEventListener('blur', eventListener);
+            }
+    
+            if (questionInput) {
+                questionInput.addEventListener('blur', eventListener);
+            }
+    
+            if (sortOrderInput) {
+                sortOrderInput.addEventListener('input', eventListener);
+            }
+        }
+    }
+}
+
+
+// ページが読み込まれた際に初回バリデーションを実行
+window.addEventListener('DOMContentLoaded', () => {
+    validateAndCheckDuplicates();
+});
 
 
 // 初回に blur イベントリスナーを追加
