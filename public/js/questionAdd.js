@@ -360,146 +360,39 @@ function blurEventListenerFunction() {
 }
 
 
-// blur イベントリスナーを追加
+// 質問数入力フィールドの要素を取得
 
-function addBlurEventListenersForQuestionNames() {
+// 質問数入力フィールドにイベントリスナーを設定
+questionCountInput.addEventListener('input', function () {
+    // 質問数を取得
     const questionCount = parseInt(questionCountInput.value);
-
+    console.log("質問数入力時のイベント設定")
+   
+    // 質問数に応じて質問フィールド、質問名フィールド、並び順フィールドのイベントリスナーを設定
     for (let i = 1; i <= questionCount; i++) {
+        // 質問名フィールドの要素を取得
         const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
         if (questionNameInput) {
-            const blurEventListenerFunction = () => {
-                const hasDuplicateQuestionNames = detectDuplicateQuestionNames();
-                const nextButton = document.getElementById('nextButton');
-
-                if (hasDuplicateQuestionNames) {
-                    nextButton.disabled = true;
-                    console.log("aaa");
-                    //alert('質問名が重複しています。重複を解消してください。');
-                } else {
-                    nextButton.disabled = false;
-                    console.log("bbc");
-
-                }
-            };
-
             questionNameInput.addEventListener('blur', blurEventListenerFunction);
-
-            // removeEventListener の引数としてリスナー関数を指定
-            questionNameInput.removeEventListener('blur', blurEventListenerFunction);
         }
-    }
-}
 
-
-function addBlurEventListenersForQuestions() {
-    const questionCount = parseInt(questionCountInput.value);
-
-    for (let i = 1; i <= questionCount; i++) {
+        // 質問フィールドの要素を取得
         const questionInput = document.querySelector(`input[name="question${i}"]`);
         if (questionInput) {
-            const blurEventListenerFunction = () => {
-                const hasDuplicateQuestions = detectDuplicateQuestions();
-                const nextButton = document.getElementById('nextButton');
-
-                if (hasDuplicateQuestions) {
-                    nextButton.disabled = true;
-                    alert('質問が重複しています。重複を解消してください。');
-                } else {
-                    nextButton.disabled = false;
-                    console.log("bbd");
-                }
-            };
-
             questionInput.addEventListener('blur', blurEventListenerFunction);
-
-            // removeEventListener の引数としてリスナー関数を指定
-            questionInput.removeEventListener('blur', blurEventListenerFunction);
         }
-    }
-}
 
-function addBlurEventListenersForSortOrders() {
-    const questionCount = parseInt(questionCountInput.value);
-
-    for (let i = 1; i <= questionCount; i++) {
+        // 並び順フィールドの要素を取得
         const sortOrderInput = document.querySelector(`input[name="sortorder${i}"]`);
         if (sortOrderInput) {
             sortOrderInput.addEventListener('blur', blurEventListenerFunction);
         }
     }
-}
-
-// 質問数の変更時に blur イベントリスナーを再設定
-questionCountInput.addEventListener('input', () => {
-    // 並び順の入力フィールドが変更されたため blur イベントリスナーを一旦削除
-    const sortOrderInputs = document.querySelectorAll('input[name^="sortorder"]');
-    sortOrderInputs.forEach(input => {
-        input.removeEventListener('blur', blurEventListenerFunction);
-    });
-
-    // 並び順の入力フィールドが再生成されたので再度 blur イベントリスナーを追加
-    addBlurEventListenersForSortOrders();
 });
 
 
-function addBlurEventListenerToQuestionName(questionIndex) {
-    const questionNameInput = document.querySelector(`input[name="question_name${questionIndex}"]`);
-    if (questionNameInput) {
-        questionNameInput.addEventListener('blur', blurEventListenerFunction);
-    }
-}
+// blur イベントリスナーを追加
 
-//質問数の変更時に blur イベントリスナーを再設定
-questionCountInput.addEventListener('input', () => {
-    // 質問名の入力フィールドが変更されたため blur イベントリスナーを一旦削除
-    const questionNameInputs = document.querySelectorAll('input[name^="question_name"]');
-    questionNameInputs.forEach(input => {
-        input.removeEventListener('blur', blurEventListenerFunction);
-    });
-
-    // 質問名の入力フィールドが再生成されたので再度 blur イベントリスナーを追加
-    addBlurEventListenersForQuestionNames();
-
-    // 質問の表示を更新
-    updateQuestions();
-
-    // 新しく生成された質問名の入力フィールドに blur イベントリスナーを追加
-    const newQuestionCount = parseInt(questionCountInput.value);
-    for (let i = 1; i <= newQuestionCount; i++) {
-        addBlurEventListenerToQuestionName(i);
-    }
-});
-
-
-
-function addBlurEventListenerToQuestion(questionIndex) {
-    const questionInput = document.querySelector(`input[name="question${questionIndex}"]`);
-    if (questionInput) {
-        questionInput.addEventListener('blur', blurEventListenerFunction);
-    }
-}
-
-// 質問数の変更時に blur イベントリスナーを再設定
-questionCountInput.addEventListener('input', () => {
-    // 質問の入力フィールドが変更されたため blur イベントリスナーを一旦削除
-    const questionInputs = document.querySelectorAll('input[name^="question"]');
-    questionInputs.forEach(input => {
-        input.removeEventListener('blur', blurEventListenerFunction);
-    });
-
-    // 質問の入力フィールドが再生成されたので再度 blur イベントリスナーを追加
-    addBlurEventListenersForQuestions();
-
-    // 質問の表示を更新
-    updateQuestions();
-
-    // 新しく生成された質問の入力フィールドに blur イベントリスナーを追加
-    const newQuestionCount = parseInt(questionCountInput.value);
-    for (let i = 1; i <= newQuestionCount; i++) {
-        addBlurEventListenerToQuestion(i);
-    }
-});
 
 // バリデーション実行後の初回と各フィールド更新時に重複確認を実行
 function validateAndCheckDuplicates() {
@@ -510,11 +403,7 @@ function validateAndCheckDuplicates() {
     console.log("aaa");
     console.log(questionCount);
 
-    // // 画面が更新された後にもバリデーションを実行
-    // window.addEventListener('DOMContentLoaded', () => {
-    //     validateAndCheckDuplicates();
-    // });
-
+    
     // 質問名に対する blur イベントリスナーを追加
     for (let i = 1; i <= questionCount; i++) {
         const questionNameInput = document.querySelector(`input[name="question_name${i}"]`);
@@ -536,7 +425,7 @@ function validateAndCheckDuplicates() {
             }
     
             if (sortOrderInput) {
-                sortOrderInput.addEventListener('input', eventListener);
+                sortOrderInput.addEventListener('blur', eventListener);
             }
         }
     }
@@ -549,12 +438,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// 初回に blur イベントリスナーを追加
-addBlurEventListenersForQuestionNames();
-
-addBlurEventListenersForQuestions()
-
-addBlurEventListenersForSortOrders();
 
 //重複確認処理ここまで
 
