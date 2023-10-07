@@ -13,24 +13,28 @@
                 <h1>アンケート実施プレビュー画面</h1>
                 <h2>■取得対象のメールアドレス</h2>
                     <div class="list-news col-md-12 mx-auto">
-                        <table class="table table-dark table-bordered border-light"> 
-                          <thead>
-                            <tr>
-                              <th>名前</th>
-                              <th>メールアドレス</th>
-                            </tr>
-                          </thead>
-                            <tbody class="table table-light table-bordered border-dark">
-                                @foreach($csv_array as $array)
-                                    @if($array[0] != "name" and $array[1] != "mailaddress")
-                                        <tr>
-                                          <td>{{ $array[0]}}</td>
-                                          <td>{{ $array[1]}}</td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                        @if (empty($csv_array))
+                            <p style="color: red;">CSVがアップロードされていません。</p>
+                        @else
+                            <table class="table table-dark table-bordered border-light"> 
+                              <thead>
+                                <tr>
+                                  <th>名前</th>
+                                  <th>メールアドレス</th>
+                                </tr>
+                              </thead>
+                                <tbody class="table table-light table-bordered border-dark">
+                                    @foreach($csv_array as $array)
+                                        @if($array[0] != "name" and $array[1] != "mailaddress")
+                                            <tr>
+                                              <td>{{ $array[0]}}</td>
+                                              <td>{{ $array[1]}}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 <!--<h2>取得している変数、暫定表示後程削除</h2>-->
                 <!--<p>{{var_dump($csv_array)}}</p>-->

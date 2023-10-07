@@ -485,6 +485,15 @@ class IhqsController extends Controller
         return view('fs.conductankatepreview', compact('form', 'csv_array'));
         
     }
+    
+    public function errorconductankatepreview()
+    {
+        // エラーメッセージを生成
+        $errorMessage = "想定していない画面遷移です。最初から入力してください。";
+    
+        // ビューにエラーメッセージを渡す
+        return view('fs.errorview', ['errorMessage' => $errorMessage]);
+    }
 
     public function saveconductankate(Request $request)  
     {

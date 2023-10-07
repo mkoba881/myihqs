@@ -63,6 +63,7 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::post('deleteankate', 'deleteankate')->name('deleteankate');
     Route::get('conductankate', 'conductankate')->name('conductankate');
     Route::post('conductankatepreview', 'conductankatepreview')->name('conductankatepreview');
+    Route::get('conductankatepreview', 'errorconductankatepreview')->name('errorconductankatepreview');
     //Route::post('saveconductankate', 'saveconductankate')->name('saveconductankate');
 });
 
