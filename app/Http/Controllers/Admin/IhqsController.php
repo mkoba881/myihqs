@@ -375,14 +375,16 @@ class IhqsController extends Controller
     public function conductankate(Request $request)
     {
         $form = $request->all();//フォームの中身を全部とってきている
+        //dd($form);
         if (isset($form['id'])) {
-                $id = $form['id'];
-        //dd($id);
-        // idを使ってmailテーブルからデータを抜き出す
-        $mailData = Mail::where('id', $id)->first();
-        $formatData = Format::where('id', $id)->first();
-        //dd($mailData);
-    
+            $id = $form['id'];
+            //dd($id);
+            // idを使ってmailテーブルからデータを抜き出す
+            $mailData = Mail::where('format_id', $id)->first();
+            $formatData = Format::where('id', $id)->first();
+            //dd($formatData);
+            //dd($mailData);
+        
             if ($mailData) {
                 $user_mailformat = $mailData->user_mailformat;
                 $remind_mailformat = $mailData->remind_mailformat;

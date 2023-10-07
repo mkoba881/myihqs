@@ -49,10 +49,15 @@
             <!--<textarea class="hight-adjust">{{var_dump($form)}}</textarea>-->
             <!--<p>{{$form["user_mailformat"]}}</p>-->
             
-            <form action="{{ route('fs.saveconductankate') }}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="form" value="{{ json_encode($form) }}">
-                @csrf
-                <!--<a href="{{ route('fs.conductankate')}}" class="btn btn-primary">前に戻る</a>-->
+            <form action="{{ route('mail.save') }}" method="get">
+                <!--<input type="hidden" name="form" value="{{ json_encode($form) }}">-->
+                <input type="hidden" name="user_mailformat" value="<?=$form['user_mailformat']?>">
+                <input type="hidden" name="remind_mailformat" value="<?=$form['remind_mailformat']?>">
+                <input type="hidden" name="admin_mailformat" value="<?=$form['admin_mailformat']?>">
+                <input type="hidden" name="start" value="<?=$form['start']?>">
+                <input type="hidden" name="end" value="<?=$form['end']?>">
+                <input type="hidden" name="id" value="<?=$form['id']?>">
+                <!--@csrf-->
                 <input type="submit" class="btn btn-primary" value="メール内容を確定する">
             </form>
             @php

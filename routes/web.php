@@ -63,7 +63,7 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
     Route::post('deleteankate', 'deleteankate')->name('deleteankate');
     Route::get('conductankate', 'conductankate')->name('conductankate');
     Route::post('conductankatepreview', 'conductankatepreview')->name('conductankatepreview');
-    Route::post('saveconductankate', 'saveconductankate')->name('saveconductankate');
+    //Route::post('saveconductankate', 'saveconductankate')->name('saveconductankate');
 });
 
 
@@ -71,7 +71,8 @@ Route::controller(IhqsController::class)->prefix('fs')->name('fs.')->middleware(
 
 Route::controller(MailSendController::class)->prefix('mail')->name('mail.')->middleware('auth')->group(function() {
     //Route::post('send', 'sendMail')->name('send');
-    Route::get('testmail', 'send')->name('testmail');
+    Route::get('savemail', 'save')->name('save');// 保存用
+    Route::get('testmail', 'send')->name('testmail');//送信用
 });
 
 

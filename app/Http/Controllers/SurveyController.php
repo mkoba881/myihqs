@@ -15,42 +15,6 @@ use Illuminate\Support\Facades\Crypt;
 
 class SurveyController extends Controller
 {
-    // public function show(Request $hash)
-    // {
-    //      // ログインユーザーのIDを取得
-    //     $userId = Auth::id();
-    //         //dd($hash);
-    //     $path = $hash->getPathInfo();//$hashの中からパス情報を抜き出す。
-    //     $path = str_replace('/fs/answer/', '', $path);
-        
-    //     $id = Crypt::decryptString(urldecode($path));//URLでコードしてから復号化処理を実施する。
-    //     $format = Format::where('id', $id)->get();
-    //     $items = Item::where('format_id', $id)->get();
-        
-    //     $details = collect(); // $detailsを空のコレクションとして初期化
-    //     $answers = collect();
-        
-    //     foreach ($items as $item) {
-    //         $detail = Detail::where('item_id', $item->id)->get();
-    //         $details = $details->merge($detail);
-        
-    //         // ログインユーザーのIDと対応するAnswerレコードを取得
-    //         $answer = Answer::where('format_id', $id)
-    //             ->where('item_id', $item->id)
-    //             ->where('user_id', $userId)
-    //             ->first();
-    
-    //         if ($answer) {
-    //             $answers->push($answer);
-    //         }
-            
-    //     }
-    //     //dd($answers);
-    //     //dd($details);
-        
-    //     return view('fs.answer', compact('format','items','details', 'userId', 'answers'));
-    // }
-    
     
     public function show(Request $hash)
     {
@@ -73,7 +37,7 @@ class SurveyController extends Controller
         $startDate = Carbon::parse($format->start);
         $endDate = Carbon::parse($format->end);
         $currentDate = now();
-        
+            
         if ($currentDate->lt($startDate) || $currentDate->gt($endDate)) {
             // アンケートが現在の日付の範囲外にある場合、別のViewにリダイレクト
             return view('error.out_of_date');
@@ -135,7 +99,6 @@ class SurveyController extends Controller
             if ($answer) {
             $answers[] = $answer; // []演算子を使用して要素を追加
             }
-    
         
         }
         

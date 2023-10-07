@@ -25,6 +25,7 @@ class MailSendController extends Controller
     {
         $form = $request->all();
         unset($form['_token']);
+        //dd($form);
     
         // CSVデータからメールアドレスの配列を作成
         $recipients = [];
@@ -112,6 +113,14 @@ class MailSendController extends Controller
             $newData_mail->admin_mailformat = $form['admin_mailformat'];
             $newData_mail->save();
         }
+    }
+    
+    public function save(Request $request)
+    {
+        $csv_array = session('csv_array');
+        $this->saveMailData($request, $csv_array);
+        $formats = Format::all();//管理画面に戻る際に再度アンケートの一覧を取得
+        return view('fs.management',['formats' => $formats]);
     }
         
     public function send(Request $request)
