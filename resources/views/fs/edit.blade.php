@@ -156,12 +156,14 @@
                                     <label class="col-md-2"><b>質問No、項目名</b></label>
                                     <div class="col-md-10">
                                         <input type="text" class="form-control" name="question_name{{ $index + 1 }}" id="question_name{{ $index + 1 }}" value="{{ old('question_name' . ($index + 1), $item->name) }}">
+                                        <span class="error-message-question_name{{ $index + 1 }}" style="color: red;"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-2">質問文</label>
                                     <div class="col-md-10">
                                         <input type="text" class="form-control" name="question{{ $index + 1 }}" id="question{{ $index + 1 }}" value="{{ old('question' . ($index + 1), $details[$index]->question) }}">
+                                        <span class="error-message-question{{ $index + 1 }}" style="color: red;"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -215,12 +217,12 @@
                                     <label class="col-md-2">並び順</label>
                                     <div class="col-md-10">
                                         <input type="number" class="form-control" name="sortorder{{ $index + 1 }}" value="{{ old('sortorder' . ($index + 1), $item->sortorder) }}">
+                                        <span class="error-message-sortorder{{ $index + 1 }}" style="color: red;"></span>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                         
-
                     </div>
                     <div class="form-group row">
                         <label class="col-md-2">作成ステータス</label>
@@ -231,7 +233,7 @@
                     </div>
                 
                     @csrf
-                    <input type="submit" class="button" value="次へ進む">
+                    <input type="submit" class="button" id="nextButton" value="次へ進む">
                     
                     <div class="card-contents">
                         <a class="button" href="{{ route('fs.management')}}">アンケート管理画面に戻る</a>

@@ -64,7 +64,6 @@
             <!--<p>{{$item}}</p>-->
             <!--<p>{{var_dump($details)}}</p>-->
             <div class="card-contents">
-                <a href="{{ route('fs.make')}}" class="btn btn-primary">作成画面に戻る</a>
                 <a href="{{ route('fs.management')}}" class="btn btn-primary">作成完了</a>
             </div>
         </div>
