@@ -11,24 +11,45 @@
             <div class="col-md-8 mx-auto">
                 <form action="{{ route('fs.answerend') }}" method="post" enctype="multipart/form-data">
                     <h1>アンケート回答画面</h1>
-                    <h2>アンケート名: {{ $format[0]["name"] }}</h2>
+                    <h2>アンケート名: {{ $format["name"] }}</h2>
                     
                     @foreach ($items as $index => $item)
                         <h2>{{ $item["name"] }}. {{ $details[$index]["question"] }}</h2>
                         <h2>・回答の選択肢</h2>
-                        <h3>①{{ $details[$index]["option1"] }}</h3>
-                        <h3>②{{ $details[$index]["option2"] }}</h3>
-                        <h3>③{{ $details[$index]["option3"] }}</h3>
-                        <h3>④{{ $details[$index]["option4"] }}</h3>
-                        <h3>⑤{{ $details[$index]["option5"] }}</h3>
+                        
+                        @if ($details[$index]["option1"])
+                            <h3>①{{ $details[$index]["option1"] }}</h3>
+                        @endif
+                        @if ($details[$index]["option2"])
+                            <h3>②{{ $details[$index]["option2"] }}</h3>
+                        @endif
+                        @if ($details[$index]["option3"])
+                            <h3>③{{ $details[$index]["option3"] }}</h3>
+                        @endif
+                        @if ($details[$index]["option4"])
+                            <h3>④{{ $details[$index]["option4"] }}</h3>
+                        @endif
+                        @if ($details[$index]["option5"])
+                            <h3>⑤{{ $details[$index]["option5"] }}</h3>
+                        @endif
                         
                         <div class="form-group row" style="margin-bottom: 30px;">
                             <select class="form-control" name="answer_result[{{ $index }}]">
+                                @if ($details[$index]["option1"])
                                     <option value="1" {{ isset($answers[$index]) && $answers[$index]->answer_result === 1 ? 'selected' : '' }}>①</option>
+                                @endif
+                                @if ($details[$index]["option2"])
                                     <option value="2" {{ isset($answers[$index]) && $answers[$index]->answer_result === 2 ? 'selected' : '' }}>②</option>
+                                @endif
+                                @if ($details[$index]["option3"])
                                     <option value="3" {{ isset($answers[$index]) && $answers[$index]->answer_result === 3 ? 'selected' : '' }}>③</option>
+                                @endif
+                                @if ($details[$index]["option4"])
                                     <option value="4" {{ isset($answers[$index]) && $answers[$index]->answer_result === 4 ? 'selected' : '' }}>④</option>
+                                @endif
+                                @if ($details[$index]["option5"])
                                     <option value="5" {{ isset($answers[$index]) && $answers[$index]->answer_result === 5 ? 'selected' : '' }}>⑤</option>
+                                @endif
                             </select>
                         </div>
                         
@@ -54,7 +75,7 @@
                             @endif
                         </div>
                         
-                        <input type="hidden" name="format_id" value="{{ $format[0]["id"] }}">
+                        <input type="hidden" name="format_id" value="{{ $format["id"] }}">
                         <input type="hidden" name="item_id[{{ $index }}][]" value="{{ $item["id"] }}">
                         <input type="hidden" name="detail_id[{{ $index }}][]" value="{{ $details[$index]["id"] }}">
 

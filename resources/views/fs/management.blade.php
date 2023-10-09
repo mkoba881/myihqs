@@ -38,7 +38,14 @@
                                             <td><input type="checkbox" name="ankate_ids[]" value="{{ $ankate->id }}"></td>
                                             <td>{{ $ankate->id }}</td>
                                             <td>{{ $ankate->name }}</td>
-                                            <td>{{ $ankate->previous_at }}</td>
+                                            <td>
+                                                @if ($ankate->previous_at)
+                                                    前回開始日: {{ $ankate->previous_at->format('Y-m-d H:i:s') }}<br>
+                                                @endif
+                                                @if ($ankate->previous_end)
+                                                    前回終了日: {{ is_object($ankate->previous_end) ? $ankate->previous_end->format('Y-m-d H:i:s') : $ankate->previous_end }}
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($ankate->created_at)
                                                     作成日: {{ $ankate->created_at->format('Y-m-d H:i:s') }}<br>

@@ -16,6 +16,16 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            \App\Models\Format::updatePreviousAt();
+        //})->daily();
+        })->dailyAt('09:00');
+        
+        // 本日の日付が終了日より後の場合、前回の終了日（previous_end）を更新
+        $schedule->call(function () {
+            \App\Models\Format::updatePreviousEnd();
+        //})->daily();
+        })->dailyAt('09:00');
     }
 
     /**
