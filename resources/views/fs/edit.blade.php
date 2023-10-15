@@ -96,7 +96,6 @@
                         $oldSortOrders[$i] = old("sortorder{$i}", '');
                     }
                 @endphp
-                {{ json_encode($oldPriorities) }}
 
                 
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">

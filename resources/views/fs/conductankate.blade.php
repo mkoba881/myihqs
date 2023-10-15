@@ -13,13 +13,20 @@
                 <h2>アンケート実施画面</h2>
             </div>
             <div class="content">
+                
+                
+
+                
+                
                 <form action="{{ route('fs.conductankatepreview') }}" method="post" enctype="multipart/form-data">
                    @if (count($errors) > 0)
-                        <ul>
-                            @foreach($errors->all() as $e)
-                                <li>{{ $e }}</li>
-                            @endforeach
-                        </ul>
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach($errors->all() as $e)
+                                    <li>{{ $e }}</li>
+                                @endforeach
+                            </ul>
+                        </div>    
                     @endif    
                     <div class="form-group row">
                         <div class="col-md-10"> 

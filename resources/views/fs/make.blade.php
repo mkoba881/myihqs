@@ -27,7 +27,7 @@
                 
                 {{-- 開始日のエラーメッセージ --}}
                 @error('start')
-                    <div class="alert alert-danger">開始日に入力が必要です。</div>
+                    <div class="alert alert-danger">開始日が空欄または正しくない値のため、開始日に入力が必要です。</div>
                     @php
                         $surveyInfoError = true; // 開始日のエラーがある場合にフラグを設定
                     @endphp
@@ -35,7 +35,7 @@
                 
                 {{-- 終了日のエラーメッセージ --}}
                 @error('end')
-                    <div class="alert alert-danger">終了日に入力が必要です。</div>
+                    <div class="alert alert-danger">終了日が空欄または正しくない値のため、終了日に入力が必要です。</div>
                     @php
                         $surveyInfoError = true; // 終了日のエラーがある場合にフラグを設定
                     @endphp
@@ -59,13 +59,13 @@
                         @endphp
                     @enderror
                     @error("question_name{$i}")
-                        <div class="alert alert-danger">質問No、項目名に入力が必要です。</div>
+                        <div class="alert alert-danger">質問 {{ $i }}の質問No、項目名に入力が必要です。</div>
                         @php
                             $imageError = true; // 質問名のエラーがある場合にフラグを設定
                         @endphp
                     @enderror
                     @error("sortorder{$i}")
-                        <div class="alert alert-danger">並び順に入力が必要です。</div>
+                        <div class="alert alert-danger">質問 {{ $i }}の並び順に入力が必要です。</div>
                         @php
                             $imageError = true; // 並び順のエラーがある場合にフラグを設定
                         @endphp

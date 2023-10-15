@@ -448,7 +448,30 @@ class IhqsController extends Controller
                 mb_convert_variables("UTF-8", "SJIS", $csv_array);
             }
             //ddd($csv_array);
+            
+            // BOM付きUTF-8を検出し、警告を表示（赤文字）
+            if ($charset[1] === "utf-8" && strncmp($csv_array[0][0], "\xEF\xBB\xBF", 3) === 0) {
+                $csv_array[0][0] = substr($csv_array[0][0], 3); // BOMを削除
+                $warningMessage = '<p style="color: red;">警告: UTF-8（BOM）が検出されました。UTF-8に変換しました。</p>';
+                // 警告メッセージを表示
+                echo $warningMessage;
+            }
+                
+             // 1行目が「name」と「mailaddress」でない場合、エラーメッセージを生成
+            if ($csv_array[0][0] != 'name' || $csv_array[0][1] != 'mailaddress') {
+                $errors[] = 'CSVの1行目が正しくありません。1行目に"name"、"mailaddress"を記入してください。';
+            }
     
+            // 2行目が「name」と「mailaddress」である場合、エラーメッセージを生成
+            if ($csv_array[1][0] == 'name' && $csv_array[1][1] == 'mailaddress') {
+                $errors[] = 'CSVの2行目が正しくありません。2行目に"name"、"mailaddress"を記入しないでください。';
+            }
+    
+            // エラーメッセージがある場合は、リダイレクトしてエラーを表示
+            if (!empty($errors)) {
+                return redirect()->back()->withErrors($errors); //withErrorsメソッドを使用
+            }
+                
         } else {
             
             // ファイルが存在しない場合の処理
