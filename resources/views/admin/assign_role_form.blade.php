@@ -3,9 +3,9 @@
 @section('title', '管理者権限付与')
 
 @section('content')
-    <div class="container">
+    <div class="container welcome-container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">管理者権限付与</div>
 
@@ -27,14 +27,14 @@
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">付与</button>
+                            <button type="submit" class="btn btn-primary">管理者権限を付与</button>
                         </form>
                     </div>
                     
-                    <div class="mt-3">
-                    <a href="{{ route('admin.ihqs.selection') }}" class="btn btn-secondary">機能選択画面に戻る</a>
+                    <div style="margin-bottom: 20px;">
+                        <a href="{{ route('admin.ihqs.selection') }}" class="btn btn-secondary">機能選択画面に戻る</a>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

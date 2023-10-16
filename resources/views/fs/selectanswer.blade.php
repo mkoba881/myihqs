@@ -6,9 +6,9 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container">
+    <div class="container welcome-container">
         <div class="row">
-            <div class="col-md-8 mx-auto">
+            <div class="col-12 mx-auto">
                 <h1>アンケート選択回答画面</h1>
                 <!-- アンケート選択セレクトボックス -->
                 <select id="surveySelect">

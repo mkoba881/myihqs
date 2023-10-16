@@ -26,60 +26,54 @@
         {{-- この章の後 半で作成するCSSを読み込みます --}}
         <link href="{{ secure_asset('css/admin.css') }}" rel="stylesheet">
     </head>
-    <body>
+    <body class="admin-page">
+        <div class="bg-cover"></div>
         <div id="app">
             {{-- 画面上部に表示するナビゲーションバーです。 --}}
-            <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
-                <div class="container">
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
+            <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+                <div class="container-fluid">
+                    <a class="navbar-brand ml-auto" href="{{ url('/') }}">社内アンケートサイト</a> <!-- ml-auto クラスを追加 -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-
+            
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav ms-auto">
-
                         </ul>
                         <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav">
-                        {{-- 以下を追記 --}}
-                        <!-- Authentication Links -->
-                        {{-- ログインしていなかったらログイン画面へのリンクを表示 --}}
-                        @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a></li>
-                        {{-- ログインしていたらユーザー名とログアウトボタンを表示 --}}
-                        @else
-                            <li class="nav-item dropdown">
-                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                 </a>
-
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Authentication Links -->
+                            @guest
+                                <li><a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a></li>
+                            @else
+                                <li class="nav-item dropdown">
+                                     <a class="navbar-brand dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                     </a>
+            
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('messages.logout') }}
                                     </a>
-
+            
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
                             </li>
                             @endguest
-                            {{-- 以上までを追記 --}}
-                        <ul class="navbar-nav">
-
+                        </ul>
                     </div>
                 </div>
             </nav>
 
+
             {{-- ここまでナビゲーションバー --}}
 
-            <main class="py-4">
+            <main class="py-5">
 
                 {{-- コンテンツをここに入れるため、@yieldで空けておきます。 --}}
                 @yield('content')
