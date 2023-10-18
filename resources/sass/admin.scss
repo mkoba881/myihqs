@@ -167,5 +167,27 @@ body.admin-page {
     right: 0;
 }
 
+/* ログインボックスの背景を白色半透明にする */
+.login-box {
+    border: none;
+    background-color: transparent;
+}
+
+.login-header {
+    background-color: rgba(255, 255, 255, 0.7); /* 背景色を白色にし、透明度を設定 */
+    padding: 20px; /* 必要に応じて余白を調整 */
+}
+
+.login-body {
+    background-color: rgba(255, 255, 255, 0.7); /* 背景色を白色にし、透明度を設定 */
+    padding: 20px; /* 必要に応じて余白を調整 */
+}
 
 
+/* 白い半透明の箱のスタイル */
+.white-transparent-box {
+    background-color: rgba(255, 255, 255, 0.7); /* 白色の半透明背景 */
+    padding: 20px; /* 必要に応じて余白を調整 */
+    border: 1px solid #ccc; /* 枠線を追加 */
+    border-radius: 10px; /* 角丸にする場合、必要に応じて調整 */
+}
