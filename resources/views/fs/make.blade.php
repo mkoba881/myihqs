@@ -7,7 +7,7 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container">
+    <div class="container white-transparent-box">
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h1>アンケート作成画面</h1>
@@ -151,11 +151,13 @@
 
                     
                     @csrf
-                    <input type="submit" class="button" id="nextButton" value="次へ進む">
+                    <div class="text-center">
+                        <input type="submit" class="button" id="nextButton" value="次へ進む">
+                    </div>
                     <div id="duplicateMessage" style="color: red;"></div>
 
                     
-                    <div class="card-contents">
+                    <div class="card-contents text-center">
                         <a class="button" href="{{ route('fs.management')}}">アンケート管理画面に戻る</a>
                     </div>
                 </form>

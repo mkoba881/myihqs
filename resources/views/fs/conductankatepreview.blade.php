@@ -7,7 +7,7 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container">
+    <div class="container white-transparent-box">
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h1>アンケート実施プレビュー画面</h1>
@@ -49,10 +49,7 @@
                 <h2>■終了日</h2>
                 <p>{{$form["end"]}}</p>
             </div>
-            <!--<p>以下は暫定表示後程削除</p>-->
-            <!--<textarea class="hight-adjust">{{var_dump($form)}}</textarea>-->
-            <!--<p>{{$form["user_mailformat"]}}</p>-->
-            
+
             <form action="{{ route('mail.save') }}" method="get">
                 <!--<input type="hidden" name="form" value="{{ json_encode($form) }}">-->
                 <input type="hidden" name="user_mailformat" value="<?=$form['user_mailformat']?>">
@@ -62,7 +59,7 @@
                 <input type="hidden" name="end" value="<?=$form['end']?>">
                 <input type="hidden" name="id" value="<?=$form['id']?>">
                 <!--@csrf-->
-                <input type="submit" class="btn btn-primary" value="メール内容を確定する">
+                <input type="submit" class="btn btn-primary mx-auto" value="メール内容を確定する">
             </form>
             @php
                 session(['csv_array' => $csv_array]);
@@ -76,7 +73,7 @@
                 <input type="hidden" name="start" value="<?=$form['start']?>">
                 <input type="hidden" name="end" value="<?=$form['end']?>">
                 <input type="hidden" name="id" value="<?=$form['id']?>">
-                <input type="submit" value="送信" class="btn btn-primary">
+                <input type="submit" value="送信" class="btn btn-primary mx-auto">
                 @csrf
             </form>
         </div>

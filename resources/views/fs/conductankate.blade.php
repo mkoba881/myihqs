@@ -7,15 +7,12 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container">
+    <div class="container white-transparent-box">
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h2>アンケート実施画面</h2>
             </div>
             <div class="content">
-                
-                
-
                 
                 
                 <form action="{{ route('fs.conductankatepreview') }}" method="post" enctype="multipart/form-data">
@@ -72,8 +69,6 @@
                 </form>
                 <div class="inner">
                 </div>
-                <p>仮でアンケートIDを表示後程削除</p>
-                <p>{{$id}}</p>
             </div>
         </div>
     </div>

@@ -1,4 +1,9 @@
 @charset "UTF-8";
+/* フォントを統一するスタイル */
+body, h1, h2, h3, h4, h5, h6, p, label, input, select, textarea {
+  font-family: "Arial", sans-serif;
+}
+
 body {
   background-repeat: no-repeat;
   background-position: center;
@@ -18,7 +23,7 @@ body {
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
-  font-weight: bold;
+  border: none; /* ボーダーを削除 */
 }
 
 .navbar-laravel {
@@ -114,8 +119,6 @@ body.home-page {
 
 /* layouts/admin.scss */
 body.admin-page {
-  display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -159,6 +162,13 @@ body.admin-page {
 /* 白い半透明の箱のスタイル */
 .white-transparent-box {
   background-color: rgba(255, 255, 255, 0.7); /* 白色の半透明背景 */
+  padding: 20px; /* 必要に応じて余白を調整 */
+  border: 1px solid #ccc; /* 枠線を追加 */
+  border-radius: 10px; /* 角丸にする場合、必要に応じて調整 */
+}
+
+.white-white-box {
+  background-color: #fff; /* 白色の背景 */
   padding: 20px; /* 必要に応じて余白を調整 */
   border: 1px solid #ccc; /* 枠線を追加 */
   border-radius: 10px; /* 角丸にする場合、必要に応じて調整 */

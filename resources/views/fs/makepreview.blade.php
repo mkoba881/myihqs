@@ -7,7 +7,7 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container">
+    <div class="container white-transparent-box">
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h1>アンケート作成プレビュー画面</h1>
@@ -83,7 +83,7 @@
                     
                 @endforeach
             </div>
-            <div class="card-contents">
+            <div class="card-contents text-center">
                 <a href="{{ route('fs.management')}}" class="btn btn-primary">作成完了</a>
             </div>
         </div>
