@@ -62,10 +62,12 @@
                             <input type="text" class="form-control" name="end" value="{{ old('end', $end) }}">
                         </div>
                     </div>
-                    <input type="hidden" name="id" value="<?=$id?>">
-                    <a href="{{ route('fs.management')}}" class="btn btn-primary">前に戻る</a>
-                    @csrf
-                    <input type="submit" class="btn btn-primary" value="次へ進む">
+                    <div class="text-center">
+                        <input type="hidden" name="id" value="<?=$id?>">
+                        <a href="{{ route('fs.management')}}" class="btn btn-primary">前に戻る</a>
+                        @csrf
+                        <input type="submit" class="btn btn-primary" value="次へ進む">
+                    </div>
                 </form>
                 <div class="inner">
                 </div>

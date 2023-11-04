@@ -6,11 +6,13 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container">
+    <div class="container white-transparent-box">
         <div class="row">
+            <div class="col-md-8 mx-auto text-center">
+                <h2>アンケート回答画面</h2>
+            </div>
             <div class="col-md-8 mx-auto">
                 <form action="{{ route('fs.answerend') }}" method="post" enctype="multipart/form-data">
-                    <h1>アンケート回答画面</h1>
                     <h2>アンケート名: {{ $format["name"] }}</h2>
                     
                     @foreach ($items as $index => $item)

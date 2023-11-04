@@ -59,7 +59,9 @@
                 <input type="hidden" name="end" value="<?=$form['end']?>">
                 <input type="hidden" name="id" value="<?=$form['id']?>">
                 <!--@csrf-->
-                <input type="submit" class="btn btn-primary mx-auto" value="メール内容を確定する">
+                <div class="text-center margin-bottom">
+                    <input type="submit" class="btn btn-primary mx-auto" value="メール内容を確定する">
+                </div>
             </form>
             @php
                 session(['csv_array' => $csv_array]);
@@ -73,7 +75,9 @@
                 <input type="hidden" name="start" value="<?=$form['start']?>">
                 <input type="hidden" name="end" value="<?=$form['end']?>">
                 <input type="hidden" name="id" value="<?=$form['id']?>">
-                <input type="submit" value="送信" class="btn btn-primary mx-auto">
+                <div class="text-center">
+                    <input type="submit" value="送信" class="btn btn-primary mx-auto">
+                </div>
                 @csrf
             </form>
         </div>

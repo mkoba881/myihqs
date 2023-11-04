@@ -5,11 +5,11 @@
 @section('content')
     <div class="container white-transparent-box">
         <div class="row">
-            <div class="col-md-8 mx-auto">
+            <div class="col-md-8 mx-auto text-center">
                 <h2>アンケート管理画面</h2>
             </div>
         </div>
-        <div class="card-contents">
+        <div class="card-contents text-center">
             <a class="button" href="{{ route('fs.make')}}">アンケートフォームを作成</a>
         </div>
             <h3>アンケート一覧</h3>
@@ -75,7 +75,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-danger deleteButton">選択したアンケートを削除</button>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-danger deleteButton">選択したアンケートを削除</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -84,7 +86,7 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <div class="card-contents">
+            <div class="card-contents text-center">
                 <a class="button" href="{{ route('admin.ihqs.selection')}}">機能選択画面に戻る</a>
             </div>
     </div>

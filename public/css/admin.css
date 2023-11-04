@@ -117,7 +117,6 @@ body.home-page {
   font-size: 24px; /* フォントサイズを調整 */
 }
 
-/* layouts/admin.scss */
 body.admin-page {
   align-items: center;
 }
@@ -167,9 +166,22 @@ body.admin-page {
   border-radius: 10px; /* 角丸にする場合、必要に応じて調整 */
 }
 
+.white-second-transparent-box {
+  background-color: rgba(255, 255, 255, 0.7); /* 白色の半透明背景 */
+  padding: 20px; /* 必要に応じて余白を調整 */
+  border: 1px solid #ccc; /* 枠線を追加 */
+  border-radius: 10px; /* 角丸にする場合、必要に応じて調整 */
+  margin-top: 20px; /* 上部に感覚を追加 */
+}
+
 .white-white-box {
   background-color: #fff; /* 白色の背景 */
   padding: 20px; /* 必要に応じて余白を調整 */
   border: 1px solid #ccc; /* 枠線を追加 */
   border-radius: 10px; /* 角丸にする場合、必要に応じて調整 */
+}
+
+/* 新しいクラスを作成 */
+.margin-bottom {
+  margin-bottom: 20px; /* 必要なマージンの値を設定 */
 }
