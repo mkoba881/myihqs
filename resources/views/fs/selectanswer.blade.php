@@ -129,10 +129,11 @@
                                         ` : ''}
                                     </div>
                                     
-
-                                    <h5>・参考画像</h5>
                                     <div style="margin-bottom: 30px;">
+                                        ${imagePath ? `
+                                        <h5>・参考画像</h5>
                                         <img src="${imagePath}" id="${referenceImageId}" style="max-width: 100%;">
+                                        ` : ''}
                                     </div>
                                     
                                     <input type="hidden" name="format_id" value="${selectedFormatId}">
@@ -147,8 +148,8 @@
     
                 content += `
                     @csrf
-                    <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="回答結果を送信する" style="margin-bottom: 30px;">
+                    <div class="card-content text-center">
+                        <input type="submit" class="btn btn-primary" value="回答結果を送信する">
                     </div>
                 </form>
                 `;

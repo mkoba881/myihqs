@@ -10,19 +10,18 @@ body {
   color: #000;
 }
 
-.card-contents {
-    margin-bottom: 20px; /* 下側に隙間を設定 */
+.text-center{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .button {
-    margin-top: 20px; /* 上側に隙間を設定 */
     display: inline-block;
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
-    //font-weight: bold;文字を太字にする
     border: none; /* ボーダーを削除 */
 }
 
@@ -142,14 +141,6 @@ body.admin-page {
     z-index: -1; /* コンテンツより背景を奥に配置 */
 }
 
-// .navbar.navbar-expand-md.navbar-dark.navbar-laravel {
-//     background-color: #000; /* ナビゲーションバーの背景色 */
-//     width: 100%; /* ナビゲーションバーを画面幅いっぱいに広げる */
-//     position: fixed; /* ナビゲーションバーを画面上部に固定 */
-//     top: 0; /* 画面上部に配置 */
-//     left: 0; /* 画面左端に配置 */
-//     right: 0; /* 画面右端に配置 */
-// }
 
 .navbar.navbar-expand-md.navbar-light.navbar-laravel {
     background-color: transparent; /* ナビゲーションバーの背景色を透明にする */

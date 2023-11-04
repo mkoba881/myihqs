@@ -11,12 +11,12 @@ body {
   color: #000;
 }
 
-.card-contents {
-  margin-bottom: 20px; /* 下側に隙間を設定 */
+.text-center {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .button {
-  margin-top: 20px; /* 上側に隙間を設定 */
   display: inline-block;
   padding: 10px 20px;
   background-color: #007bff;
