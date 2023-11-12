@@ -39,64 +39,66 @@ function updateQuestions() {
 
             const questionTemplate = `
                 <div class="question">
-                    <label class="col-md-2" for="question_name${questionIndex}"><b><span style="color: red;">質問${questionIndex}の項目</span></b></label>
-                    <div class="form-group row">
-                        <label class="col-md-2"><b>質問No、項目名</b></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="question_name${questionIndex}" id="question_name${questionIndex}" value="${oldQuestionNames[questionIndex] || ''}">
-                            <span class="error-message-question_name${questionIndex}" style="color: red;"></span>
+                    <div class="container white-second-transparent-box">
+                        <label class="col-md-2" for="question_name${questionIndex}"><b><span style="color: red;">質問${questionIndex}の項目</span></b></label>
+                        <div class="form-group row">
+                            <label class="col-md-2"><b>質問No、項目名</b></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="question_name${questionIndex}" id="question_name${questionIndex}" value="${oldQuestionNames[questionIndex] || ''}">
+                                <span class="error-message-question_name${questionIndex}" style="color: red;"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">質問文</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="question${questionIndex}" id="question${questionIndex}" value="${oldQuestions[questionIndex] || ''}">
-                            <span class="error-message-question${questionIndex}" style="color: red;"></span>
+                        <div class="form-group row">
+                            <label class="col-md-2">質問文</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="question${questionIndex}" id="question${questionIndex}" value="${oldQuestions[questionIndex] || ''}">
+                                <span class="error-message-question${questionIndex}" style="color: red;"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">選択肢</label>
-                        <div class="col-md-10">
-                            <label class="col-md-2">①</label>
-                            <input type="text" class="form-control" name="option${questionIndex}_1" value="${options[0] || ''}">
-                            <label class="col-md-2">②</label>
-                            <input type="text" class="form-control" name="option${questionIndex}_2" value="${options[1] || ''}">
-                            <label class="col-md-2">③</label>
-                            <input type="text" class="form-control" name="option${questionIndex}_3" value="${options[2] || ''}">
-                            <label class="col-md-2">④</label>
-                            <input type="text" class="form-control" name="option${questionIndex}_4" value="${options[3] || ''}">
-                            <label class="col-md-2">⑤</label>
-                            <input type="text" class="form-control" name="option${questionIndex}_5" value="${options[4] || ''}">
+                        <div class="form-group row">
+                            <label class="col-md-2">選択肢</label>
+                            <div class="col-md-10">
+                                <label class="col-md-2">①</label>
+                                <input type="text" class="form-control" name="option${questionIndex}_1" value="${options[0] || ''}">
+                                <label class="col-md-2">②</label>
+                                <input type="text" class="form-control" name="option${questionIndex}_2" value="${options[1] || ''}">
+                                <label class="col-md-2">③</label>
+                                <input type="text" class="form-control" name="option${questionIndex}_3" value="${options[2] || ''}">
+                                <label class="col-md-2">④</label>
+                                <input type="text" class="form-control" name="option${questionIndex}_4" value="${options[3] || ''}">
+                                <label class="col-md-2">⑤</label>
+                                <input type="text" class="form-control" name="option${questionIndex}_5" value="${options[4] || ''}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">優先度</label>
-                        <select class="form-control" name="priority${questionIndex}">
-                            <option ${oldPriorities[questionIndex] === '1' ? 'selected' : ''}>1</option>
-                            <option ${oldPriorities[questionIndex] === '2' ? 'selected' : ''}>2</option>
-                            <option ${oldPriorities[questionIndex] === '3' ? 'selected' : ''}>3</option>
-                            <option ${oldPriorities[questionIndex] === '4' ? 'selected' : ''}>4</option>
-                            <option ${oldPriorities[questionIndex] === '5' ? 'selected' : ''}>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">参考リンク</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="rf_url${questionIndex}" value="${oldReferenceLinks[questionIndex] || ''}">
+                        <div class="form-group row">
+                            <label class="col-md-2">優先度</label>
+                            <select class="form-control" name="priority${questionIndex}">
+                                <option ${oldPriorities[questionIndex] === '1' ? 'selected' : ''}>1</option>
+                                <option ${oldPriorities[questionIndex] === '2' ? 'selected' : ''}>2</option>
+                                <option ${oldPriorities[questionIndex] === '3' ? 'selected' : ''}>3</option>
+                                <option ${oldPriorities[questionIndex] === '4' ? 'selected' : ''}>4</option>
+                                <option ${oldPriorities[questionIndex] === '5' ? 'selected' : ''}>5</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">参考画像</label>
-                        <div class="col-md-5">
-                            <input type="file" class="form-control-file" name="rf_image${questionIndex}" onchange="handleImageChange(${questionIndex}, this)" data-selected-image="">
-                            <div class="image-preview">${imagePreview}</div>
+                        <div class="form-group row">
+                            <label class="col-md-2">参考リンク</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="rf_url${questionIndex}" value="${oldReferenceLinks[questionIndex] || ''}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">並び順</label>
-                        <div class="col-md-10">
-                            <input type="number" class="form-control" name="sortorder${questionIndex}" value="${oldSortOrders[questionIndex] || ''}">
-                            <span class="error-message-sortorder${questionIndex}" style="color: red;"></span>
+                        <div class="form-group row">
+                            <label class="col-md-2">参考画像</label>
+                            <div class="col-md-5">
+                                <input type="file" class="form-control-file" name="rf_image${questionIndex}" onchange="handleImageChange(${questionIndex}, this)" data-selected-image="">
+                                <div class="image-preview">${imagePreview}</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">並び順</label>
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" name="sortorder${questionIndex}" value="${oldSortOrders[questionIndex] || ''}">
+                                <span class="error-message-sortorder${questionIndex}" style="color: red;"></span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@
                 <h2>アンケート分析画面</h2>
             </div>
             <select class="form-control" id="formatId" name="format_id">
-                <option>－－－－</option>
+                <option>----------</option>
                 @foreach($formats as $formatId => $formatName)
                     <option value="{{ $formatId }}">{{ $formatName }}</option>
                 @endforeach

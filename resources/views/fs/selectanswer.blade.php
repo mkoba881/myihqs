@@ -25,8 +25,10 @@
         <div id="answerSection" style="display: none;">
         <!-- ここに回答画面の内容が表示されます -->
         </div>
-        <div class="card-contents text-center">
-            <a class="button" href="{{ route('admin.ihqs.selection')}}">機能選択画面に戻る</a>
+        <div  class="container white-second-transparent-box">
+            <div class="card-contents text-center">
+                <a class="button" href="{{ route('admin.ihqs.selection')}}">機能選択画面に戻る</a>
+            </div>
         </div>
     </div>
     
@@ -141,15 +143,15 @@
                                     <input type="hidden" name="detail_id[${itemIndex}][]" value="${detail.id}">
                                 </div>
                             </div>
-
                         `;
                     });
                 });
-    
                 content += `
                     @csrf
-                    <div class="card-content text-center">
-                        <input type="submit" class="btn btn-primary" value="回答結果を送信する">
+                    <div  class="container white-second-transparent-box">
+                        <div class="card-content text-center">
+                            <input type="submit" class="btn btn-primary" value="回答結果を送信する">
+                        </div>
                     </div>
                 </form>
                 `;

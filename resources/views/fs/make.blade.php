@@ -7,10 +7,9 @@
 
 {{-- admin.blade.phpの@yield('content')に以下のタグを埋め込む --}}
 @section('content')
-    <div class="container white-transparent-box">
+    <div>
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h1>アンケート作成画面</h1>
                 
                 @php
                     $imageError = false; // 画像エラーのフラグを初期化
@@ -101,33 +100,34 @@
 
                 <form action="{{ route('fs.create') }}" method="post" enctype="multipart/form-data">
                     
-             
-                    <div class="form-group row">
-                        <label class="col-md-2"><b>アンケート名</b></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="ankate_name" value="{{ old('ankate_name') }}">
+                    <div class="container white-second-transparent-box">
+                        <h1>アンケート作成画面</h1>
+                        <div class="form-group row">
+                            <label class="col-md-2"><b>アンケート名</b></label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="ankate_name" value="{{ old('ankate_name') }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">開始日</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="start" value="{{ old('start') }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2">終了日</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="end" value="{{ old('end') }}">
+                            </div>
+                        </div>
+                    
+                        <div class="form-group row">
+                            <label class="col-md-2">質問数</label>
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" name="questionCount" value="{{ old('questionCount') }}">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">開始日</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="start" value="{{ old('start') }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">終了日</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="end" value="{{ old('end') }}">
-                        </div>
-                    </div>
-                
-                    <div class="form-group row">
-                        <label class="col-md-2">質問数</label>
-                        <div class="col-md-10">
-                            <input type="number" class="form-control" name="questionCount" value="{{ old('questionCount') }}">
-                        </div>
-                    </div>
-                
                 
                     <div id="questions" 
                          data-old-question-names="{{ json_encode($oldQuestionNames) }}"
@@ -138,30 +138,26 @@
                          data-old-sort-orders="{{ json_encode($oldSortOrders) }}">
                     </div>
                     
-             
-                
-                    
-                    <div class="form-group row">
-                        <label class="col-md-2">作成ステータス</label>
-                        <select class="form-control" name="status" value="{{ old('status') }}">-->
-                            <option value=1>作成中（一時保存）</option>
-                            <option value=2>実施前（完成）</option>
-                        </select>
-                    </div>
-
-                    
-                    @csrf
-                    <div class="text-center">
-                        <input type="submit" class="button" id="nextButton" value="次へ進む">
-                    </div>
-                    <div id="duplicateMessage" style="color: red;"></div>
-
-                    
-                    <div class="card-contents text-center">
-                        <a class="button" href="{{ route('fs.management')}}">アンケート管理画面に戻る</a>
+                    <div class="container  white-second-transparent-box">
+                        <div class="form-group row">
+                            <label class="col-md-2">作成ステータス</label>
+                            <select class="form-control" name="status" value="{{ old('status') }}">-->
+                                <option value=1>作成中（一時保存）</option>
+                                <option value=2>実施前（完成）</option>
+                            </select>
+                        </div>
+                        @csrf
+                        <div class="text-center">
+                            <input type="submit" class="button" id="nextButton" value="次へ進む">
+                        </div>
+                        <div id="duplicateMessage" style="color: red;"></div>
+    
+                        
+                        <div class="card-contents text-center">
+                            <a class="button" href="{{ route('fs.management')}}">アンケート管理画面に戻る</a>
+                        </div>
                     </div>
                 </form>
-                
             </div>
         </div>
     </div>
