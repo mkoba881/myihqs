@@ -18,23 +18,23 @@
                 {{-- 繰り返し処理で質問の詳細情報を表示 --}}
                 @foreach ($items as $index => $item)
                     <div class="container white-second-transparent-box">
-                        <h2><b><span style="color: red;">●質問No.{{$item->sortorder}} . {{$item->name}} </span></b></h2>
-                        <h2>質問文 . {{$details[$index]->question}}</h2>
-                        <h2>・回答の選択肢</h2>
+                        <h5><span style="color: red;">●質問No.{{$item->sortorder}} . {{$item->name}} </span></h5>
+                        <h5>質問文 . {{$details[$index]->question}}</h5>
+                        <h5>・回答の選択肢</h5>
                             @if ($details[$index]->option1)
-                                <h3>①{{$details[$index]->option1}}</h3>
+                                <h5>①{{$details[$index]->option1}}</h5>
                             @endif
                             @if ($details[$index]->option2)
-                                <h3>②{{$details[$index]->option2}}</h3>
+                                <h5>②{{$details[$index]->option2}}</h5>
                             @endif
                             @if ($details[$index]->option3)
-                                <h3>③{{$details[$index]->option3}}</h3>
+                                <h5>③{{$details[$index]->option3}}</h5>
                             @endif
                             @if ($details[$index]->option4)
-                                <h3>④{{$details[$index]->option4}}</h3>
+                                <h5>④{{$details[$index]->option4}}</h5>
                             @endif
                             @if ($details[$index]->option5)
-                                <h3>⑤{{$details[$index]->option5}}</h3>
+                                <h5>⑤{{$details[$index]->option5}}</h5>
                             @endif
                         <!-- その他のコード -->
                         
@@ -63,7 +63,7 @@
                             </form>
                         @endif
                         
-                        <h2>・優先度</h2>
+                        <h5>・優先度</h5>
                         <form>
                             <div class="form-group row">
                                 <select class="form-control">
@@ -75,9 +75,9 @@
                                 </select>
                             </div>
                         </form>
-                        <h2>・参考リンク</h2>
-                        <h3>{{$details[$index] -> rf_url}}</h3>
-                        <h2>・参考画像</h2>
+                        <h5>・参考リンク</h5>
+                        <a href={{$details[$index] -> rf_url}} target="_blank">{{$details[$index] -> rf_url}}</a>
+                        <h5>・参考画像</h5>
                         <div class="image">
                             @if ($details[$index] ->rf_image)
                                     <img src="{{ secure_asset('uploads/' . $details[$index]->rf_image) }}">
